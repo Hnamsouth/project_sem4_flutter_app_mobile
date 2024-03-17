@@ -8,15 +8,5 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  ThemeData _themeData = ThemeData(
-    colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-    useMaterial3: true,
-  );
-
-  ThemeData get themeData => _themeData;
-
-  void updateTheme(ThemeData themeData) {
-    _themeData = themeData;
-    notifyListeners();
-  }
+  ThemeMode get getThemeMode => themeMode;
 }
