@@ -2,7 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/action_type.dart';
 import 'package:rive/rive.dart';
+
+import 'main_screen.dart';
 
 class SelectActionScreen extends StatelessWidget {
   SelectActionScreen({super.key});
@@ -10,22 +13,21 @@ class SelectActionScreen extends StatelessWidget {
   final List<Map<String, dynamic>> listAction = [
     {
       'title': 'Manage School',
-      'route': '/main',
+      'type': ActionType.MANAGER_SCHOOL,
     },
     {
       'title': 'Manage Student',
-      'route': '/manage_student',
+      'type': ActionType.MANAGER_STUDENT,
     },
     {
       'title': 'Manage Teacher',
-      'route': '/manage_teacher',
+      'type': ActionType.MANAGER_TEACHER,
     },
     {
       'title': 'Manage Class',
-      'route': '/manage_class',
+      'type': ActionType.MANAGER_CLASS,
     },
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,8 +76,16 @@ class SelectActionScreen extends StatelessWidget {
                                 Theme.of(context).colorScheme.secondary,
                             elevation: 5,
                             onPressed: () {
-                              Navigator.pushNamed(
-                                  context, e['route'].toString());
+                              // Navigator.pushNamed(
+                              //     context, e['route'].toString());
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MainScreen(
+                                    action: e,
+                                  ),
+                                ),
+                              );
                             },
                             child: Text(
                               e['title'].toString(),

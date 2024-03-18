@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_sem4_flutter_app_mobile/provider/theme_provider.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/main_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/select_action_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Manage School',
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.light,
+      themeMode: context.watch<ThemeProvider>().getThemeMode,
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
@@ -53,7 +52,6 @@ class MyApp extends StatelessWidget {
       ),
       home: const LoginScreen(),
       routes: {
-        '/main': (context) => const MainScreen(title: 'Flutter Demo Home Page'),
         '/select_action': (context) => SelectActionScreen(),
       },
     );
