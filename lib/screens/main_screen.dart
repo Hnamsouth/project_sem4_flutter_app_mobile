@@ -13,17 +13,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MainScreen> {
-  String actionSelected = '1';
-  var listData = [
-    {'name': 'Sarah', 'age': '19', 'address': 'New York'},
-    {'name': 'Janine', 'age': '43', 'address': 'Paris'},
-    {'name': 'William', 'age': '27', 'address': 'London'},
-  ];
-  List<bool> selecteds = [];
-
   @override
   void initState() {
-    selecteds = List<bool>.generate(listData.length, (index) => false);
     super.initState();
   }
 
