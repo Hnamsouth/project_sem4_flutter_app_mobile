@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_sem4_flutter_app_mobile/model/user_model.dart';
-import 'package:project_sem4_flutter_app_mobile/service/user_service.dart';
 import 'package:quickly/quickly.dart';
-import 'package:logger/logger.dart';
 
 class SelectDirection extends StatelessWidget {
   final String? title;
@@ -28,7 +25,7 @@ class SelectDirection extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade300,
-              offset: Offset(0.0, 3), //(x,y)
+              offset: const Offset(0.0, 3), //(x,y)
               blurRadius: 1.0,
             ),
           ]),
@@ -54,7 +51,7 @@ class SelectDirection extends StatelessWidget {
         ],
       ),
     ).onTap(() {
-      UserService.login();
+      // UserService.login();
       // Logger().i("Navigate to $direction");
       // Navigator.pushNamed(context, direction!);
     });

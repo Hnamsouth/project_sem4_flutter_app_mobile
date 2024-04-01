@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:project_sem4_flutter_app_mobile/home_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/provider/theme_provider.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/select_action_screen.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/select_role/select_role.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/teacher/teacher_actions.dart';
 import 'package:provider/provider.dart';
 
 import 'data/constants.dart';
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           secondary: secondaryLightColor,
           onSecondary: onSecondaryLightColor,
           background: bgLightColor,
-          onPrimary: Color(0xFF232323),
+          onPrimary: Color(0xFFFFFFFF),
           brightness: Brightness.light,
         ),
       ),
@@ -49,16 +49,16 @@ class MyApp extends StatelessWidget {
             onPrimary: Color(0xF7F1F1F1),
             secondary: secondaryDarkColor,
             onSecondary: onSecondaryDarkColor,
-            background: bgDarkColor,
+            background: bgLightColor,
             brightness: Brightness.dark),
       ),
-      // home: const LoginScreen(),
-      home: const SelectRole(),
+      home: SelectActionScreen(),
       routes: {
-        '/select_action': (context) => const SelectActionScreen(),
-        '/select_role': (context) => const SelectRole(),
-        '/teacher_action': (context) => TeacherActions(),
+        '/select_action': (context) => SelectActionScreen(),
+        '/home_parent': (context) => const HomeScreen(),
+        '/login': (context) => const LoginScreen(),
       },
+      builder: EasyLoading.init(),
     );
   }
 }

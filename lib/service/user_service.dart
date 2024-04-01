@@ -1,7 +1,10 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../model/login_response.dart';
 import '../model/user_model.dart';
+import 'api_service.dart';
 import 'iservice.dart';
 import 'package:logger/logger.dart';
-import 'package:dio/dio.dart';
 
 class UserService implements Iservice<User> {
   Future<User> getUserTest() async {
@@ -51,18 +54,50 @@ class UserService implements Iservice<User> {
     throw UnimplementedError();
   }
 
-  static Future<void> login() async {
-    String url = "http://14.231.219.20:4869/api/v1/auth/login";
+  static Future<Object?> login(dynamic data) async {
+    var user = {"username": "bdht2207a", "password": "bdht2207a"};
     try {
-      await Dio()
-          .post(url,
-              data: {"username": "user1", "password": "asd123"},
-              options:
-                  Options(headers: {"Content-Type": Headers.jsonContentType}))
-          .then((value) => Logger().i(value.data))
-          .catchError((e) => Logger().e(e));
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await DioService().post("/auth/login", data: data).then((value) async {
+        // cast to LoginResponse
+        Logger().i("Login Success $value.data");
+        LoginResponse data = LoginResponse.fromJson(value.data);
+        Logger().i("Login Success $data");
+        await prefs.setString('access-token', data.authResponse.token);
+        await prefs.setString('refresh-token', data.authResponse.refreshToken);
+        return data;
+      });
     } catch (e) {
       Logger().e(e);
     }
+    return null;
   }
+
+  // logout
+  static Future<void> logout() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('access-token');
+    await prefs.remove('refresh-token');
+  }
+
+// final Dio _dio = Dio();
+//
+//
+// Future<Response> login1(String username, String password) async {
+//   try {
+//     Response response = await _dio.post(
+//       'https://api.loginradius.com/identity/v2/auth/login',
+//       data: {
+//         'username': username,
+//         'password': password
+//       },
+//       queryParameters: {'apikey': 'YOUR_API_KEY'},
+//     );
+//     //returns the successful user data json object
+//     return response.data;
+//   } on DioError catch (e) {
+//     //returns the error object if any
+//     return e.response!.data;
+//   }
+// }
 }

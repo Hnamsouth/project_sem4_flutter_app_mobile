@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../model/user_model.dart';
 
 final List<User> users = [

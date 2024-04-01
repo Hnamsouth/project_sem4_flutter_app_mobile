@@ -3,77 +3,45 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/action_type.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
 import 'package:rive/rive.dart';
 
 import 'main_screen.dart';
 
-class SelectActionScreen extends StatefulWidget {
-  const SelectActionScreen({super.key});
-
-  @override
-  State<SelectActionScreen> createState() => _SelectActionScreenState();
-}
-
-class _SelectActionScreenState extends State<SelectActionScreen> {
-  late RiveAnimationController _btnAnimationController;
-
-  bool isShowSignInDialog = false;
-
-  @override
-  void initState() {
-    _btnAnimationController = OneShotAnimation('Animation 1', autoplay: false);
-    super.initState();
-  }
+class SelectActionScreen extends StatelessWidget {
+  SelectActionScreen({super.key});
 
   final List<Map<String, dynamic>> listAction = [
     {
-      'title': 'Manage School',
-      'type': ActionType.MANAGER_SCHOOL,
-    },
-    {
-      'title': 'Manage Student',
-      'type': ActionType.MANAGER_STUDENT,
-    },
-    {
-      'title': 'Manage Teacher',
+      'title': 'Giáo Viên',
       'type': ActionType.MANAGER_TEACHER,
     },
     {
-      'title': 'Manage Class',
-      'type': ActionType.MANAGER_CLASS,
+      'title': 'Phụ Huynh',
+      'type': ActionType.MANAGER_PARENT,
     },
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(alignment: Alignment.center, children: [
-        // Positioned(
-        //   width: MediaQuery.of(context).size.width * 1.7,
-        //   left: 200,
-        //   bottom: 0,
-        //   child: Image.asset(
-        //     "assets/Backgrounds/Spline.png",
-        //   ),
-        // ),
-        RiveAnimation.asset(
-          "assets/RiveAssets/shapes.riv",
-          controllers: [_btnAnimationController],
+        Positioned(
+            width: MediaQuery.of(context).size.width * 1.7,
+            left: 200,
+            bottom: 0,
+            child: Text("")),
+        Positioned.fill(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: const SizedBox(),
+          ),
         ),
-        //
-        // Positioned.fill(
-        //   child: BackdropFilter(
-        //     filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-        //     child: const SizedBox(),
-        //   ),
-        // ),
-
-        // Positioned.fill(
-        //   child: BackdropFilter(
-        //     filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-        //     child: const SizedBox(),
-        //   ),
-        // ),
+        Positioned.fill(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+            child: const SizedBox(),
+          ),
+        ),
         Align(
             alignment: Alignment.center,
             child: GridView.count(
@@ -91,8 +59,7 @@ class _SelectActionScreenState extends State<SelectActionScreen> {
                           i,
                           FloatingActionButton(
                             heroTag: e['title'].toString(),
-                            backgroundColor:
-                                Theme.of(context).colorScheme.secondary,
+                            backgroundColor: Colors.black,
                             elevation: 5,
                             onPressed: () {
                               // Navigator.pushNamed(
@@ -100,9 +67,7 @@ class _SelectActionScreenState extends State<SelectActionScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MainScreen(
-                                    action: e,
-                                  ),
+                                  builder: (context) => LoginScreen(),
                                 ),
                               );
                             },
@@ -119,43 +84,6 @@ class _SelectActionScreenState extends State<SelectActionScreen> {
                           )))
                       .values
                 ])),
-        Align(
-          alignment: Alignment.bottomLeft,
-          child: Container(
-            width: 60,
-            height: 60,
-            margin: const EdgeInsets.only(left: 20, bottom: 20),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-              borderRadius: BorderRadius.circular(60),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).colorScheme.onSecondary,
-                  blurRadius: 3,
-                  offset: const Offset(1, 2), // changes position of shadow
-                )
-              ],
-            ),
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.logout,
-                color: Theme.of(context).colorScheme.onPrimary,
-                textDirection: TextDirection.rtl,
-              ),
-            ),
-          ),
-        ),
-        TextButton(
-          onPressed: () {
-            _btnAnimationController.isActive =
-                !_btnAnimationController.isActive;
-            print("Adasf");
-          },
-          child: Text("Tap to play"),
-        ),
       ]),
     );
   }
