@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MainScreen> {
               pinned: true,
               actions: _actionAppbar,
             ),
-            SliverToBoxAdapter(
+            const SliverToBoxAdapter(
               child: DemoDataTable(),
             ),
             SliverList(

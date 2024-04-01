@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -27,8 +30,23 @@ class _LoginScreenState extends State<LoginScreen> {
           width: 150,
           height: 50,
           child: TextButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/select_action');
+            onPressed: () async {
+              // Navigator.pushNamed(context, '/select_action');
+              String url = "http://113.178.50.42:4869/api/v1/auth/login";
+              try {
+                await Dio()
+                    .fetch(RequestOptions(path: url, method: 'POST', data: {
+                      "username": "user1",
+                      "password": "asd123",
+                    }, headers: {
+                      'Content-Type': 'application/json'
+                    }))
+                    .then((value) => Logger().i(value))
+                    .catchError((e) => Logger().e(e));
+                ;
+              } catch (e) {
+                Logger().e(e);
+              }
             },
             child: Text(
               'Login',

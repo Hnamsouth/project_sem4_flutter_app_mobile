@@ -7,8 +7,23 @@ import 'package:rive/rive.dart';
 
 import 'main_screen.dart';
 
-class SelectActionScreen extends StatelessWidget {
-  SelectActionScreen({super.key});
+class SelectActionScreen extends StatefulWidget {
+  const SelectActionScreen({super.key});
+
+  @override
+  State<SelectActionScreen> createState() => _SelectActionScreenState();
+}
+
+class _SelectActionScreenState extends State<SelectActionScreen> {
+  late RiveAnimationController _btnAnimationController;
+
+  bool isShowSignInDialog = false;
+
+  @override
+  void initState() {
+    _btnAnimationController = OneShotAnimation('Animation 1', autoplay: false);
+    super.initState();
+  }
 
   final List<Map<String, dynamic>> listAction = [
     {
@@ -28,33 +43,37 @@ class SelectActionScreen extends StatelessWidget {
       'type': ActionType.MANAGER_CLASS,
     },
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(alignment: Alignment.center, children: [
-        Positioned(
-          width: MediaQuery.of(context).size.width * 1.7,
-          left: 200,
-          bottom: 0,
-          child: Image.asset(
-            "assets/Backgrounds/Spline.png",
-          ),
-        ),
-        Positioned.fill(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: const SizedBox(),
-          ),
-        ),
-        const RiveAnimation.asset(
+        // Positioned(
+        //   width: MediaQuery.of(context).size.width * 1.7,
+        //   left: 200,
+        //   bottom: 0,
+        //   child: Image.asset(
+        //     "assets/Backgrounds/Spline.png",
+        //   ),
+        // ),
+        RiveAnimation.asset(
           "assets/RiveAssets/shapes.riv",
+          controllers: [_btnAnimationController],
         ),
-        Positioned.fill(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-            child: const SizedBox(),
-          ),
-        ),
+        //
+        // Positioned.fill(
+        //   child: BackdropFilter(
+        //     filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+        //     child: const SizedBox(),
+        //   ),
+        // ),
+
+        // Positioned.fill(
+        //   child: BackdropFilter(
+        //     filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+        //     child: const SizedBox(),
+        //   ),
+        // ),
         Align(
             alignment: Alignment.center,
             child: GridView.count(
@@ -128,7 +147,15 @@ class SelectActionScreen extends StatelessWidget {
               ),
             ),
           ),
-        )
+        ),
+        TextButton(
+          onPressed: () {
+            _btnAnimationController.isActive =
+                !_btnAnimationController.isActive;
+            print("Adasf");
+          },
+          child: Text("Tap to play"),
+        ),
       ]),
     );
   }

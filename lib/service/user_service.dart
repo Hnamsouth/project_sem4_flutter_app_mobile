@@ -1,5 +1,7 @@
 import '../model/user_model.dart';
 import 'iservice.dart';
+import 'package:logger/logger.dart';
+import 'package:dio/dio.dart';
 
 class UserService implements Iservice<User> {
   Future<User> getUserTest() async {
@@ -47,5 +49,20 @@ class UserService implements Iservice<User> {
   Future<User> update(User s) async {
     // TODO: implement update
     throw UnimplementedError();
+  }
+
+  static Future<void> login() async {
+    String url = "http://14.231.219.20:4869/api/v1/auth/login";
+    try {
+      await Dio()
+          .post(url,
+              data: {"username": "user1", "password": "asd123"},
+              options:
+                  Options(headers: {"Content-Type": Headers.jsonContentType}))
+          .then((value) => Logger().i(value.data))
+          .catchError((e) => Logger().e(e));
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 }

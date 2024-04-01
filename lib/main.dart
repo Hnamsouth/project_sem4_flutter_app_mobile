@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project_sem4_flutter_app_mobile/provider/theme_provider.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/select_action_screen.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/select_role/select_role.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/teacher/teacher_actions.dart';
 import 'package:provider/provider.dart';
 
 import 'data/constants.dart';
@@ -50,9 +52,12 @@ class MyApp extends StatelessWidget {
             background: bgDarkColor,
             brightness: Brightness.dark),
       ),
-      home: const LoginScreen(),
+      // home: const LoginScreen(),
+      home: const SelectRole(),
       routes: {
-        '/select_action': (context) => SelectActionScreen(),
+        '/select_action': (context) => const SelectActionScreen(),
+        '/select_role': (context) => const SelectRole(),
+        '/teacher_action': (context) => TeacherActions(),
       },
     );
   }
