@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/action_type.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
 import 'package:rive/rive.dart';
 
 import 'main_screen.dart';
@@ -12,21 +13,14 @@ class SelectActionScreen extends StatelessWidget {
 
   final List<Map<String, dynamic>> listAction = [
     {
-      'title': 'Manage School',
-      'type': ActionType.MANAGER_SCHOOL,
-    },
-    {
-      'title': 'Manage Student',
-      'type': ActionType.MANAGER_STUDENT,
-    },
-    {
-      'title': 'Manage Teacher',
+      'title': 'Giáo Viên',
       'type': ActionType.MANAGER_TEACHER,
     },
     {
-      'title': 'Manage Class',
-      'type': ActionType.MANAGER_CLASS,
+      'title': 'Phụ Huynh',
+      'type': ActionType.MANAGER_PARENT,
     },
+
   ];
   @override
   Widget build(BuildContext context) {
@@ -36,9 +30,7 @@ class SelectActionScreen extends StatelessWidget {
           width: MediaQuery.of(context).size.width * 1.7,
           left: 200,
           bottom: 0,
-          child: Image.asset(
-            "assets/Backgrounds/Spline.png",
-          ),
+          child: Text("")
         ),
         Positioned.fill(
           child: BackdropFilter(
@@ -46,9 +38,7 @@ class SelectActionScreen extends StatelessWidget {
             child: const SizedBox(),
           ),
         ),
-        const RiveAnimation.asset(
-          "assets/RiveAssets/shapes.riv",
-        ),
+
         Positioned.fill(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
@@ -73,7 +63,7 @@ class SelectActionScreen extends StatelessWidget {
                           FloatingActionButton(
                             heroTag: e['title'].toString(),
                             backgroundColor:
-                                Theme.of(context).colorScheme.secondary,
+                                Colors.black,
                             elevation: 5,
                             onPressed: () {
                               // Navigator.pushNamed(
@@ -81,8 +71,8 @@ class SelectActionScreen extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MainScreen(
-                                    action: e,
+                                  builder: (context) => LoginScreen(
+
                                   ),
                                 ),
                               );
@@ -100,35 +90,6 @@ class SelectActionScreen extends StatelessWidget {
                           )))
                       .values
                 ])),
-        Align(
-          alignment: Alignment.bottomLeft,
-          child: Container(
-            width: 60,
-            height: 60,
-            margin: const EdgeInsets.only(left: 20, bottom: 20),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-              borderRadius: BorderRadius.circular(60),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).colorScheme.onSecondary,
-                  blurRadius: 3,
-                  offset: const Offset(1, 2), // changes position of shadow
-                )
-              ],
-            ),
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.logout,
-                color: Theme.of(context).colorScheme.onPrimary,
-                textDirection: TextDirection.rtl,
-              ),
-            ),
-          ),
-        )
       ]),
     );
   }

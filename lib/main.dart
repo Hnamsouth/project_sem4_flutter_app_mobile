@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:project_sem4_flutter_app_mobile/home_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/provider/theme_provider.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/home_parent.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/select_action_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Manage School',
       debugShowCheckedModeBanner: false,
+
       themeMode: context.watch<ThemeProvider>().getThemeMode,
       theme: ThemeData(
         useMaterial3: true,
@@ -35,7 +38,7 @@ class MyApp extends StatelessWidget {
           secondary: secondaryLightColor,
           onSecondary: onSecondaryLightColor,
           background: bgLightColor,
-          onPrimary: Color(0xFF232323),
+          onPrimary: Color(0xFFFFFFFF),
           brightness: Brightness.light,
         ),
       ),
@@ -47,12 +50,14 @@ class MyApp extends StatelessWidget {
             onPrimary: Color(0xF7F1F1F1),
             secondary: secondaryDarkColor,
             onSecondary: onSecondaryDarkColor,
-            background: bgDarkColor,
+            background: bgLightColor,
             brightness: Brightness.dark),
       ),
-      home: const LoginScreen(),
+
+      home:   SelectActionScreen(),
       routes: {
         '/select_action': (context) => SelectActionScreen(),
+        '/home_parent': (context) => const HomeScreen(),
       },
     );
   }
