@@ -6,10 +6,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/action_type.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
-import 'package:rive/rive.dart';
 
 import '../controller/user_controller.dart';
-import 'main_screen.dart';
 
 class SelectActionScreen extends StatelessWidget {
   SelectActionScreen({super.key});
@@ -17,17 +15,15 @@ class SelectActionScreen extends StatelessWidget {
   final List<Map<String, dynamic>> listAction = [
     {
       'title': 'Giáo Viên',
-      'type': ActionType.MANAGER_TEACHER,
+      'type': LoginType.giaovien,
     },
     {
       'title': 'Phụ Huynh',
-      'type': ActionType.MANAGER_PARENT,
+      'type': LoginType.phuhuynh,
     },
   ];
   @override
   Widget build(BuildContext context) {
-
-    final UserController userController = Get.put(UserController());
     return Scaffold(
       body: Stack(alignment: Alignment.center, children: [
         Positioned(
@@ -69,11 +65,12 @@ class SelectActionScreen extends StatelessWidget {
                             onPressed: () {
                               // Navigator.pushNamed(
                               //     context, e['route'].toString());
-                              Get.to(const LoginScreen());
+                              Get.to(LoginScreen(loginType: e['type']));
                             },
                             child: Text(
                               e['title'].toString(),
                               style: const TextStyle(
+                                color: Colors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 1.8,

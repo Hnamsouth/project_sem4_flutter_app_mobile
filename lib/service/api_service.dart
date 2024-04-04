@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
 import 'package:project_sem4_flutter_app_mobile/model/login_response.dart';
 import 'package:project_sem4_flutter_app_mobile/service/Endpoint.dart';
 import 'package:logger/logger.dart';
@@ -17,14 +18,10 @@ class DioService {
       // ..interceptors.add(LogInterceptor(responseBody: true))
       ..interceptors.add(InterceptorsWrapper(
         onRequest: (options, handler) async {
-          // final prefs = await SharedPreferences.getInstance();
-          // // // Get token from secure storage
-          // String accessToken = prefs.getString('access-token') ?? "";
-          // String refreshToken = prefs.getString('refresh-token') ?? "";
-          // print('$accessToken \n $refreshToken');
-          // if (accessToken.isNotEmpty && refreshToken.isNotEmpty) {
-          //   options.headers['Authorization'] = 'Bearer $accessToken';
-          // }
+          final prefs = await SharedPreferences.getInstance();
+          // // Get token from secure storage
+          String? accessToken = prefs.getString(TokenType.accress_token.name);
+          options.headers['Authorization'] = 'Bearer $accessToken';
           return handler.next(options); //continue
         },
         onResponse: (response, handler) {
@@ -32,52 +29,55 @@ class DioService {
           return handler.next(response); // continue
         },
         onError: (DioException e, handler) async {
-          if (e.response?.statusCode == 401) {
+          if (e.response?.statusCode == 401 &&
+              e.response?.requestOptions.path != authenticationLoginUrl) {
             final prefs = await SharedPreferences.getInstance();
             // // Get token from secure storage
-            String rfToken = prefs.getString('refresh-token') ?? "";
-            if (rfToken.isNotEmpty) {
+            String? rfToken = prefs.getString(TokenType.refresh_token.name);
+            String? accessToken = await refreshToken(rfToken ?? "");
+            if (accessToken != null) {
+              // Update the request header with the new access token
+              e.requestOptions.headers['Authorization'] = 'Bearer $accessToken';
               // call refresh token
-              await refreshToken(rfToken);
-              RequestOptions options = e.requestOptions;
-              try {
-                var resp = await _dio.request(e.requestOptions.path,
-                    data: options.data,
-                    cancelToken: options.cancelToken,
-                    onReceiveProgress: options.onReceiveProgress,
-                    onSendProgress: options.onSendProgress,
-                    queryParameters: options.queryParameters);
-                return handler.resolve(resp);
-              } on DioException catch (error) {
-                return handler.reject(error);
-              }
-              //   } else {
-              //     return handler.reject(e);
+              return handler.resolve(await _dio.fetch(e.requestOptions));
             }
           }
-          Logger().e(e);
+          Logger().w(e.message);
           return handler.next(e); //continue
         },
       ));
   }
+
+  String get authenticationLoginUrl => '';
   // refresh token
-  Future<void> refreshToken(String refreshToken) async {
+  Future<String?> refreshToken(String refreshToken) async {
     final prefs = await SharedPreferences.getInstance();
     try {
       Logger().w("calling refresh-token");
-      await _dio
+      var result = await _dio
           .post("/auth/refresh-token",
               options: Options(headers: {
                 'Authorization': 'Bearer $refreshToken',
               }))
-          .then((value) async {
-        AuthResponse data = AuthResponse.fromJson(value.data);
-        await prefs.setString('access-token', data.token);
-        await prefs.setString('refresh-token', data.refreshToken);
+          .then((value) async {});
+      // Check if the response status code is 200 (OK)
+      if (result.statusCode == 200) {
+        // Parse the response to get the new authentication token
+        AuthResponse data = AuthResponse.fromJson(result.data);
+        await prefs.setString(TokenType.accress_token.name, data.token);
+        await prefs.setString(TokenType.refresh_token.name, data.refreshToken);
         Logger().i(data.toString());
-      });
+        // Return the new access token
+        return data.token;
+      } else {
+        await prefs.remove(TokenType.accress_token.name);
+        await prefs.remove(TokenType.refresh_token.name);
+      }
+      // Return null if the response status code is not 200
+      return null;
     } catch (e) {
-      Logger().e(e);
+      Logger().e('Error refreshing authentication token: $e');
+      return null;
     }
   }
 

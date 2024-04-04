@@ -1,11 +1,17 @@
+import 'package:dio/dio.dart';
+import 'package:get/get.dart';
+import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
+import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
+import 'package:project_sem4_flutter_app_mobile/model/authRespone_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../controller/user_controller.dart';
 import '../model/user_model.dart';
 import 'api_service.dart';
 import 'iservice.dart';
 import 'package:logger/logger.dart';
 
 class UserService implements Iservice<User> {
+  final UserController userController = Get.put(UserController());
+
   @override
   Future<User> create(User s) async {
     // TODO: implement create
@@ -42,24 +48,43 @@ class UserService implements Iservice<User> {
     throw UnimplementedError();
   }
 
-  static Future<bool> login(dynamic data, UserController u) async {
-    var user = {"username": "bdht2207a1", "password": "123456"};
+  static Future<User?> login(dynamic data, LoginType loginType) async {
+    var user = {"username": "phuhuynh1e", "password": "123456"};
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await DioService().post("/auth/login", data: user).then((value) async {
-        // cast to LoginResponse
-        Logger().i("Login Success $value.data");
-        User data = User.fromJson(value.data);
-        await prefs.setString('access-token', data.authResponse!.token);
-        await prefs.setString('refresh-token', data.authResponse!.refreshToken);
-        Logger().i("Login Success $data");
-        u.setUser(data);
-        return true;
-      });
+      var result = await DioService().post("/auth/login", data: data);
+      if (result.statusCode == 200) {
+        User data = User.fromJson(result.data);
+        Logger().i(data);
+        if (loginType == LoginType.phuhuynh) {
+          return checkRole(data, Role.ROLE_PH) ? data : null;
+        } else if (loginType == LoginType.giaovien) {
+          return checkRole(data, Role.ROLE_GV) ? data : null;
+        } else {
+          return null;
+        }
+      }
+    } on DioException catch (e) {
+      Logger().e("Dio exception: $e.message");
     } catch (e) {
-      Logger().e('er:-----------$e');
+      Logger().e("exception: $e.message");
+    }
+    return null;
+  }
+
+  static bool checkRole(User data, Role role) {
+    var check = data.roles?.map((e) => e.name.contains(role.name));
+    if (check!.contains(true)) {
+      Logger().i(check.toString());
+      saveLocalToken(data.authResponse);
+      return true;
     }
     return false;
+  }
+
+  static void saveLocalToken(AuthResponse? auth) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(TokenType.accress_token.name, auth!.token);
+    await prefs.setString(TokenType.refresh_token.name, auth.refreshToken);
   }
 
   // logout

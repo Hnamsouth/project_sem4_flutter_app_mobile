@@ -17,28 +17,100 @@ class HomeParent extends StatefulWidget {
 
   @override
   State<HomeParent> createState() => _HomeParentState();
-
 }
 
 final _controller = PageController();
 
 class _HomeParentState extends State<HomeParent> {
-
-
-
   @override
   Widget build(BuildContext context) {
     final UserController ctrl = Get.find();
-
-
-    print(ctrl);
-
-
-
     void _logout() {
       Navigator.pushNamed(context, '/login');
     }
 
+    final List<Map<String, dynamic>> workData = [
+      {
+        'title': "Học phí,Khoản thu",
+        'icon': FontAwesomeIcons.graduationCap,
+        'action': () => {},
+        'color': Colors.redAccent
+      },
+      {
+        'title': "Điểm danh,Xin nghỉ học",
+        'icon': FontAwesomeIcons.schoolCircleCheck,
+        'action': () => {},
+        'color': Colors.redAccent
+      },
+      {
+        'title': "Hoạt động hàng ngày",
+        'icon': FontAwesomeIcons.calendarDays,
+        'action': () => {},
+        'color': Colors.redAccent
+      },
+      {
+        'title': "Phiếu đánh giá học tập",
+        'icon': FontAwesomeIcons.calendarDay,
+        'action': () => {},
+        'color': Colors.redAccent
+      },
+      {
+        'title': "Nhiệm vụ,Bài tập",
+        'icon': FontAwesomeIcons.bookOpen,
+        'action': () => {},
+        'color': Colors.redAccent
+      },
+      {
+        'title': "Đăng ký, Khảo sát",
+        'icon': FontAwesomeIcons.calendar,
+        'action': () => {},
+        'color': Colors.redAccent
+      },
+      // 2
+      {
+        'title': "Thời khoá biểu lớp học",
+        'icon': FontAwesomeIcons.calendarDays,
+        'action': () => {},
+        'color': Colors.redAccent
+      },
+      {
+        'title': "Thực đơn bữa ăn",
+        'icon': FontAwesomeIcons.bowlRice,
+        'action': () => {},
+        'color': Colors.redAccent
+      },
+      {
+        'title': "Thông tin học sinh",
+        'icon': FontAwesomeIcons.addressCard,
+        'action': () => {},
+        'color': Colors.redAccent
+      },
+      {
+        'title': "Trang số liệu học",
+        'icon': FontAwesomeIcons.usersRectangle,
+        'action': () => {},
+        'color': Colors.redAccent
+      },
+      {
+        'title': "Quét QR code",
+        'icon': FontAwesomeIcons.qrcode,
+        'action': () => {},
+        'color': Colors.redAccent
+      },
+      {
+        'title': "Trang điện Tử",
+        'icon': FontAwesomeIcons.globe,
+        'action': () => {},
+        'color': Colors.redAccent
+      },
+      {
+        'title': "Thời khoá biểu lớp học",
+        'icon': FontAwesomeIcons.heart,
+        'action': () => {},
+        'color': Colors.redAccent
+      },
+    ];
+    List<Map<String, dynamic>> workdetail = workData.getRange(0, 8).toList();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -92,417 +164,15 @@ class _HomeParentState extends State<HomeParent> {
                 // SizedBox(
                 //   height: 10,
                 // ),
+                // work view
                 SizedBox(
                   height: 320,
                   child: PageView(
                     controller: _controller,
                     children: [
-                      Container(
-                        child: GridView.count(
-                          childAspectRatio: 6 / 7,
-                          padding: const EdgeInsets.fromLTRB(15, 15, 15, 40),
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 30,
-                          mainAxisSpacing: 40,
-                          children: [
-                            Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Ink(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            5, 5, 5, 5),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.green),
-                                        color: Colors.deepOrange,
-                                        borderRadius:
-                                            BorderRadius.circular(20.0)),
-                                    child: IconButton(
-                                      color: Colors.white,
-                                      icon: const FaIcon(
-                                          FontAwesomeIcons.graduationCap,
-                                          size: 43.0),
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  const Text(
-                                    "Học phí,Khoản thu",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ]),
-                            Column(children: [
-                              Ink(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    5, 5, 5, 5),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.green),
-                                    color: Colors.purple,
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child: IconButton(
-                                  color: Colors.white,
-                                  icon: const FaIcon(
-                                      FontAwesomeIcons.schoolCircleCheck,
-                                      size: 45.0),
-                                  onPressed: () {},
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 3,
-                              ),
-                              const Text(
-                                "Điểm danh,Xin nghỉ học",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ]),
-                            Column(children: [
-                              Ink(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    5, 5, 5, 5),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.green),
-                                    color: Colors.pink,
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child: IconButton(
-                                  color: Colors.white,
-                                  icon: const FaIcon(
-                                      FontAwesomeIcons.calendarDays,
-                                      size: 45.0),
-                                  onPressed: () {},
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 3,
-                              ),
-                              const Text(
-                                "Hoạt động hàng ngày",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ]),
-                            Column(children: [
-                              Ink(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    5, 5, 5, 5),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.green),
-                                    color: Colors.deepOrange,
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child: IconButton(
-                                  color: Colors.white,
-                                  icon: const FaIcon(
-                                      FontAwesomeIcons.calendarDay,
-                                      size: 45.0),
-                                  onPressed: () {},
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 3,
-                              ),
-                              const Text(
-                                "Phiếu đánh giá học tập",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ]),
-                            Column(children: [
-                              Ink(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    5, 5, 5, 5),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.green),
-                                    color: Colors.deepOrange,
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child: IconButton(
-                                  color: Colors.white,
-                                  icon: const FaIcon(FontAwesomeIcons.bookOpen,
-                                      size: 45.0),
-                                  onPressed: () {},
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 3,
-                              ),
-                              const Text(
-                                "Nhiệm vụ,Bài tập",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ]),
-                            Column(children: [
-                              Ink(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    5, 5, 5, 5),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.green),
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child: IconButton(
-                                  color: Colors.white,
-                                  icon: const FaIcon(FontAwesomeIcons.calendar,
-                                      size: 45.0),
-                                  onPressed: () {},
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 3,
-                              ),
-                              const Text(
-                                "Đăng ký, Khảo sát",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ]),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: GridView.count(
-                          childAspectRatio: 6 / 7,
-                          padding: const EdgeInsets.fromLTRB(15, 15, 15, 40),
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 30,
-                          mainAxisSpacing: 40,
-                          children: [
-                            Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Ink(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            5, 5, 5, 5),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.green),
-                                        color: Colors.blue,
-                                        borderRadius:
-                                            BorderRadius.circular(20.0)),
-                                    child: IconButton(
-                                      color: Colors.white,
-                                      icon: const FaIcon(
-                                          FontAwesomeIcons.calendarDays,
-                                          size: 43.0),
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  const Text(
-                                    "Thời khoá biểu lớp học",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ]),
-                            Column(children: [
-                              Ink(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    5, 5, 5, 5),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.green),
-                                    color: Colors.pink,
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child: IconButton(
-                                  color: Colors.white,
-                                  icon: const FaIcon(FontAwesomeIcons.bowlRice,
-                                      size: 45.0),
-                                  onPressed: () {},
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 3,
-                              ),
-                              const Text(
-                                "Thực đơn bữa ăn",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ]),
-                            Column(children: [
-                              Ink(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    5, 5, 5, 5),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.green),
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child: IconButton(
-                                  color: Colors.white,
-                                  icon: const FaIcon(
-                                      FontAwesomeIcons.addressCard,
-                                      size: 45.0),
-                                  onPressed: () {},
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 3,
-                              ),
-                              const Text(
-                                "Thông tin học sinh",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ]),
-                            Column(children: [
-                              Ink(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    5, 5, 5, 5),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.green),
-                                    color: Colors.purple,
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child: IconButton(
-                                  color: Colors.white,
-                                  icon: const FaIcon(
-                                      FontAwesomeIcons.usersRectangle,
-                                      size: 45.0),
-                                  onPressed: () {},
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 3,
-                              ),
-                              const Text(
-                                "Trang số liệu học",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ]),
-                            Column(children: [
-                              Ink(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    5, 5, 5, 5),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.green),
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child: IconButton(
-                                  color: Colors.white,
-                                  icon: const FaIcon(FontAwesomeIcons.qrcode,
-                                      size: 45.0),
-                                  onPressed: () {},
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 3,
-                              ),
-                              const Text(
-                                "Quét QR code",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ]),
-                            Column(children: [
-                              Ink(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    5, 5, 5, 5),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.green),
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child: IconButton(
-                                  color: Colors.white,
-                                  icon: const FaIcon(FontAwesomeIcons.globe,
-                                      size: 45.0),
-                                  onPressed: () {},
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 3,
-                              ),
-                              const Text(
-                                "Trang điện Tử",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ]),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: GridView.count(
-                          childAspectRatio: 6 / 7,
-                          padding: const EdgeInsets.fromLTRB(15, 15, 15, 40),
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 30,
-                          mainAxisSpacing: 40,
-                          children: [
-                            Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Ink(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            5, 5, 5, 5),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.green),
-                                        color: Colors.pink,
-                                        borderRadius:
-                                            BorderRadius.circular(20.0)),
-                                    child: IconButton(
-                                      color: Colors.white,
-                                      icon: const FaIcon(FontAwesomeIcons.heart,
-                                          size: 44.0),
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  const Text(
-                                    "Thời khoá biểu lớp học",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ]),
-                          ],
-                        ),
-                      ),
+                      workViewDetail(workData.getRange(0, 6).toList()),
+                      workViewDetail(workData.getRange(6, 12).toList()),
+                      workViewDetail(workData.getRange(6, 12).toList()),
                     ],
                   ),
                 ),
@@ -553,11 +223,60 @@ class _HomeParentState extends State<HomeParent> {
                         child: const Text("Tất Cả"))
                   ],
                 ),
-
               ],
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget workViewDetail(List<Map<String, dynamic>> workdetail) {
+    return Container(
+      child: GridView.count(
+        childAspectRatio: 6 / 7,
+        padding: const EdgeInsets.fromLTRB(15, 15, 15, 45),
+        crossAxisCount: 3,
+        crossAxisSpacing: 30,
+        mainAxisSpacing: 30,
+        children: workdetail
+            .asMap()
+            .map((key, value) => MapEntry(
+                  key,
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          width: 70,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                            color: value['color'],
+                          ),
+                          child: IconButton(
+                            color: Colors.white,
+                            icon: FaIcon(value['icon'], size: 43.0),
+                            onPressed: () => value['action'],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          value['title'].toString(),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 2,
+                        )
+                      ]),
+                ))
+            .values
+            .toList(),
       ),
     );
   }

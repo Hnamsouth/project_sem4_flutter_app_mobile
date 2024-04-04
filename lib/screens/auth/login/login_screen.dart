@@ -7,11 +7,9 @@ import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart'
 import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
 import 'package:project_sem4_flutter_app_mobile/service/user_service.dart';
 import 'package:rive/rive.dart' as rive;
-import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/login_data.dart';
-import '../../../model/user_model.dart';
 import '../../parents/chat/chat_screen.dart';
 import '../../parents/contact/contact_screen.dart';
 import '../../parents/home_parent.dart';
@@ -19,37 +17,14 @@ import '../../parents/notification/notification_screen.dart';
 import '../../parents/work/work_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  late LoginType loginType;
+  LoginScreen({super.key, required this.loginType});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final List<Widget> _screens = [
-    const HomeParent(),
-    const ChatScreen(),
-    const NotificationScreen(),
-    const WorkScreen(),
-    const ContactScreen(),
-  ];
-  int _selectedIndex = 0;
-
-  _changeTab(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  late rive.RiveAnimationController _btnAnimationController;
-
-  @override
-  void initState() {
-    _btnAnimationController =
-        rive.SimpleAnimation('Animation 1', autoplay: false);
-    super.initState();
-  }
-
   var headers = {
     'Content-Type': 'application/json',
     'authorization': 'Basic c3R1ZHlkb3RlOnN0dWR5ZG90ZTEyMw=='
@@ -62,18 +37,16 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     bool loginLoading = false;
     DataLogin formData = DataLogin();
-    // navigator
-    void _loginSucces() {
-      Navigator.pushNamed(context, '/home_parent');
-    }
+    final UserController c = Get.find();
 
-    void _loginFail() {
+    // navigator
+    void loginFail() {
       showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
               title: const Text('Đăng nhập thất bại'),
-              content: const Text('Sai tên đăng nhập hoặc mật khẩu'),
+              content: const Text('Thông tin đăng nhập không hợp lệ'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
@@ -86,8 +59,6 @@ class _LoginScreenState extends State<LoginScreen> {
           });
     }
 
-    final UserController c = Get.find();
-
     Future<void> login() async {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       EasyLoading.show(
@@ -95,11 +66,14 @@ class _LoginScreenState extends State<LoginScreen> {
         maskType: EasyLoadingMaskType.black,
       );
       await Future.delayed(const Duration(seconds: 1));
-      await UserService.login(formData.toJson(), c);
-      if (prefs.getString('access-token') == '') {
-        _loginFail();
+      var user = await UserService.login(formData.toJson(), widget.loginType);
+      if (user == null) {
+        loginFail();
       } else {
-        Get.toNamed('/home_parent');
+        c.setUser(user);
+        widget.loginType == LoginType.phuhuynh
+            ? Get.toNamed('/home_parent')
+            : Get.toNamed('/teacher_action');
       }
       EasyLoading.dismiss();
     }
@@ -274,13 +248,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                     child: IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/select_action');
-                      },
-                      icon: Icon(
+                      onPressed: () => Get.toNamed('/select_action'),
+                      icon: const Icon(
                         semanticLabel: 'Go back',
                         Icons.logout,
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: Colors.white,
                         textDirection: TextDirection.rtl,
                       ),
                     ),

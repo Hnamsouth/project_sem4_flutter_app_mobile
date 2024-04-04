@@ -5,13 +5,14 @@ import 'package:project_sem4_flutter_app_mobile/home_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/provider/theme_provider.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/select_action_screen.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/teacher/teacher_actions.dart';
 import 'package:provider/provider.dart';
-import 'package:quickly/quickly.dart';
 
 import 'controller/user_controller.dart';
 import 'data/constants.dart';
 
 void main() {
+  Get.put(UserController());
   runApp(
     MultiProvider(
       providers: [
@@ -21,8 +22,8 @@ void main() {
     ),
   );
 }
-final UserController userController = Get.put(UserController());
 
+final UserController userController = Get.put(UserController());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
           secondary: secondaryLightColor,
           onSecondary: onSecondaryLightColor,
           background: bgLightColor,
-          onPrimary: Color(0xFFFFFFFF),
+          onPrimary: Color(0xFF2A2A2A),
           brightness: Brightness.light,
         ),
       ),
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/select_action': (context) => SelectActionScreen(),
         '/home_parent': (context) => const HomeScreen(),
-        '/login': (context) => const LoginScreen(),
+        '/teacher_action': (context) => TeacherActions()
       },
       builder: EasyLoading.init(),
     );

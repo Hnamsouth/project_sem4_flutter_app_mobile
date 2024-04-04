@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/extensions/text_extension.dart';
+import 'package:project_sem4_flutter_app_mobile/main.dart';
+import 'package:project_sem4_flutter_app_mobile/model/userDetails_model.dart';
+import 'package:project_sem4_flutter_app_mobile/service/user_service.dart';
 import 'package:quickly/quickly.dart';
 import 'package:provider/provider.dart';
 import '../../provider/theme_provider.dart';
@@ -59,6 +64,9 @@ class TeacherActions extends StatelessWidget {
       ]
     }
   ];
+
+  final UserController userController = Get.find();
+  get userDetail => userController.user.value.userDetail;
 
   @override
   Widget build(BuildContext context) {
@@ -185,8 +193,9 @@ class TeacherActions extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 20,
+                // backgroundImage: NetworkImage(userDetail?.avatar),
                 backgroundImage:
-                    NetworkImage("https://robohash.org/Terry.png?set=set3"),
+                    NetworkImage('https://robohash.org/Terry.png?set=set5'),
               ),
               Icon(
                 Icons.keyboard_arrow_down_outlined,
@@ -209,7 +218,9 @@ class TeacherActions extends StatelessWidget {
       children: [
         Container(
           alignment: Alignment.center,
-          child: const Text("Teacher Name").fontSize(20).bold,
+          child: Text("${userDetail?.firstname} ${userDetail?.lastname}")
+              .fontSize(20)
+              .bold,
         ),
         const SizedBox(
           height: 10,
@@ -258,21 +269,22 @@ class TeacherActions extends StatelessWidget {
                   ),
                 ],
               ),
+              // bottom action
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _iconTextButton(context,
                       text: "Setting",
-                      onPressed: () =>
-                          Navigator.pushNamed(context, "/select_role"),
+                      onPressed: () {},
                       icon: Icon(
                         Icons.settings_outlined,
                         size: 25,
                         color: Theme.of(context).colorScheme.onPrimary,
                       )),
-                  _iconTextButton(context,
-                      onPressed: () =>
-                          Navigator.pushNamed(context, "/select_role"),
+                  _iconTextButton(context, onPressed: () {
+                    UserService.logout();
+                    Get.toNamed('/select_action');
+                  },
                       icon: Icon(
                         Icons.login_outlined,
                         size: 25,
