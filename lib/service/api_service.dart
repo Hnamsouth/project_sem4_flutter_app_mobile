@@ -17,13 +17,14 @@ class DioService {
       // ..interceptors.add(LogInterceptor(responseBody: true))
       ..interceptors.add(InterceptorsWrapper(
         onRequest: (options, handler) async {
-          final prefs = await SharedPreferences.getInstance();
-          // // Get token from secure storage
-          String accessToken = prefs.getString('access-token') ?? "";
-          String refreshToken = prefs.getString('refresh-token') ?? "";
-          if (accessToken.isNotEmpty && refreshToken.isNotEmpty) {
-            options.headers['Authorization'] = 'Bearer $accessToken';
-          }
+          // final prefs = await SharedPreferences.getInstance();
+          // // // Get token from secure storage
+          // String accessToken = prefs.getString('access-token') ?? "";
+          // String refreshToken = prefs.getString('refresh-token') ?? "";
+          // print('$accessToken \n $refreshToken');
+          // if (accessToken.isNotEmpty && refreshToken.isNotEmpty) {
+          //   options.headers['Authorization'] = 'Bearer $accessToken';
+          // }
           return handler.next(options); //continue
         },
         onResponse: (response, handler) {

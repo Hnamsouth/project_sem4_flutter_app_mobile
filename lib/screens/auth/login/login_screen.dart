@@ -64,7 +64,6 @@ class _LoginScreenState extends State<LoginScreen> {
     DataLogin formData = DataLogin();
     // navigator
     void _loginSucces() {
-
       Navigator.pushNamed(context, '/home_parent');
     }
 
@@ -90,20 +89,18 @@ class _LoginScreenState extends State<LoginScreen> {
     final UserController c = Get.find();
 
     Future<void> login() async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
       EasyLoading.show(
         status: 'loading...',
         maskType: EasyLoadingMaskType.black,
       );
       await Future.delayed(const Duration(seconds: 1));
-      User? rs = await UserService.login(formData.toJson());
-      if(rs == null){
+      await UserService.login(formData.toJson(), c);
+      if (prefs.getString('access-token') == '') {
         _loginFail();
-      }else{
-        c.setUser(rs);
+      } else {
         Get.toNamed('/home_parent');
       }
-      
-
       EasyLoading.dismiss();
     }
 
@@ -236,8 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 backgroundColor:
                                     const Color.fromRGBO(143, 148, 251, 1),
                                 fixedSize: const Size(600, 50)),
-                            onPressed: () => login()
-                            ,
+                            onPressed: () => login(),
                             child: const Text(
                               "Đăng nhập",
                               style: TextStyle(
@@ -279,7 +275,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(context,'/select_action');
+                        Navigator.pushNamed(context, '/select_action');
                       },
                       icon: Icon(
                         semanticLabel: 'Go back',

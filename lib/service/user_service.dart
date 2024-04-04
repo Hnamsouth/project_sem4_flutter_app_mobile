@@ -1,24 +1,11 @@
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../model/login_response.dart';
+import '../controller/user_controller.dart';
 import '../model/user_model.dart';
 import 'api_service.dart';
 import 'iservice.dart';
 import 'package:logger/logger.dart';
 
 class UserService implements Iservice<User> {
-  // Future<User> getUserTest() async {
-  //   await Future.delayed(Duration(seconds: 1));
-  //   return User(
-  //     id: 1,
-  //     username: 'user',
-  //     password: 'password',
-  //     created_at: DateTime.now(),
-  //     status: true,
-  //   );
-  // }
-
   @override
   Future<User> create(User s) async {
     // TODO: implement create
@@ -55,26 +42,24 @@ class UserService implements Iservice<User> {
     throw UnimplementedError();
   }
 
-  static Future<User?> login(dynamic data) async {
-    var user = {"username": "hiennd", "password": "hiennd"};
+  static Future<bool> login(dynamic data, UserController u) async {
+    var user = {"username": "bdht2207a1", "password": "123456"};
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await DioService().post("/auth/login", data: data).then((value) async {
+      await DioService().post("/auth/login", data: user).then((value) async {
         // cast to LoginResponse
         Logger().i("Login Success $value.data");
         User data = User.fromJson(value.data);
-        Logger().i("Login Success $data");
         await prefs.setString('access-token', data.authResponse!.token);
         await prefs.setString('refresh-token', data.authResponse!.refreshToken);
-
-
-
-        return data;
+        Logger().i("Login Success $data");
+        u.setUser(data);
+        return true;
       });
     } catch (e) {
-      Logger().e(e);
+      Logger().e('er:-----------$e');
     }
-    return null;
+    return false;
   }
 
   // logout
@@ -83,9 +68,4 @@ class UserService implements Iservice<User> {
     await prefs.remove('access-token');
     await prefs.remove('refresh-token');
   }
-
-
-
-
-
 }
