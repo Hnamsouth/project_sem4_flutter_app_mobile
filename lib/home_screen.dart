@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/chat/chat_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/contact/contact_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/home_parent.dart';
@@ -40,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen>{
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue[200],
+        selectedItemColor: btnColor,
         unselectedItemColor: Colors.black45,
         onTap: (index) => _changeTab(index),
         items: [

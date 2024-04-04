@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:logger/logger.dart';
+import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
+import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
+import 'package:project_sem4_flutter_app_mobile/model/user_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -12,13 +17,24 @@ class HomeParent extends StatefulWidget {
 
   @override
   State<HomeParent> createState() => _HomeParentState();
+
 }
 
 final _controller = PageController();
 
 class _HomeParentState extends State<HomeParent> {
+
+
+
   @override
   Widget build(BuildContext context) {
+    final UserController ctrl = Get.find();
+
+
+    print(ctrl);
+
+
+
     void _logout() {
       Navigator.pushNamed(context, '/login');
     }
@@ -38,7 +54,7 @@ class _HomeParentState extends State<HomeParent> {
                       height: 100,
                       child: CircleAvatar(
                         backgroundColor: Color.fromRGBO(143, 148, 251, 1),
-                        child: Text('A'),
+                        child: Text("A"),
                       ),
                     ),
                     SizedBox(
@@ -484,141 +500,6 @@ class _HomeParentState extends State<HomeParent> {
                                     ),
                                   )
                                 ]),
-                            // Column(children: [
-                            //   Ink(
-                            //     padding: EdgeInsetsDirectional.fromSTEB(
-                            //         5, 5, 5, 5),
-                            //     decoration: BoxDecoration(
-                            //         border: Border.all(color: Colors.green),
-                            //         color: Color.fromRGBO(128, 215, 255, 1),
-                            //         borderRadius:
-                            //         BorderRadius.circular(20.0)),
-                            //     child: IconButton(
-                            //       color: Colors.white,
-                            //       icon: FaIcon(FontAwesomeIcons., size: 45.0),
-                            //       onPressed: () {},
-                            //     ),
-                            //   ),
-                            //   SizedBox(
-                            //     height: 3,
-                            //   ),
-                            //   Text(
-                            //     "Thực đơn bữa ăn",
-                            //     style: TextStyle(
-                            //       color: Colors.black,
-                            //       fontSize: 13,
-                            //       fontWeight: FontWeight.bold,
-                            //     ),
-                            //   )
-                            // ]),
-                            // Column(children: [
-                            //   Ink(
-                            //     padding: EdgeInsetsDirectional.fromSTEB(
-                            //         5, 5, 5, 5),
-                            //     decoration: BoxDecoration(
-                            //         border: Border.all(color: Colors.green),
-                            //         color: Color.fromRGBO(128, 215, 255, 1),
-                            //         borderRadius:
-                            //         BorderRadius.circular(20.0)),
-                            //     child: IconButton(
-                            //       color: Colors.white,
-                            //       icon: FaIcon(FontAwesomeIcons., size: 45.0),
-                            //       onPressed: () {},
-                            //     ),
-                            //   ),
-                            //   SizedBox(
-                            //     height: 3,
-                            //   ),
-                            //   Text(
-                            //     "Thông tin học sinh",
-                            //     style: TextStyle(
-                            //       color: Colors.black,
-                            //       fontSize: 13,
-                            //       fontWeight: FontWeight.bold,
-                            //     ),
-                            //   )
-                            // ]),
-                            // Column(children: [
-                            //   Ink(
-                            //     padding: EdgeInsetsDirectional.fromSTEB(
-                            //         5, 5, 5, 5),
-                            //     decoration: BoxDecoration(
-                            //         border: Border.all(color: Colors.green),
-                            //         color: Color.fromRGBO(128, 215, 255, 1),
-                            //         borderRadius:
-                            //         BorderRadius.circular(20.0)),
-                            //     child: IconButton(
-                            //       color: Colors.white,
-                            //       icon: FaIcon(FontAwesomeIcons., size: 45.0),
-                            //       onPressed: () {},
-                            //     ),
-                            //   ),
-                            //   SizedBox(
-                            //     height: 3,
-                            //   ),
-                            //   Text(
-                            //     "Trang số liệu học",
-                            //     style: TextStyle(
-                            //       color: Colors.black,
-                            //       fontSize: 13,
-                            //       fontWeight: FontWeight.bold,
-                            //     ),
-                            //   )
-                            // ]),
-                            // Column(children: [
-                            //   Ink(
-                            //     padding: EdgeInsetsDirectional.fromSTEB(
-                            //         5, 5, 5, 5),
-                            //     decoration: BoxDecoration(
-                            //         border: Border.all(color: Colors.green),
-                            //         color: Color.fromRGBO(128, 215, 255, 1),
-                            //         borderRadius:
-                            //         BorderRadius.circular(20.0)),
-                            //     child: IconButton(
-                            //       color: Colors.white,
-                            //       icon: FaIcon(FontAwesomeIcons., size: 45.0),
-                            //       onPressed: () {},
-                            //     ),
-                            //   ),
-                            //   SizedBox(
-                            //     height: 3,
-                            //   ),
-                            //   Text(
-                            //     "Quét QR code",
-                            //     style: TextStyle(
-                            //       color: Colors.black,
-                            //       fontSize: 13,
-                            //       fontWeight: FontWeight.bold,
-                            //     ),
-                            //   )
-                            // ]),
-                            // Column(children: [
-                            //   Ink(
-                            //     padding: EdgeInsetsDirectional.fromSTEB(
-                            //         5, 5, 5, 5),
-                            //     decoration: BoxDecoration(
-                            //         border: Border.all(color: Colors.green),
-                            //         color: Color.fromRGBO(128, 215, 255, 1),
-                            //         borderRadius:
-                            //         BorderRadius.circular(20.0)),
-                            //     child: IconButton(
-                            //       color: Colors.white,
-                            //       icon: FaIcon(FontAwesomeIcons., size: 45.0),
-                            //       onPressed: () {},
-                            //     ),
-                            //   ),
-                            //   SizedBox(
-                            //     height: 3,
-                            //   ),
-                            //   Text(
-                            //     "Trang điện Tử",
-                            //     style: TextStyle(
-                            //       color: Colors.black,
-                            //       fontSize: 13,
-                            //       fontWeight: FontWeight.bold,
-                            //     ),
-                            //   )
-                            // ]),
                           ],
                         ),
                       ),
@@ -673,38 +554,6 @@ class _HomeParentState extends State<HomeParent> {
                   ],
                 ),
 
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Container(
-                    width: 60,
-                    height: 60,
-                    margin: const EdgeInsets.only(left: 20, bottom: 20),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(60),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context).colorScheme.onSecondary,
-                          blurRadius: 3,
-                          offset:
-                              const Offset(1, 2), // changes position of shadow
-                        )
-                      ],
-                    ),
-                    child: IconButton(
-                      onPressed: () async {
-                        await UserService.logout();
-                        Logger().i("Logout Success");
-                        _logout();
-                      },
-                      icon: Icon(
-                        Icons.logout,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        textDirection: TextDirection.rtl,
-                      ),
-                    ),
-                  ),
-                )
               ],
             ),
           )

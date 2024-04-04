@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 import 'package:project_sem4_flutter_app_mobile/home_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/provider/theme_provider.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/select_action_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:quickly/quickly.dart';
 
+import 'controller/user_controller.dart';
 import 'data/constants.dart';
 
 void main() {
@@ -18,6 +21,8 @@ void main() {
     ),
   );
 }
+final UserController userController = Get.put(UserController());
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -25,7 +30,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Manage School',
       debugShowCheckedModeBanner: false,
       themeMode: context.watch<ThemeProvider>().getThemeMode,

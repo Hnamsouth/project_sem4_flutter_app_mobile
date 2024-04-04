@@ -1,53 +1,46 @@
+import 'package:project_sem4_flutter_app_mobile/model/permissions_model.dart';
+import 'package:project_sem4_flutter_app_mobile/model/roles_model.dart';
+import 'package:project_sem4_flutter_app_mobile/model/userDetails_model.dart';
+
+import 'authRespone_model.dart';
+
 class User {
-  final int id;
-  final String username;
-  final String password;
-  final String? token;
-  final DateTime created_at;
-  final bool status;
+
+
+
   User({
-    required this.id,
-    required this.username,
-    required this.password,
-    this.token,
-    required this.created_at,
-    required this.status,
+     this.id,
+     this.username,
+     this.authResponse,
+     this.roles,
+     this.permissions,
+     this.userDetail,
   });
-  // copy
-  User copy({
-    int? id,
-    String? username,
-    String? password,
-    String? token,
-    DateTime? created_at,
-    bool? status,
-  }) =>
-      User(
-        id: id ?? this.id,
-        username: username ?? this.username,
-        password: password ?? this.password,
-        token: token ?? this.token,
-        created_at: created_at ?? this.created_at,
-        status: status ?? this.status,
-      );
-  // toJson
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'username': username,
-        'password': password,
-        'token': token,
-        'created_at': created_at,
-        'status': status,
-      };
-  // fromJson
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json['id'],
-      username: json['username'],
-      password: json['password'],
-      token: json['token'],
-      created_at: json['created_at'],
-      status: json['status'],
-    );
+  late  int? id;
+  late  String? username;
+  late  AuthResponse? authResponse;
+  late  List<Roles>? roles;
+  late  List<Permissions>? permissions;
+  late  UserDetail? userDetail;
+
+  User.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    username = json['username'];
+    authResponse = AuthResponse.fromJson(json['authResponse']);
+    roles = List.from(json['roles']).map((e)=>Roles.fromJson(e)).toList();
+    permissions = List.from(json['permissions']).map((e)=>Permissions.fromJson(e)).toList();
+    userDetail = UserDetail.fromJson(json['userDetail']);
   }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['username'] = username;
+    _data['authResponse'] = authResponse?.toJson();
+    _data['roles'] = roles?.map((e)=>e.toJson()).toList();
+    _data['permissions'] = permissions?.map((e)=>e.toJson()).toList();
+    _data['userDetail'] = userDetail?.toJson();
+    return _data;
+  }
+
 }

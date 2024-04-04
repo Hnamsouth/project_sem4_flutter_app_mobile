@@ -1,3 +1,4 @@
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/login_response.dart';
@@ -7,16 +8,16 @@ import 'iservice.dart';
 import 'package:logger/logger.dart';
 
 class UserService implements Iservice<User> {
-  Future<User> getUserTest() async {
-    await Future.delayed(Duration(seconds: 1));
-    return User(
-      id: 1,
-      username: 'user',
-      password: 'password',
-      created_at: DateTime.now(),
-      status: true,
-    );
-  }
+  // Future<User> getUserTest() async {
+  //   await Future.delayed(Duration(seconds: 1));
+  //   return User(
+  //     id: 1,
+  //     username: 'user',
+  //     password: 'password',
+  //     created_at: DateTime.now(),
+  //     status: true,
+  //   );
+  // }
 
   @override
   Future<User> create(User s) async {
@@ -54,17 +55,20 @@ class UserService implements Iservice<User> {
     throw UnimplementedError();
   }
 
-  static Future<Object?> login(dynamic data) async {
-    var user = {"username": "bdht2207a", "password": "bdht2207a"};
+  static Future<User?> login(dynamic data) async {
+    var user = {"username": "hiennd", "password": "hiennd"};
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await DioService().post("/auth/login", data: data).then((value) async {
         // cast to LoginResponse
         Logger().i("Login Success $value.data");
-        LoginResponse data = LoginResponse.fromJson(value.data);
+        User data = User.fromJson(value.data);
         Logger().i("Login Success $data");
-        await prefs.setString('access-token', data.authResponse.token);
-        await prefs.setString('refresh-token', data.authResponse.refreshToken);
+        await prefs.setString('access-token', data.authResponse!.token);
+        await prefs.setString('refresh-token', data.authResponse!.refreshToken);
+
+
+
         return data;
       });
     } catch (e) {
@@ -80,24 +84,8 @@ class UserService implements Iservice<User> {
     await prefs.remove('refresh-token');
   }
 
-// final Dio _dio = Dio();
-//
-//
-// Future<Response> login1(String username, String password) async {
-//   try {
-//     Response response = await _dio.post(
-//       'https://api.loginradius.com/identity/v2/auth/login',
-//       data: {
-//         'username': username,
-//         'password': password
-//       },
-//       queryParameters: {'apikey': 'YOUR_API_KEY'},
-//     );
-//     //returns the successful user data json object
-//     return response.data;
-//   } on DioError catch (e) {
-//     //returns the error object if any
-//     return e.response!.data;
-//   }
-// }
+
+
+
+
 }

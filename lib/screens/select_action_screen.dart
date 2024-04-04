@@ -1,11 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/action_type.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
 import 'package:rive/rive.dart';
 
+import '../controller/user_controller.dart';
 import 'main_screen.dart';
 
 class SelectActionScreen extends StatelessWidget {
@@ -23,6 +26,8 @@ class SelectActionScreen extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+
+    final UserController userController = Get.put(UserController());
     return Scaffold(
       body: Stack(alignment: Alignment.center, children: [
         Positioned(
@@ -59,17 +64,12 @@ class SelectActionScreen extends StatelessWidget {
                           i,
                           FloatingActionButton(
                             heroTag: e['title'].toString(),
-                            backgroundColor: Colors.black,
+                            backgroundColor: btnColor,
                             elevation: 5,
                             onPressed: () {
                               // Navigator.pushNamed(
                               //     context, e['route'].toString());
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginScreen(),
-                                ),
-                              );
+                              Get.to(const LoginScreen());
                             },
                             child: Text(
                               e['title'].toString(),

@@ -1,9 +1,13 @@
+import 'package:project_sem4_flutter_app_mobile/model/userDetails_model.dart';
+
 class LoginResponse {
   final int id;
   final String username;
   final AuthResponse authResponse;
   final List<Role> roles;
   final List<Permission> permissions;
+  final  UserDetail? userDetail;
+
 
   LoginResponse({
     required this.id,
@@ -11,6 +15,7 @@ class LoginResponse {
     required this.authResponse,
     required this.roles,
     required this.permissions,
+    required this.userDetail,
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
@@ -22,6 +27,8 @@ class LoginResponse {
       permissions: (json['permissions'] as List)
           .map((i) => Permission.fromJson(i))
           .toList(),
+        userDetail : UserDetail.fromJson(json['userDetail'])
+
     );
   }
   // to json
@@ -31,11 +38,12 @@ class LoginResponse {
         'authResponse': authResponse,
         'roles': roles,
         'permissions': permissions,
+        'userDetail': userDetail,
       };
   // to string
   @override
   String toString() {
-    return 'LoginResponse{id: $id, username: $username, authResponse: $authResponse, roles: $roles, permissions: $permissions}';
+    return 'LoginResponse{id: $id, username: $username, authResponse: $authResponse, roles: $roles, permissions: $permissions,userDetail:$userDetail}';
   }
 }
 

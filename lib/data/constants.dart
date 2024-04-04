@@ -11,3 +11,4 @@ const secondaryLightColor = Color(0xFFFFFFFF);
 const onSecondaryLightColor = Color(0xCDB0B0B0);
 
 const defaultPadding = 15.0;
+const btnColor = Color.fromARGB(255,108,114, 224);
