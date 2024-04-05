@@ -64,9 +64,8 @@ class DioService {
       Logger().w("calling refresh-token");
       var result = await Dio().post(
         '${Endpoints.baseURL}${Endpoints.authenticationRefreshToken}',
-        options: Options(contentType: 'application/json', headers: {
-          'Authorization': 'Bearer $refreshToken',
-        }),
+        data: {"refresh_token": refreshToken},
+        options: Options(contentType: 'application/json'),
       );
       // Check if the response status code is 200 (OK)
       if (result.statusCode == 200) {
