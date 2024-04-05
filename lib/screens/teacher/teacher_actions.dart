@@ -1,13 +1,18 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/extensions/text_extension.dart';
 import 'package:project_sem4_flutter_app_mobile/main.dart';
 import 'package:project_sem4_flutter_app_mobile/model/userDetails_model.dart';
+import 'package:project_sem4_flutter_app_mobile/service/api_service.dart';
 import 'package:project_sem4_flutter_app_mobile/service/user_service.dart';
 import 'package:quickly/quickly.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../data/constants.dart';
 import '../../provider/theme_provider.dart';
 import '../widgets/select_direction.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -171,6 +176,18 @@ class TeacherActions extends StatelessWidget {
             )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final prefs = await SharedPreferences.getInstance();
+          // // Get token from secure storage
+          String? accessToken = prefs.getString(TokenType.accress_token.name);
+          Logger().i('$accessToken');
+          // var res = await DioService().get('/auth/test-auth');
+          var res = await DioService().get('/auth/test-auth');
+          Logger().i('$res.data');
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
+import 'package:project_sem4_flutter_app_mobile/main.dart';
 import 'package:project_sem4_flutter_app_mobile/model/authRespone_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/user_model.dart';
@@ -10,7 +11,7 @@ import 'iservice.dart';
 import 'package:logger/logger.dart';
 
 class UserService implements Iservice<User> {
-  final UserController userController = Get.put(UserController());
+  static final UserController userController = Get.put(UserController());
 
   @override
   Future<User> create(User s) async {
@@ -87,8 +88,23 @@ class UserService implements Iservice<User> {
     await prefs.setString(TokenType.refresh_token.name, auth.refreshToken);
   }
 
+  static Future<bool> loginToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString(TokenType.accress_token.name);
+    if (accessToken != null) {
+      var result = await DioService().post("/auth/login-token");
+      if (result.statusCode == 200) {
+        User data = User.fromJson(result.data);
+        userController.setUser(data);
+        return true;
+      }
+    }
+    return false;
+  }
+
   // logout
   static Future<void> logout() async {
+    userController.setUser(User());
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('access-token');
     await prefs.remove('refresh-token');

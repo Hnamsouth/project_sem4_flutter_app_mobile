@@ -1,20 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:logger/logger.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
-import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
-import 'package:project_sem4_flutter_app_mobile/model/user_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import '../../service/user_service.dart';
 
 class HomeParent extends StatefulWidget {
   const HomeParent({super.key});
-
   @override
   State<HomeParent> createState() => _HomeParentState();
 }
@@ -26,7 +18,8 @@ class _HomeParentState extends State<HomeParent> {
   Widget build(BuildContext context) {
     final UserController ctrl = Get.find();
     void _logout() {
-      Navigator.pushNamed(context, '/login');
+      UserService.logout();
+      Get.offNamed('/select_action');
     }
 
     final List<Map<String, dynamic>> workData = [
@@ -110,125 +103,132 @@ class _HomeParentState extends State<HomeParent> {
         'color': Colors.redAccent
       },
     ];
-    List<Map<String, dynamic>> workdetail = workData.getRange(0, 8).toList();
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            // scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                const Row(
-                  children: [
-                    SizedBox(
-                      height: 100,
-                      child: CircleAvatar(
-                        backgroundColor: Color.fromRGBO(143, 148, 251, 1),
-                        child: Text("A"),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Text(
-                      "eNetViet",
-                      style: TextStyle(
-                          color: Color.fromRGBO(143, 148, 251, 1),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                    )
-                  ],
-                ),
-                // SizedBox(
-                //   height: 5,
-                // ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Các chức năng",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                    ),
-                    ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white),
-                        child: const Text("Tất Cả"))
-                  ],
-                ),
-                // SizedBox(
-                //   height: 10,
-                // ),
-                // work view
-                SizedBox(
-                  height: 320,
-                  child: PageView(
-                    controller: _controller,
+        backgroundColor: Colors.white,
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              // scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  const Row(
                     children: [
-                      workViewDetail(workData.getRange(0, 6).toList()),
-                      workViewDetail(workData.getRange(6, 12).toList()),
-                      workViewDetail(workData.getRange(6, 12).toList()),
-                    ],
-                  ),
-                ),
-                SmoothPageIndicator(
-                  controller: _controller,
-                  count: 3,
-                  axisDirection: Axis.horizontal,
-                  effect: const SlideEffect(
-                    activeDotColor: Colors.white54,
-                    dotHeight: 10,
-                    dotColor: Colors.blue,
-                    dotWidth: 10,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                    height: 150,
-                    width: double.infinity,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                              "assets/images/B_Ill_Education_Back_to_school_min_a72a89f00f.png"),
-                          fit: BoxFit.cover,
+                      SizedBox(
+                        height: 100,
+                        child: CircleAvatar(
+                          backgroundColor: Color.fromRGBO(143, 148, 251, 1),
+                          child: Text("A"),
                         ),
                       ),
-                      child: null,
-                    )),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Tin tức - Sự kiện",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Text(
+                        "eNetViet",
+                        style: TextStyle(
+                            color: Color.fromRGBO(143, 148, 251, 1),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      )
+                    ],
+                  ),
+                  // SizedBox(
+                  //   height: 5,
+                  // ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Các chức năng",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
+                      ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white),
+                          child: const Text("Tất Cả"))
+                    ],
+                  ),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+                  // work view
+                  SizedBox(
+                    height: 320,
+                    child: PageView(
+                      controller: _controller,
+                      children: [
+                        workViewDetail(workData.getRange(0, 6).toList()),
+                        workViewDetail(workData.getRange(6, 12).toList()),
+                        workViewDetail(workData.getRange(12, 13).toList()),
+                      ],
                     ),
-                    ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white),
-                        child: const Text("Tất Cả"))
-                  ],
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+                  ),
+                  SmoothPageIndicator(
+                    controller: _controller,
+                    count: 3,
+                    axisDirection: Axis.horizontal,
+                    effect: const SlideEffect(
+                      activeDotColor: Colors.white54,
+                      dotHeight: 10,
+                      dotColor: Colors.blue,
+                      dotWidth: 10,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                      height: 150,
+                      width: double.infinity,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/B_Ill_Education_Back_to_school_min_a72a89f00f.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: null,
+                      )),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Tin tức - Sự kiện",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
+                      ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white),
+                          child: const Text("Tất Cả"))
+                    ],
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+        // test logout
+        floatingActionButton: FloatingActionButton(
+          onPressed: _logout,
+          backgroundColor: Theme.of(context).colorScheme.onSecondary,
+          child: const Icon(
+            Icons.logout,
+            color: Colors.white,
+          ),
+        ));
   }
 
   Widget workViewDetail(List<Map<String, dynamic>> workdetail) {

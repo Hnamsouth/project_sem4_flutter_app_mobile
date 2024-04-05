@@ -6,13 +6,18 @@ import 'package:project_sem4_flutter_app_mobile/provider/theme_provider.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/select_action_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/teacher/teacher_actions.dart';
+import 'package:project_sem4_flutter_app_mobile/service/user_service.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'controller/user_controller.dart';
 import 'data/constants.dart';
 
-void main() {
+void main() async {
   Get.put(UserController());
+  final token = await SharedPreferences.getInstance();
+  final accessToken = token.getString(TokenType.accress_token.name);
+  // UserService.login(data, loginType)
   runApp(
     MultiProvider(
       providers: [
@@ -27,7 +32,6 @@ final UserController userController = Get.put(UserController());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
