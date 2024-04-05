@@ -87,7 +87,7 @@ class DioService {
     return _dio.get(path, queryParameters: queryParameters);
   }
 
-  // post method
+  // post method,
   Future<Response> post(String path, {dynamic data}) async {
     return _dio.post(path, data: data);
   }
