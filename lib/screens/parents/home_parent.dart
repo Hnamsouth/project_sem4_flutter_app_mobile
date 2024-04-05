@@ -9,14 +9,16 @@ class HomeParent extends StatefulWidget {
   const HomeParent({super.key});
   @override
   State<HomeParent> createState() => _HomeParentState();
+
 }
+
+final UserController ctrl = Get.find();
 
 final _controller = PageController();
 
 class _HomeParentState extends State<HomeParent> {
   @override
   Widget build(BuildContext context) {
-    final UserController ctrl = Get.find();
     void _logout() {
       UserService.logout();
       Get.offNamed('/select_action');
@@ -112,20 +114,23 @@ class _HomeParentState extends State<HomeParent> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  const Row(
+                   Row(
                     children: [
                       SizedBox(
                         height: 100,
                         child: CircleAvatar(
                           backgroundColor: Color.fromRGBO(143, 148, 251, 1),
-                          child: Text("A"),
+                          child: Text("Avatar",style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.white
+                          ),),
                         ),
                       ),
                       SizedBox(
                         width: 15,
                       ),
                       Text(
-                        "eNetViet",
+                        "${ctrl.user.value}",
                         style: TextStyle(
                             color: Color.fromRGBO(143, 148, 251, 1),
                             fontWeight: FontWeight.bold,

@@ -45,6 +45,6 @@ class User {
 // to string
   @override
   String toString() {
-    return 'LoginResponse{id: $id, username: $username, authResponse: $authResponse, roles: $roles, permissions: $permissions,userDetail:$userDetail}';
+    return '$username';
   }
 }
