@@ -72,8 +72,8 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         c.setUser(user);
         widget.loginType == LoginType.phuhuynh
-            ? Get.toNamed('/home_parent')
-            : Get.toNamed('/teacher_action');
+            ? Get.offNamed('/home_parent')
+            : Get.offNamed('/teacher_action');
       }
       EasyLoading.dismiss();
     }

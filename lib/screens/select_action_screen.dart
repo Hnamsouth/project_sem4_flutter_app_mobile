@@ -65,7 +65,7 @@ class SelectActionScreen extends StatelessWidget {
                             onPressed: () {
                               // Navigator.pushNamed(
                               //     context, e['route'].toString());
-                              Get.to(LoginScreen(loginType: e['type']));
+                              Get.offAll(LoginScreen(loginType: e['type']));
                             },
                             child: Text(
                               e['title'].toString(),
