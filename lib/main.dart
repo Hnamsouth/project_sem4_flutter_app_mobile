@@ -3,10 +3,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:project_sem4_flutter_app_mobile/home_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/provider/theme_provider.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/select_action_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/teacher/teacher_actions.dart';
-import 'package:project_sem4_flutter_app_mobile/service/user_service.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DioService {
   Dio _dio = Dio();
-  String? _token;
 
   DioService() {
     _dio = Dio(BaseOptions(
@@ -26,11 +25,10 @@ class DioService {
               options.path == Endpoints.authenticationRefreshToken) {
             return handler.next(options);
           }
-          if (_token == null) {
-            final prefs = await SharedPreferences.getInstance();
-            _token = prefs.getString(TokenType.accress_token.name) ?? "";
-          }
-          options.headers['Authorization'] = 'Bearer $_token';
+          final prefs = await SharedPreferences.getInstance();
+          // // Get token from secure storage
+          String? accessToken = prefs.getString(TokenType.accress_token.name);
+          options.headers['Authorization'] = 'Bearer $accessToken';
           return handler.next(options); //continue
         },
         onResponse: (response, handler) {
@@ -80,7 +78,6 @@ class DioService {
         // Return the new access token
         return data.token;
       } else {
-        _token = null;
         await prefs.remove(TokenType.accress_token.name);
         await prefs.remove(TokenType.refresh_token.name);
         Getx.Get.offNamed('/select_action');
