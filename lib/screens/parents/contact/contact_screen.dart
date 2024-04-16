@@ -12,19 +12,20 @@ class ContactScreen extends StatefulWidget {
 }
 
 class _ContactScreenState extends State<ContactScreen> {
-  List<ParentDetails> _searchResult = [];
-  List<ParentDetails> _parentDetails = [];
+  List<TeacherContact> _searchResult = [];
+  List<TeacherContact> _teacherDetails = [];
   TextEditingController controller = TextEditingController();
 
   Future<Null> getUserDetails() async {
-    const String url = 'https://jsonplaceholder.typicode.com/users';
+    const String url =
+        'http://14.248.97.203:4869/api/v1/teacher/teacher-contact?schoolYearClassId=1';
 
     final dio = Dio();
     final response = await dio.get(url);
-    // print(response.data);
+    print(response.data);
     setState(() {
-      for (Map<dynamic, dynamic> user in response.data) {
-        _parentDetails.add(ParentDetails.fromJson(user));
+      for (Map<String, dynamic> user in response.data) {
+        _teacherDetails.add(TeacherContact.fromJson(user));
       }
     });
   }
@@ -38,33 +39,27 @@ class _ContactScreenState extends State<ContactScreen> {
 
   Widget _buildUsersList() {
     return ListView.builder(
-      itemCount: _parentDetails.length,
+      itemCount: _teacherDetails.length,
       itemBuilder: (context, index) {
         return Card(
           color: Colors.white,
           child: Column(children: [
             ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(
-                  _parentDetails[index].profileUrl!,
-                ),
-              ),
-              title: Text(
-                  _parentDetails[index].firstName! +
-                      ' ' +
-                      _parentDetails[index].lastName!,
+              title: Text(_teacherDetails[index].name!,
                   style: TextStyle(color: Colors.black)),
               subtitle: Text(
-                'Phone: ' + _parentDetails[index].phone!,
-                style: TextStyle(color: Colors.black),
+                'Mon: ' + _teacherDetails[index].subjects!.join(", "),
+
               ),
+              textColor: Colors.black,
+
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 TextButton(
                   child: const Text('Call'),
-                  onPressed: () => launch(_parentDetails[index].phone!),
+                  onPressed: () => launch(_teacherDetails[index].phone!),
                 ),
                 const SizedBox(width: 8),
                 TextButton(
@@ -89,16 +84,11 @@ class _ContactScreenState extends State<ContactScreen> {
         return Card(
           color: Colors.white,
           child: ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(
-                _searchResult[i].profileUrl!,
-              ),
-            ),
             title: Text(
                 style: TextStyle(
                   color: Colors.black,
                 ),
-                _searchResult[i].firstName! + ' ' + _searchResult[i].lastName!),
+                _searchResult[i].name!),
           ),
           margin: const EdgeInsets.all(0.0),
         );
@@ -155,7 +145,6 @@ class _ContactScreenState extends State<ContactScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -174,63 +163,10 @@ class _ContactScreenState extends State<ContactScreen> {
       return;
     }
 
-    _parentDetails.forEach((userDetail) {
-      if (userDetail.firstName!.contains(text) ||
-          userDetail.lastName!.contains(text)) _searchResult.add(userDetail);
-    });
+    for (var userDetail in _teacherDetails) {
+      if (userDetail.name!.contains(text)) _searchResult.add(userDetail);
+    }
 
     setState(() {});
   }
 }
-
-
-
-
-//   return MaterialApp(
-//     home: DefaultTabController(
-//       length: 2,
-//       child: Scaffold(
-//         appBar: AppBar(
-//           title: Text("Danh bạ"),
-//           bottom: const TabBar(
-//             tabs: [
-//               Tab(
-//                 child: Text(
-//                   "Giáo Viên",
-//                   style: TextStyle(
-//                       color: Colors.black,
-//                       fontWeight: FontWeight.bold,
-//                       fontSize: 20),
-//                 ),
-//               ),
-//               Tab(
-//                 child: Text(
-//                   "Phụ Huynh",
-//                   style: TextStyle(
-//                       color: Colors.black,
-//                       fontWeight: FontWeight.bold,
-//                       fontSize: 20),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//         body: TabBarView(
-//           children: [
-//             ListView.builder(
-//                 padding: const EdgeInsets.all(8),
-//                 itemCount: entries.length,
-//                 itemBuilder: (BuildContext context, int index) {
-//                   return Container(
-//                     height: 50,
-//                     color: Colors.amber[colorCodes[index]],
-//                     child: Center(child: Text(' ${entries[index]}')),
-//                   );
-//                 }),
-//             Icon(Icons.directions_bike),
-//           ],
-//         ),
-//       ),
-//     ),
-//   );
-// }

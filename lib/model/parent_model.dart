@@ -1,18 +1,36 @@
-import 'package:flutter/material.dart';
+class TeacherContact {
+  int? teacherSchoolYearId;
+  String? name;
+  String? email;
+  String? phone;
+  List<String>? subjects;
+  String? teacherType;
 
-class ParentDetails {
-  final int id;
+  TeacherContact(
+      {this.teacherSchoolYearId,
+        this.name,
+        this.email,
+        this.phone,
+        this.subjects,
+        this.teacherType});
 
-  final String? firstName, lastName, profileUrl,phone;
+  TeacherContact.fromJson(Map<String, dynamic> json) {
+    teacherSchoolYearId = json['teacherSchoolYearId'];
+    name = json['name'];
+    email = json['email'];
+    phone = json['phone'];
+    subjects = json['subjects'].cast<String>();
+    teacherType = json['teacherType'];
+  }
 
-  ParentDetails({required this.id, this.firstName, this.lastName, this.profileUrl = 'https://i.amz.mshcdn.com/3NbrfEiECotKyhcUhgPJHbrL7zM=/950x534/filters:quality(90)/2014%2F06%2F02%2Fc0%2Fzuckheadsho.a33d0.jpg',this.phone});
-
-  factory ParentDetails.fromJson(Map<dynamic, dynamic> json) {
-    return  ParentDetails(
-      id: json['id'],
-      firstName: json['name'],
-      lastName: json['username'],
-      phone: json['phone'],
-    );
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['teacherSchoolYearId'] = this.teacherSchoolYearId;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['phone'] = this.phone;
+    data['subjects'] = this.subjects;
+    data['teacherType'] = this.teacherType;
+    return data;
   }
 }

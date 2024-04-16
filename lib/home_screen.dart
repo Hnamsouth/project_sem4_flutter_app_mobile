@@ -39,10 +39,9 @@ class _HomeScreenState extends State<HomeScreen>{
 
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
         currentIndex: _selectedIndex,
-        selectedItemColor: btnColor,
-        unselectedItemColor: Colors.black45,
+        selectedItemColor: primary,
+        unselectedItemColor: secondary,
         onTap: (index) => _changeTab(index),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home),label: "Trang chủ"),

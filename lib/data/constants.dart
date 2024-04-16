@@ -17,7 +17,18 @@ enum LoginType {
   giaovien,
   phuhuynh,
 }
-
 enum TokenType { accress_token, refresh_token }
 
 enum Role { ROLE_GV, ROLE_PH }
+
+
+
+const primary = Color(0xFF616200);
+const primaryContainer =Color(0xFFE7E885);
+const secondary =Color(0xFF606042);
+const secondaryContainer =Color(0xFFE6E4C0);
+const tertiary =Color(0xFF3D6657);
+const tertiaryContainer =Color(0xFFBFECD9);
+const error =Color(0xFFBA1A1A);
+const errorContainer =Color(0xFFFFDAD6);
+

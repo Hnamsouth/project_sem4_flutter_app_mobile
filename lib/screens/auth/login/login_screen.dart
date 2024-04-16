@@ -1,8 +1,11 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
 import 'package:project_sem4_flutter_app_mobile/service/user_service.dart';
@@ -10,11 +13,9 @@ import 'package:rive/rive.dart' as rive;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/login_data.dart';
-import '../../parents/chat/chat_screen.dart';
-import '../../parents/contact/contact_screen.dart';
-import '../../parents/home_parent.dart';
-import '../../parents/notification/notification_screen.dart';
-import '../../parents/work/work_screen.dart';
+import '../../widgets/my_button.dart';
+import '../../widgets/my_textfield.dart';
+
 
 class LoginScreen extends StatefulWidget {
   late LoginType loginType;
@@ -78,189 +79,299 @@ class _LoginScreenState extends State<LoginScreen> {
       EasyLoading.dismiss();
     }
 
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body:
-            Stack(alignment: Alignment.center, fit: StackFit.expand, children: [
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  height: 400,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/background.png'),
-                          fit: BoxFit.fill)),
-                  child: Stack(
-                    children: <Widget>[
-                      Positioned(
-                          left: 30,
-                          width: 80,
-                          height: 200,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/light-1.png'))),
-                          )),
-                      Positioned(
-                          left: 140,
-                          width: 80,
-                          height: 150,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/light-2.png'))),
-                          )),
-                      Positioned(
-                          right: 40,
-                          top: 40,
-                          width: 80,
-                          height: 150,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image:
-                                        AssetImage('assets/images/clock.png'))),
-                          )),
-                      Positioned(
-                          child: Container(
-                        margin: const EdgeInsets.only(top: 50),
-                        child: const Center(
-                          child: Text(
-                            "Đăng nhập",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold),
-                          ),
+    return SafeArea(
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.green,
+          body: ListView(
+              padding: const EdgeInsets.fromLTRB(0, 400, 0, 0),
+              shrinkWrap: true,
+              reverse: true,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Transform.translate(
+                      offset: const Offset(0, 20),
+                      child: Image.asset(
+                        'assets/images/plants2.png',
+                        scale: 1.5,
+                        width: double.infinity,
+                      ),
+                    ),
+                    Container(
+                      height: 555,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: HexColor("#ffffff"),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(40),
+                          topRight: Radius.circular(40),
                         ),
-                      )),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            // color: Color.fromRGBO(255, 255, 255, 1.0),
-
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: const [
-                              BoxShadow(
-                                  color: Colors.white,
-                                  blurRadius: 20.0,
-                                  offset: Offset(0, 10))
-                            ]),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
                         child: Column(
-                          children: <Widget>[
-                            Container(
-                              padding: const EdgeInsets.all(8.0),
-                              decoration: const BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(color: Colors.grey))),
-                              child: TextField(
-                                onChanged: (value) {
-                                  formData.username = value;
-                                },
-                                style: const TextStyle(color: Colors.grey),
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Username ",
-                                    hintStyle:
-                                        TextStyle(color: Colors.grey[400])),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Đăng nhập",
+                              style: GoogleFonts.poppins(
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                                color: HexColor("#4f4f4f"),
                               ),
                             ),
-                            Container(
-                              color: Colors.white,
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                onChanged: (value) {
-                                  formData.password = value;
-                                },
-                                obscureText: true,
-                                style: const TextStyle(color: Colors.grey),
-                                decoration: const InputDecoration(
-                                  hintText: "Password",
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(15, 0, 0, 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Username",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 18,
+                                      color: HexColor("#8d8d8d"),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  MyTextField(
+                                    onChanged: (value) {
+                                      formData.username = value;
+                                    },
+                                    hintText: "Username",
+                                    obscureText: false,
+                                    prefixIcon: const Icon(Icons.supervised_user_circle),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Password",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 18,
+                                      color: HexColor("#8d8d8d"),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  MyTextField(
+                                    onChanged: (value) {
+                                      formData.password = value;
+                                    },
+                                    hintText: "**************",
+                                    obscureText: true,
+                                    prefixIcon: const Icon(Icons.lock_outline),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  MyButton(
+                                    onPressed: () {
+                                      login();
+                                    },
+                                    buttonText: 'Đăng nhập',
+                                  ),
+                                  const SizedBox(
+                                    height: 12,
+                                  ),
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets.fromLTRB(65, 0, 0, 0),
+                                    child: Row(
+                                      children: [
+                                        Text("Quên mật khẩu?",
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 15,
+                                              color: HexColor("#8d8d8d"),
+                                            )),
+                                        TextButton(
+                                            child: Text(
+                                              "Tại đây !",
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 15,
+                                                color: HexColor("#44564a"),
+                                              ),
+                                            ),
+                                            onPressed: () => {}),
+                                      ],
+                                    ),
+                                  ),
+                                     IconButton(
+                                      onPressed: () => Get.toNamed('/select_action'),
+                                      icon:  Icon(
+                                        semanticLabel: 'Go back',
+                                        Icons.navigate_next_sharp,
+                                        color: HexColor("#44564a"),
+                                        textDirection: TextDirection.rtl,
+                                      ),
+                                    ),
+
+                                ],
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromRGBO(143, 148, 251, 1),
-                                fixedSize: const Size(600, 50)),
-                            onPressed: () => login(),
-                            child: const Text(
-                              "Đăng nhập",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 70,
-                      ),
-                      const Text(
-                        "Quên mật khẩu?",
-                        style:
-                            TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),
-                      ),
-                    ],
-                  ),
+                    ),
+
+
+                  ],
                 ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Container(
-                    width: 60,
-                    height: 60,
-                    margin: const EdgeInsets.only(left: 20, bottom: 20),
-                    decoration: BoxDecoration(
-                      color: btnColor,
-                      borderRadius: BorderRadius.circular(60),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context).colorScheme.onSecondary,
-                          blurRadius: 3,
-                          offset:
-                              const Offset(1, 2), // changes position of shadow
-                        )
-                      ],
-                    ),
-                    child: IconButton(
-                      onPressed: () => Get.toNamed('/select_action'),
-                      icon: const Icon(
-                        semanticLabel: 'Go back',
-                        Icons.logout,
-                        color: Colors.white,
-                        textDirection: TextDirection.rtl,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ]));
+
+
+              ])),
+    );
+
+
+
+
+
+
+    // return Scaffold(
+    //   resizeToAvoidBottomInset: false,
+    //     backgroundColor: Colors.green,
+    //     body:
+    //         Stack(alignment: Alignment.center, fit: StackFit.expand, children: [
+    //       SingleChildScrollView(
+    //         child: Column(
+    //           children: <Widget>[
+    //             Container(
+    //               height: 400,
+    //               decoration: const BoxDecoration(
+    //                   image: DecorationImage(
+    //                       image: AssetImage('assets/images/plants2.png'),
+    //                       fit: BoxFit.fill)
+    //
+    //                     ),
+    //             ),
+    //             Padding(
+    //               padding: const EdgeInsets.all(30.0),
+    //               child: Column(
+    //                 children: <Widget>[
+    //                   Container(
+    //                     padding: const EdgeInsets.all(5),
+    //                     decoration: BoxDecoration(
+    //                         // color: Color.fromRGBO(255, 255, 255, 1.0),
+    //
+    //                         borderRadius: BorderRadius.circular(10),
+    //                         boxShadow: const [
+    //                           BoxShadow(
+    //                               color: Colors.white,
+    //                               blurRadius: 20.0,
+    //                               offset: Offset(0, 10))
+    //                         ]),
+    //                     child: Column(
+    //                       children: <Widget>[
+    //                         Container(
+    //                           padding: const EdgeInsets.all(8.0),
+    //                           decoration: const BoxDecoration(
+    //                               border: Border(
+    //                                   bottom: BorderSide(color: Colors.grey))),
+    //                           child: TextField(
+    //                             onChanged: (value) {
+    //                               formData.username = value;
+    //                             },
+    //                             style: const TextStyle(color: Colors.grey),
+    //                             decoration: InputDecoration(
+    //                                 border: InputBorder.none,
+    //                                 hintText: "Username ",
+    //                                 hintStyle:
+    //                                     TextStyle(color: Colors.grey[400])),
+    //                           ),
+    //                         ),
+    //                         Container(
+    //                           color: Colors.white,
+    //                           padding: const EdgeInsets.all(8.0),
+    //                           child: TextFormField(
+    //                             onChanged: (value) {
+    //                               formData.password = value;
+    //                             },
+    //                             obscureText: true,
+    //                             style: const TextStyle(color: Colors.grey),
+    //                             decoration: const InputDecoration(
+    //                               hintText: "Password",
+    //                               hintStyle: TextStyle(color: Colors.grey),
+    //                             ),
+    //                           ),
+    //                         )
+    //                       ],
+    //                     ),
+    //                   ),
+    //                   const SizedBox(
+    //                     height: 30,
+    //                   ),
+    //                   Container(
+    //                     height: 50,
+    //                     decoration: BoxDecoration(
+    //                       borderRadius: BorderRadius.circular(10),
+    //                     ),
+    //                     child: Center(
+    //                       child: ElevatedButton(
+    //                         style: ElevatedButton.styleFrom(
+    //                             backgroundColor:
+    //                                 const Color.fromRGBO(143, 148, 251, 1),
+    //                             fixedSize: const Size(600, 50)),
+    //                         onPressed: () => login(),
+    //                         child: const Text(
+    //                           "Đăng nhập",
+    //                           style: TextStyle(
+    //                             color: Colors.white,
+    //                             fontWeight: FontWeight.bold,
+    //                           ),
+    //                         ),
+    //                       ),
+    //                     ),
+    //                   ),
+    //                   const SizedBox(
+    //                     height: 70,
+    //                   ),
+    //                   const Text(
+    //                     "Quên mật khẩu?",
+    //                     style:
+    //                         TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),
+    //                   ),
+    //                 ],
+    //               ),
+    //             ),
+    //             Align(
+    //               alignment: Alignment.bottomLeft,
+    //               child: Container(
+    //                 width: 60,
+    //                 height: 60,
+    //                 margin: const EdgeInsets.only(left: 20, bottom: 20),
+    //                 decoration: BoxDecoration(
+    //                   color: btnColor,
+    //                   borderRadius: BorderRadius.circular(60),
+    //                   boxShadow: [
+    //                     BoxShadow(
+    //                       color: Theme.of(context).colorScheme.onSecondary,
+    //                       blurRadius: 3,
+    //                       offset:
+    //                           const Offset(1, 2), // changes position of shadow
+    //                     )
+    //                   ],
+    //                 ),
+    //                 child: IconButton(
+    //                   onPressed: () => Get.toNamed('/select_action'),
+    //                   icon: const Icon(
+    //                     semanticLabel: 'Go back',
+    //                     Icons.logout,
+    //                     color: Colors.white,
+    //                     textDirection: TextDirection.rtl,
+    //                   ),
+    //                 ),
+    //               ),
+    //             )
+    //           ],
+    //         ),
+    //       ),
+    //     ]));
   }
 }

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:project_sem4_flutter_app_mobile/home_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/provider/theme_provider.dart';
-<<<<<<< HEAD
-import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/parents/home_parent.dart';
-=======
->>>>>>> 8dc9253a9cfddf7c6ed31292d38343bd8ac41326
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/timetable/timetable_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/select_action_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/teacher/teacher_actions.dart';
 import 'package:provider/provider.dart';
@@ -42,14 +39,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       themeMode: context.watch<ThemeProvider>().getThemeMode,
       theme: ThemeData(
+        fontFamily:'Roboto',
         useMaterial3: true,
         brightness: Brightness.light,
         colorScheme: const ColorScheme.light(
-          primary: primaryLightColor,
-          secondary: secondaryLightColor,
-          onSecondary: onSecondaryLightColor,
-          background: bgLightColor,
-          onPrimary: Color(0xFF2A2A2A),
+          primary: primary,
+          secondary: secondary,
+          onSecondary: secondaryContainer,
+          background: tertiaryContainer,
+          onPrimary: primaryContainer,
           brightness: Brightness.light,
         ),
       ),
@@ -57,18 +55,19 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         brightness: Brightness.dark,
         colorScheme: const ColorScheme.dark(
-            primary: primaryDarkColor,
-            onPrimary: Color(0xF7F1F1F1),
-            secondary: secondaryDarkColor,
-            onSecondary: onSecondaryDarkColor,
-            background: bgLightColor,
+            primary: primary,
+            onPrimary: primaryContainer,
+            secondary: secondary,
+            onSecondary: secondaryContainer,
+            background: tertiaryContainer,
             brightness: Brightness.dark),
       ),
       home: SelectActionScreen(),
       routes: {
         '/select_action': (context) => SelectActionScreen(),
         '/home_parent': (context) => const HomeScreen(),
-        '/teacher_action': (context) => TeacherActions()
+        '/teacher_action': (context) => TeacherActions(),
+        '/timetable_action': (context) => TimetableScreen()
       },
       builder: EasyLoading.init(),
     );

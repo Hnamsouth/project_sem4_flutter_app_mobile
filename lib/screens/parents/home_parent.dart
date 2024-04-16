@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/allAction.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/attendance/attendance_creen.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/tuition/tuition_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../service/user_service.dart';
+import 'action/timetable/timetable_screen.dart';
 
 class HomeParent extends StatefulWidget {
   const HomeParent({super.key});
+
   @override
   State<HomeParent> createState() => _HomeParentState();
-
 }
 
 final UserController ctrl = Get.find();
@@ -28,26 +32,30 @@ class _HomeParentState extends State<HomeParent> {
       {
         'title': "Học phí,Khoản thu",
         'icon': FontAwesomeIcons.graduationCap,
-        'action': () => {},
-        'color': Colors.redAccent
+        'action': () => {
+          Get.to(TuitionScreen())
+        },
+        'color': Colors.blue
       },
       {
         'title': "Điểm danh,Xin nghỉ học",
         'icon': FontAwesomeIcons.schoolCircleCheck,
-        'action': () => {},
+        'action': () => {
+          Get.to(AttendanceScreen())
+        },
         'color': Colors.redAccent
       },
       {
         'title': "Hoạt động hàng ngày",
         'icon': FontAwesomeIcons.calendarDays,
         'action': () => {},
-        'color': Colors.redAccent
+        'color': Colors.pink
       },
       {
         'title': "Phiếu đánh giá học tập",
         'icon': FontAwesomeIcons.calendarDay,
         'action': () => {},
-        'color': Colors.redAccent
+        'color': Colors.yellow
       },
       {
         'title': "Nhiệm vụ,Bài tập",
@@ -65,8 +73,10 @@ class _HomeParentState extends State<HomeParent> {
       {
         'title': "Thời khoá biểu lớp học",
         'icon': FontAwesomeIcons.calendarDays,
-        'action': () => {},
-        'color': Colors.redAccent
+        'action': () => {
+             Get.to(TimetableScreen())
+            },
+        'color': Colors.cyan
       },
       {
         'title': "Thực đơn bữa ăn",
@@ -78,7 +88,7 @@ class _HomeParentState extends State<HomeParent> {
         'title': "Thông tin học sinh",
         'icon': FontAwesomeIcons.addressCard,
         'action': () => {},
-        'color': Colors.redAccent
+        'color': Colors.yellow
       },
       {
         'title': "Trang số liệu học",
@@ -99,7 +109,7 @@ class _HomeParentState extends State<HomeParent> {
         'color': Colors.redAccent
       },
       {
-        'title': "Thời khoá biểu lớp học",
+        'title': "Thời khoá biểu lớp học 22",
         'icon': FontAwesomeIcons.heart,
         'action': () => {},
         'color': Colors.redAccent
@@ -114,16 +124,16 @@ class _HomeParentState extends State<HomeParent> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                   Row(
+                  Row(
                     children: [
                       SizedBox(
                         height: 100,
                         child: CircleAvatar(
                           backgroundColor: Color.fromRGBO(143, 148, 251, 1),
-                          child: Text("Avatar",style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.white
-                          ),),
+                          child: Text(
+                            "Avatar",
+                            style: TextStyle(fontSize: 10, color: Colors.white),
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -152,7 +162,9 @@ class _HomeParentState extends State<HomeParent> {
                             fontSize: 20),
                       ),
                       ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(AllActionScreen());
+                          },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white),
                           child: const Text("Tất Cả"))
@@ -214,7 +226,9 @@ class _HomeParentState extends State<HomeParent> {
                             fontSize: 20),
                       ),
                       ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+
+                          },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white),
                           child: const Text("Tất Cả"))
@@ -262,7 +276,7 @@ class _HomeParentState extends State<HomeParent> {
                           child: IconButton(
                             color: Colors.white,
                             icon: FaIcon(value['icon'], size: 43.0),
-                            onPressed: () => value['action'],
+                            onPressed: value['action'],
                           ),
                         ),
                         const SizedBox(
