@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/learning/learning_assessment.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/meal/meal_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/timetable/timetable_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/tuition/tuition_screen.dart';
 
@@ -37,16 +39,13 @@ class _AllActionScreenState extends State<AllActionScreen> {
       },
       'color': Colors.redAccent
     },
-    {
-      'title': "Hoạt động hàng ngày",
-      'icon': FontAwesomeIcons.calendarDays,
-      'action': () => {},
-      'color': Colors.pink
-    },
+
     {
       'title': "Phiếu đánh giá học tập",
       'icon': FontAwesomeIcons.calendarDay,
-      'action': () => {},
+      'action': () => {
+        Get.to(LeaningAssessmentScreen())
+      },
       'color': Colors.yellow
     },
     {
@@ -73,7 +72,9 @@ class _AllActionScreenState extends State<AllActionScreen> {
     {
       'title': "Thực đơn bữa ăn",
       'icon': FontAwesomeIcons.bowlRice,
-      'action': () => {},
+      'action': () => {
+        Get.to(MealScreen())
+      },
       'color': Colors.redAccent
     },
     {
@@ -120,7 +121,7 @@ class _AllActionScreenState extends State<AllActionScreen> {
           child: PageView(
             controller: _controller,
             children: [
-              workViewDetail(workData.getRange(0, 13).toList()),
+              workViewDetail(workData.getRange(0, 12).toList()),
             ],
           ),
         ),

@@ -86,7 +86,7 @@ class _TakeLeaveScreenState extends State<TakeLeaveScreen> {
             SizedBox(
               height: 25,
             ),
-            MyButton(onPressed: (){}, buttonText: "Nộp đơn xin nghỉ")
+            MyButton(onPressed: (){}, buttonText: "Nộp đơn xin nghỉ", btnHeight: 55, btnWidth: 275,)
           ],
         )));
   }

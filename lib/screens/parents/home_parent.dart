@@ -3,10 +3,12 @@ import 'package:get/get.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/allAction.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/attendance/attendance_creen.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/learning/learning_assessment.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/tuition/tuition_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../service/user_service.dart';
+import 'action/meal/meal_screen.dart';
 import 'action/timetable/timetable_screen.dart';
 
 class HomeParent extends StatefulWidget {
@@ -23,10 +25,6 @@ final _controller = PageController();
 class _HomeParentState extends State<HomeParent> {
   @override
   Widget build(BuildContext context) {
-    void _logout() {
-      UserService.logout();
-      Get.offNamed('/select_action');
-    }
 
     final List<Map<String, dynamic>> workData = [
       {
@@ -45,16 +43,14 @@ class _HomeParentState extends State<HomeParent> {
         },
         'color': Colors.redAccent
       },
-      {
-        'title': "Hoạt động hàng ngày",
-        'icon': FontAwesomeIcons.calendarDays,
-        'action': () => {},
-        'color': Colors.pink
-      },
+
       {
         'title': "Phiếu đánh giá học tập",
         'icon': FontAwesomeIcons.calendarDay,
-        'action': () => {},
+        'action': () => {
+          Get.to(LeaningAssessmentScreen())
+
+        },
         'color': Colors.yellow
       },
       {
@@ -81,7 +77,10 @@ class _HomeParentState extends State<HomeParent> {
       {
         'title': "Thực đơn bữa ăn",
         'icon': FontAwesomeIcons.bowlRice,
-        'action': () => {},
+        'action': () => {
+          Get.to(MealScreen())
+
+        },
         'color': Colors.redAccent
       },
       {
@@ -93,7 +92,8 @@ class _HomeParentState extends State<HomeParent> {
       {
         'title': "Trang số liệu học",
         'icon': FontAwesomeIcons.usersRectangle,
-        'action': () => {},
+        'action': () => {
+        },
         'color': Colors.redAccent
       },
       {
@@ -175,19 +175,18 @@ class _HomeParentState extends State<HomeParent> {
                   // ),
                   // work view
                   SizedBox(
-                    height: 320,
+                    height: 277,
                     child: PageView(
                       controller: _controller,
                       children: [
                         workViewDetail(workData.getRange(0, 6).toList()),
                         workViewDetail(workData.getRange(6, 12).toList()),
-                        workViewDetail(workData.getRange(12, 13).toList()),
                       ],
                     ),
                   ),
                   SmoothPageIndicator(
                     controller: _controller,
-                    count: 3,
+                    count: 2,
                     axisDirection: Axis.horizontal,
                     effect: const SlideEffect(
                       activeDotColor: Colors.white54,
@@ -231,30 +230,34 @@ class _HomeParentState extends State<HomeParent> {
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white),
-                          child: const Text("Tất Cả"))
+                          child: const Text("Xem thêm"))
                     ],
                   ),
+                  SizedBox(
+                    height: 200,
+
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+
+                      ],
+                    ),
+                  )
                 ],
               ),
             )
           ],
         ),
         // test logout
-        floatingActionButton: FloatingActionButton(
-          onPressed: _logout,
-          backgroundColor: Theme.of(context).colorScheme.onSecondary,
-          child: const Icon(
-            Icons.logout,
-            color: Colors.white,
-          ),
-        ));
+    );
   }
+
 
   Widget workViewDetail(List<Map<String, dynamic>> workdetail) {
     return Container(
       child: GridView.count(
         childAspectRatio: 6 / 7,
-        padding: const EdgeInsets.fromLTRB(15, 15, 15, 45),
+        padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
         crossAxisCount: 3,
         crossAxisSpacing: 30,
         mainAxisSpacing: 30,

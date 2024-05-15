@@ -162,6 +162,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     height: 10,
                                   ),
                                   MyTextField(
+
+
                                     onChanged: (value) {
                                       formData.password = value;
                                     },
@@ -176,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     onPressed: () {
                                       login();
                                     },
-                                    buttonText: 'Đăng nhập',
+                                    buttonText: 'Đăng Nhập', btnHeight: 55, btnWidth: 375,
                                   ),
                                   const SizedBox(
                                     height: 12,
@@ -203,15 +205,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ],
                                     ),
                                   ),
-                                     IconButton(
-                                      onPressed: () => Get.toNamed('/select_action'),
-                                      icon:  Icon(
-                                        semanticLabel: 'Go back',
-                                        Icons.navigate_next_sharp,
-                                        color: HexColor("#44564a"),
-                                        textDirection: TextDirection.rtl,
-                                      ),
-                                    ),
 
                                 ],
                               ),
@@ -234,144 +227,5 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
 
-    // return Scaffold(
-    //   resizeToAvoidBottomInset: false,
-    //     backgroundColor: Colors.green,
-    //     body:
-    //         Stack(alignment: Alignment.center, fit: StackFit.expand, children: [
-    //       SingleChildScrollView(
-    //         child: Column(
-    //           children: <Widget>[
-    //             Container(
-    //               height: 400,
-    //               decoration: const BoxDecoration(
-    //                   image: DecorationImage(
-    //                       image: AssetImage('assets/images/plants2.png'),
-    //                       fit: BoxFit.fill)
-    //
-    //                     ),
-    //             ),
-    //             Padding(
-    //               padding: const EdgeInsets.all(30.0),
-    //               child: Column(
-    //                 children: <Widget>[
-    //                   Container(
-    //                     padding: const EdgeInsets.all(5),
-    //                     decoration: BoxDecoration(
-    //                         // color: Color.fromRGBO(255, 255, 255, 1.0),
-    //
-    //                         borderRadius: BorderRadius.circular(10),
-    //                         boxShadow: const [
-    //                           BoxShadow(
-    //                               color: Colors.white,
-    //                               blurRadius: 20.0,
-    //                               offset: Offset(0, 10))
-    //                         ]),
-    //                     child: Column(
-    //                       children: <Widget>[
-    //                         Container(
-    //                           padding: const EdgeInsets.all(8.0),
-    //                           decoration: const BoxDecoration(
-    //                               border: Border(
-    //                                   bottom: BorderSide(color: Colors.grey))),
-    //                           child: TextField(
-    //                             onChanged: (value) {
-    //                               formData.username = value;
-    //                             },
-    //                             style: const TextStyle(color: Colors.grey),
-    //                             decoration: InputDecoration(
-    //                                 border: InputBorder.none,
-    //                                 hintText: "Username ",
-    //                                 hintStyle:
-    //                                     TextStyle(color: Colors.grey[400])),
-    //                           ),
-    //                         ),
-    //                         Container(
-    //                           color: Colors.white,
-    //                           padding: const EdgeInsets.all(8.0),
-    //                           child: TextFormField(
-    //                             onChanged: (value) {
-    //                               formData.password = value;
-    //                             },
-    //                             obscureText: true,
-    //                             style: const TextStyle(color: Colors.grey),
-    //                             decoration: const InputDecoration(
-    //                               hintText: "Password",
-    //                               hintStyle: TextStyle(color: Colors.grey),
-    //                             ),
-    //                           ),
-    //                         )
-    //                       ],
-    //                     ),
-    //                   ),
-    //                   const SizedBox(
-    //                     height: 30,
-    //                   ),
-    //                   Container(
-    //                     height: 50,
-    //                     decoration: BoxDecoration(
-    //                       borderRadius: BorderRadius.circular(10),
-    //                     ),
-    //                     child: Center(
-    //                       child: ElevatedButton(
-    //                         style: ElevatedButton.styleFrom(
-    //                             backgroundColor:
-    //                                 const Color.fromRGBO(143, 148, 251, 1),
-    //                             fixedSize: const Size(600, 50)),
-    //                         onPressed: () => login(),
-    //                         child: const Text(
-    //                           "Đăng nhập",
-    //                           style: TextStyle(
-    //                             color: Colors.white,
-    //                             fontWeight: FontWeight.bold,
-    //                           ),
-    //                         ),
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   const SizedBox(
-    //                     height: 70,
-    //                   ),
-    //                   const Text(
-    //                     "Quên mật khẩu?",
-    //                     style:
-    //                         TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //             Align(
-    //               alignment: Alignment.bottomLeft,
-    //               child: Container(
-    //                 width: 60,
-    //                 height: 60,
-    //                 margin: const EdgeInsets.only(left: 20, bottom: 20),
-    //                 decoration: BoxDecoration(
-    //                   color: btnColor,
-    //                   borderRadius: BorderRadius.circular(60),
-    //                   boxShadow: [
-    //                     BoxShadow(
-    //                       color: Theme.of(context).colorScheme.onSecondary,
-    //                       blurRadius: 3,
-    //                       offset:
-    //                           const Offset(1, 2), // changes position of shadow
-    //                     )
-    //                   ],
-    //                 ),
-    //                 child: IconButton(
-    //                   onPressed: () => Get.toNamed('/select_action'),
-    //                   icon: const Icon(
-    //                     semanticLabel: 'Go back',
-    //                     Icons.logout,
-    //                     color: Colors.white,
-    //                     textDirection: TextDirection.rtl,
-    //                   ),
-    //                 ),
-    //               ),
-    //             )
-    //           ],
-    //         ),
-    //       ),
-    //     ]));
   }
 }

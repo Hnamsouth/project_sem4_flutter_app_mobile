@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:project_sem4_flutter_app_mobile/service/api_service.dart';
 
 import '../../../model/parent_model.dart';
 import 'package:dio/dio.dart';
@@ -17,17 +19,19 @@ class _ContactScreenState extends State<ContactScreen> {
   TextEditingController controller = TextEditingController();
 
   Future<Null> getUserDetails() async {
-    const String url =
-        'http://14.248.97.203:4869/api/v1/teacher/teacher-contact?schoolYearClassId=1';
-
-    final dio = Dio();
-    final response = await dio.get(url);
+    EasyLoading.show(
+      status: 'loading...',
+      maskType: EasyLoadingMaskType.black,
+    );
+    final response = await DioService().get("/teacher/contact?schoolYearClassId=1");
     print(response.data);
     setState(() {
       for (Map<String, dynamic> user in response.data) {
         _teacherDetails.add(TeacherContact.fromJson(user));
       }
     });
+    EasyLoading.dismiss();
+
   }
 
   @override
@@ -45,10 +49,16 @@ class _ContactScreenState extends State<ContactScreen> {
           color: Colors.white,
           child: Column(children: [
             ListTile(
+
               title: Text(_teacherDetails[index].name!,
-                  style: TextStyle(color: Colors.black)),
+                  style: TextStyle(color: Colors.black,fontSize: 20)),
+              contentPadding: EdgeInsets.symmetric(horizontal: 20),
               subtitle: Text(
-                'Mon: ' + _teacherDetails[index].subjects!.join(", "),
+                'Môn: ' + _teacherDetails[index].subjects!.join(", "),
+              ),
+              trailing: Text(
+
+                'SDT: '+  _teacherDetails[index].phone!,style:TextStyle(color: Colors.green,fontSize: 15) ,
 
               ),
               textColor: Colors.black,
@@ -57,11 +67,7 @@ class _ContactScreenState extends State<ContactScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                TextButton(
-                  child: const Text('Call'),
-                  onPressed: () => launch(_teacherDetails[index].phone!),
-                ),
-                const SizedBox(width: 8),
+
                 TextButton(
                   child: const Text('Chat'),
                   onPressed: () {
@@ -110,7 +116,7 @@ class _ContactScreenState extends State<ContactScreen> {
             style: TextStyle(color: Colors.black),
             controller: controller,
             decoration: const InputDecoration(
-              hintText: 'Search',
+              hintText: 'Nhập tên giáo viên ...',
               hintStyle: TextStyle(color: Colors.black),
               border: InputBorder.none,
             ),

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:collection/collection.dart';
 
+
 import 'package:project_sem4_flutter_app_mobile/screens/widgets/my_button.dart';
+import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
 
 class TuitionScreen extends StatefulWidget {
   const TuitionScreen({super.key});
@@ -15,6 +17,12 @@ class TuitionScreen extends StatefulWidget {
 class _TuitionScreenState extends State<TuitionScreen> {
   final List<String> entries = <String>['A', 'B', 'C'];
   final List<int> test = <int>[600000, 700000, 800000];
+
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -119,10 +127,22 @@ class _TuitionScreenState extends State<TuitionScreen> {
                     const Divider(),
               ),
             ),
-            MyButton(onPressed: () {}, buttonText: "Thanh Toán")
+            TextButton(
+              onPressed: () async {
+              },
+              child: const Text('Thanh Toán  '),
+            ),
+            // MyButton(onPressed: () {
+            //
+            // }, buttonText: "Thanh Toán")
           ],
         ),
       ),
     );
   }
 }
+
+
+
+
+
