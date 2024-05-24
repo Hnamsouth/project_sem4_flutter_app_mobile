@@ -13,36 +13,34 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   final DioService _dio = DioService();
   bool _isLoading = false;
+final data=
+  {"amount": 111212, "orderInfo": "hahahaha"};
 
-
-  // final data = {
-  //   'amount': 100000,
-  //   'orderInfo': 'dio'
-  // };
-
-
-  Future<void> initiatePayment() async {
+  Future<void> initiatePayment(dynamic data) async {
     setState(() {
       _isLoading = true;
     });
+
     try {
       final response = await _dio.post(
-          '/vn-pay/submitOrder',data: {
-        "amount": 111212,
-        "orderInfo": "stringdadas"
-      }
-
+        '/vn-pay/submitOrder',
+        data:data,
       );
-      if (response.statusCode == 200) {
 
-        final paymentUrl = response.data['paymentUrl'];
-        print(paymentUrl);
-        // Assuming the response JSON has a 'paymentUrl' field.
-        if (await canLaunch(paymentUrl)) {
-          await launch(paymentUrl);
-        } else {
-          throw Exception('Could not launch $paymentUrl');
-        }
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+
+        // Ensure responseData is a Map
+
+          final paymentUrl = responseData;
+          // Ensure the paymentUrl is a String
+            if (await canLaunch(paymentUrl)) {
+              await launch(paymentUrl);
+            } else {
+              throw Exception('Could not launch $paymentUrl');
+            }
+
+
       } else {
         print('Failed to create payment: ${response.statusMessage}');
         throw Exception('Failed to create payment: ${response.statusMessage}');
@@ -79,11 +77,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
         child: _isLoading
             ? CircularProgressIndicator()
             : ElevatedButton(
-          onPressed: () {
-            initiatePayment();
-          },
-          child: Text('Pay with VNPay'),
-        ),
+                onPressed: () {
+                  initiatePayment(data);
+                },
+                child: Text('Pay with VNPay'),
+              ),
       ),
     );
   }
