@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_sem4_flutter_app_mobile/controller/student_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/allAction.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/attendance/attendance_creen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/learning/learning_assessment.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/schedule/schedule_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/tuition/tuition_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../service/user_service.dart';
+import '../../model/student_info.dart';
+import '../../service/student_service.dart';
 import 'action/meal/meal_screen.dart';
-import 'action/timetable/timetable_screen.dart';
+import 'action/student/student_infor.dart';
+import 'action/tasks_exercises/tasks_screen.dart';
+
+final UserController ctrl = Get.find();
 
 class HomeParent extends StatefulWidget {
   const HomeParent({super.key});
@@ -18,45 +24,47 @@ class HomeParent extends StatefulWidget {
   State<HomeParent> createState() => _HomeParentState();
 }
 
-final UserController ctrl = Get.find();
+
+
+
+
+
+
+
 
 final _controller = PageController();
 
 class _HomeParentState extends State<HomeParent> {
   @override
   Widget build(BuildContext context) {
-
+    // print(ctrl2.studentRecord.value.schoolYearClass?.id);
     final List<Map<String, dynamic>> workData = [
       {
         'title': "Học phí,Khoản thu",
         'icon': FontAwesomeIcons.graduationCap,
-        'action': () => {
-          Get.to(TuitionScreen())
-        },
+        'action': () => {Get.to(StudentPaymentScreen())},
         'color': Colors.blue
       },
       {
         'title': "Điểm danh,Xin nghỉ học",
         'icon': FontAwesomeIcons.schoolCircleCheck,
-        'action': () => {
-          Get.to(AttendanceScreen())
-        },
+        'action': () => {Get.to(AttendanceScreen())},
         'color': Colors.redAccent
       },
 
       {
         'title': "Phiếu đánh giá học tập",
         'icon': FontAwesomeIcons.calendarDay,
-        'action': () => {
-          Get.to(LeaningAssessmentScreen())
-
-        },
+        'action': () => {Get.to(LeaningAssessmentScreen())},
         'color': Colors.yellow
       },
       {
         'title': "Nhiệm vụ,Bài tập",
         'icon': FontAwesomeIcons.bookOpen,
-        'action': () => {},
+        'action': () => {
+          Get.to(TaskScreen())
+
+        },
         'color': Colors.redAccent
       },
       {
@@ -69,31 +77,25 @@ class _HomeParentState extends State<HomeParent> {
       {
         'title': "Thời khoá biểu lớp học",
         'icon': FontAwesomeIcons.calendarDays,
-        'action': () => {
-             Get.to(TimetableScreen())
-            },
+        'action': () => {Get.to(ScheduleScreen())},
         'color': Colors.cyan
       },
       {
         'title': "Thực đơn bữa ăn",
         'icon': FontAwesomeIcons.bowlRice,
-        'action': () => {
-          Get.to(MealScreen())
-
-        },
+        'action': () => {Get.to(MealScreen())},
         'color': Colors.redAccent
       },
       {
         'title': "Thông tin học sinh",
         'icon': FontAwesomeIcons.addressCard,
-        'action': () => {},
+        'action': () => {Get.to(StudentInfoScreen())},
         'color': Colors.yellow
       },
       {
         'title': "Trang số liệu học",
         'icon': FontAwesomeIcons.usersRectangle,
-        'action': () => {
-        },
+        'action': () => {},
         'color': Colors.redAccent
       },
       {
@@ -116,142 +118,137 @@ class _HomeParentState extends State<HomeParent> {
       },
     ];
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              // scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 100,
-                        child: CircleAvatar(
-                          backgroundColor: Color.fromRGBO(143, 148, 251, 1),
-                          child: Text(
-                            "Avatar",
-                            style: TextStyle(fontSize: 10, color: Colors.white),
-                          ),
+      backgroundColor: Colors.white,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            // scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 100,
+                      child: CircleAvatar(
+                        backgroundColor: Color.fromRGBO(143, 148, 251, 1),
+                        child: Text(
+                          "avatar",
+                          style: TextStyle(fontSize: 10, color: Colors.white),
                         ),
                       ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text(
-                        "${ctrl.user.value}",
-                        style: TextStyle(
-                            color: Color.fromRGBO(143, 148, 251, 1),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      )
-                    ],
-                  ),
-                  // SizedBox(
-                  //   height: 5,
-                  // ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Các chức năng",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      ),
-                      ElevatedButton(
-                          onPressed: () {
-                            Get.to(AllActionScreen());
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white),
-                          child: const Text("Tất Cả"))
-                    ],
-                  ),
-                  // SizedBox(
-                  //   height: 10,
-                  // ),
-                  // work view
-                  SizedBox(
-                    height: 277,
-                    child: PageView(
-                      controller: _controller,
-                      children: [
-                        workViewDetail(workData.getRange(0, 6).toList()),
-                        workViewDetail(workData.getRange(6, 12).toList()),
-                      ],
                     ),
-                  ),
-                  SmoothPageIndicator(
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Text(
+                      "${ctrl.user.value.userDetail?.fullName()}",
+                      // "${ctrl2.studentRecord.value.students?.id}",
+                      style: TextStyle(
+                          color: Color.fromRGBO(143, 148, 251, 1),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    )
+                  ],
+                ),
+                // SizedBox(
+                //   height: 5,
+                // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Các chức năng",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          Get.to(AllActionScreen());
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white),
+                        child: const Text("Tất Cả"))
+                  ],
+                ),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                // work view
+                SizedBox(
+                  height: 277,
+                  child: PageView(
                     controller: _controller,
-                    count: 2,
-                    axisDirection: Axis.horizontal,
-                    effect: const SlideEffect(
-                      activeDotColor: Colors.white54,
-                      dotHeight: 10,
-                      dotColor: Colors.blue,
-                      dotWidth: 10,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                      height: 150,
-                      width: double.infinity,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(
-                                "assets/images/B_Ill_Education_Back_to_school_min_a72a89f00f.png"),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        child: null,
-                      )),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "Tin tức - Sự kiện",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      ),
-                      ElevatedButton(
-                          onPressed: () {
-
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white),
-                          child: const Text("Xem thêm"))
+                      workViewDetail(workData.getRange(0, 6).toList()),
+                      workViewDetail(workData.getRange(6, 12).toList()),
                     ],
                   ),
-                  SizedBox(
-                    height: 200,
-
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-
-                      ],
+                ),
+                SmoothPageIndicator(
+                  controller: _controller,
+                  count: 2,
+                  axisDirection: Axis.horizontal,
+                  effect: const SlideEffect(
+                    activeDotColor: Colors.white54,
+                    dotHeight: 10,
+                    dotColor: Colors.blue,
+                    dotWidth: 10,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                    height: 150,
+                    width: double.infinity,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                              "assets/images/B_Ill_Education_Back_to_school_min_a72a89f00f.png"),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      child: null,
+                    )),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Tin tức - Sự kiện",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
                     ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-        // test logout
+                    ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white),
+                        child: const Text("Xem thêm"))
+                  ],
+                ),
+                SizedBox(
+                  height: 200,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [],
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+      // test logout
     );
   }
-
 
   Widget workViewDetail(List<Map<String, dynamic>> workdetail) {
     return Container(

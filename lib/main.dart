@@ -2,20 +2,21 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:project_sem4_flutter_app_mobile/controller/student_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/home_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/provider/theme_provider.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/parents/action/timetable/timetable_screen.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/schedule/schedule_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/select_action_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/teacher/teacher_actions.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/test/example.dart';
+import 'package:project_sem4_flutter_app_mobile/service/student_service.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'controller/user_controller.dart';
 import 'data/constants.dart';
 import 'firebase_options.dart';
+import 'model/student_info.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +24,20 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   Get.put(UserController());
+  Get.put(StudentController());
+
+
+  // final StudentController studentController = Get.find();
+  // final UserController userController = Get.find();
+  // final int? _id = userController.user.value.id;
+  //
+  // Future<StudentRecord> getInfo() async {
+  //   var student = await StudentService.getOne(_id!);
+  //   studentController.setStudentRecord(student);
+  //   return student;
+  // }await getInfo();
+
+
   final token = await SharedPreferences.getInstance();
   final accessToken = token.getString(TokenType.accress_token.name);
   // UserService.login(data, loginType)
@@ -39,6 +54,7 @@ final UserController userController = Get.put(UserController());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -76,7 +92,7 @@ class MyApp extends StatelessWidget {
         '/select_action': (context) => SelectActionScreen(),
         '/home_parent': (context) => const HomeScreen(),
         '/teacher_action': (context) => TeacherActions(),
-        '/timetable_action': (context) => TimetableScreen()
+        '/timetable_action': (context) =>  ScheduleScreen()
       },
       builder: EasyLoading.init(),
     );

@@ -57,4 +57,7 @@ class UserDetail {
     _data['user'] = user;
     return _data;
   }
+   fullName(){
+    return '$firstname $lastname';
+  }
 }

@@ -1,19 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-List<String> breakfastDishes = ['Omelette', 'Toast', 'Fruit Salad'];
-List<String> lunchDishes = ['Grilled Chicken', 'Steamed Vegetables', 'Brown Rice'];
-List<String> dinnerDishes = ['Salmon', 'Quinoa Salad', 'Stir-fried Tofu'];
-
-// Khởi tạo thực đơn cho mỗi ngày trong tuần
-List<Menu> weeklyMenu = [
-  Menu('Thứ 2', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes), Meal('Dinner', dinnerDishes)),
-  Menu('Thứ 3', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes), Meal('Dinner', dinnerDishes)),
-  Menu('Thứ 4', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes), Meal('Dinner', dinnerDishes)),
-  Menu('Thứ 5', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes), Meal('Dinner', dinnerDishes)),
-  Menu('Thứ 6', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes), Meal('Dinner', dinnerDishes)),
-  Menu('Thứ 7', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes), Meal('Dinner', dinnerDishes)),
-];
-
 
 class Meal {
   late String name;
@@ -26,10 +12,21 @@ class Menu {
   late String day;
   late Meal breakfast;
   late Meal lunch;
-  late Meal dinner;
 
-  Menu(this.day, this.breakfast, this.lunch, this.dinner);
+  Menu(this.day, this.breakfast, this.lunch);
 }
+
+List<String> breakfastDishes = ['Omelette', 'Toast', 'Fruit Salad'];
+List<String> lunchDishes = ['Grilled Chicken', 'Steamed Vegetables', 'Brown Rice'];
+
+// Khởi tạo thực đơn cho mỗi ngày trong tuần từ thứ 2 đến thứ 6
+List<Menu> weeklyMenu = [
+  Menu('Thứ 2', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes)),
+  Menu('Thứ 3', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes)),
+  Menu('Thứ 4', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes)),
+  Menu('Thứ 5', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes)),
+  Menu('Thứ 6', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes)),
+];
 
 class MealScreen extends StatefulWidget {
   const MealScreen({super.key});
@@ -39,7 +36,6 @@ class MealScreen extends StatefulWidget {
 }
 
 class _MealScreenState extends State<MealScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,18 +50,30 @@ class _MealScreenState extends State<MealScreen> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  weeklyMenu[index].day,
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+                Container(
+                  decoration: BoxDecoration(
+                    color: CupertinoColors.white,
+                    border: Border.all(color: Colors.green),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  height: 50,
+                  width: double.infinity,
+                  child: Center(
+                    child: Text(
+                      weeklyMenu[index].day,
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                  ),
                 ),
                 SizedBox(height: 10),
                 DataTable(
                   columns: [
-                    DataColumn(label: Text('Sáng :',
-                      style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),
-                    )
+                    DataColumn(
+                      label: Text(
+                        'Sáng :',
+                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                      ),
                     ),
-
                   ],
                   rows: weeklyMenu[index].breakfast.dishes.map((dish) {
                     return DataRow(
@@ -78,7 +86,12 @@ class _MealScreenState extends State<MealScreen> {
                 SizedBox(height: 10),
                 DataTable(
                   columns: [
-                    DataColumn(label: Text('Trưa :', style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)),
+                    DataColumn(
+                      label: Text(
+                        'Trưa :',
+                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ],
                   rows: weeklyMenu[index].lunch.dishes.map((dish) {
                     return DataRow(
@@ -89,18 +102,6 @@ class _MealScreenState extends State<MealScreen> {
                   }).toList(),
                 ),
                 SizedBox(height: 10),
-                DataTable(
-                  columns: [
-                    DataColumn(label: Text('Chiều :', style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)),
-                  ],
-                  rows: weeklyMenu[index].dinner.dishes.map((dish) {
-                    return DataRow(
-                      cells: [
-                        DataCell(Text(dish)),
-                      ],
-                    );
-                  }).toList(),
-                ),
                 Divider(),
               ],
             );
@@ -111,6 +112,8 @@ class _MealScreenState extends State<MealScreen> {
   }
 }
 
-
-
-
+void main() {
+  runApp(MaterialApp(
+    home: MealScreen(),
+  ));
+}

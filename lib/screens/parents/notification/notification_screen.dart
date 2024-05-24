@@ -12,36 +12,28 @@ class NotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     const items = 3;
     return Scaffold(
-        body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              SafeArea(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 16, right: 16, top: 10),
-                  child: Row(
+      appBar: AppBar(
+        title: Text("Thông báo"),
+      ),
+        body: Center(
+          child: Row(
+            children: [
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        child: CircleAvatar(
-                          backgroundColor: Color.fromRGBO(143, 148, 251, 1),
-                          child: Text("A"),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Thông báo",
-                        style: TextStyle(
-                            color: Color.fromRGBO(143, 148, 251, 1),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      )
+                      Icon(Icons.insert_drive_file, size: 50),
+                      Text('Chưa có dữ liệu.'),
                     ],
                   ),
                 ),
               ),
-              // BuildSearchBox(),
-            ])));
+
+            ],
+          )
+
+        )
+    );
   }
 }

@@ -8,17 +8,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
+import 'package:project_sem4_flutter_app_mobile/model/student_info.dart';
 import 'package:project_sem4_flutter_app_mobile/service/user_service.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../controller/student_controller.dart';
 import '../../../data/login_data.dart';
 import '../../widgets/my_button.dart';
 import '../../widgets/my_textfield.dart';
 
-
 class LoginScreen extends StatefulWidget {
   late LoginType loginType;
+
   LoginScreen({super.key, required this.loginType});
 
   @override
@@ -68,10 +70,21 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       await Future.delayed(const Duration(seconds: 1));
       var user = await UserService.login(formData.toJson(), widget.loginType);
+
+
+
       if (user == null) {
         loginFail();
       } else {
         c.setUser(user);
+        // Fetch the user ID after login
+        final UserController userController = Get.find();
+        final int? userId = userController.user.value.id;
+        if (userId != null) {
+          // Update the StudentController with the new data
+          final StudentController studentController = Get.find();
+          await studentController.updateStudentRecord(userId);
+        }
         widget.loginType == LoginType.phuhuynh
             ? Get.offNamed('/home_parent')
             : Get.offNamed('/teacher_action');
@@ -146,7 +159,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     },
                                     hintText: "Username",
                                     obscureText: false,
-                                    prefixIcon: const Icon(Icons.supervised_user_circle),
+                                    prefixIcon: const Icon(
+                                        Icons.supervised_user_circle),
                                   ),
                                   const SizedBox(
                                     height: 10,
@@ -162,8 +176,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     height: 10,
                                   ),
                                   MyTextField(
-
-
                                     onChanged: (value) {
                                       formData.password = value;
                                     },
@@ -178,14 +190,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                     onPressed: () {
                                       login();
                                     },
-                                    buttonText: 'Đăng Nhập', btnHeight: 55, btnWidth: 375,
+                                    buttonText: 'Đăng Nhập',
+                                    btnHeight: 55,
+                                    btnWidth: 375,
                                   ),
                                   const SizedBox(
                                     height: 12,
                                   ),
                                   Padding(
                                     padding:
-                                    const EdgeInsets.fromLTRB(65, 0, 0, 0),
+                                        const EdgeInsets.fromLTRB(65, 0, 0, 0),
                                     child: Row(
                                       children: [
                                         Text("Quên mật khẩu?",
@@ -205,7 +219,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ],
                                     ),
                                   ),
-
                                 ],
                               ),
                             ),
@@ -213,19 +226,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-
-
                   ],
                 ),
-
-
               ])),
     );
-
-
-
-
-
-
   }
 }

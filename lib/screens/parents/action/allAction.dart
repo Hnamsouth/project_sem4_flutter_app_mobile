@@ -5,8 +5,14 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/learning/learning_assessment.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/meal/meal_screen.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/parents/action/timetable/timetable_screen.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/schedule/schedule_screen.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/student/student_infor.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/schedule/schedule_screen.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/tasks_exercises/tasks_screen.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/tuition/payment_details.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/tuition/tuition_screen.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/test/test_payment.dart';
+import 'package:project_sem4_flutter_app_mobile/service/student_service.dart';
 
 import 'attendance/attendance_creen.dart';
 
@@ -27,7 +33,7 @@ class _AllActionScreenState extends State<AllActionScreen> {
       'title': "Học phí,Khoản thu",
       'icon': FontAwesomeIcons.graduationCap,
       'action': () => {
-        Get.to(TuitionScreen())
+        Get.to( StudentPaymentScreen())
       },
       'color': Colors.blue
     },
@@ -51,7 +57,9 @@ class _AllActionScreenState extends State<AllActionScreen> {
     {
       'title': "Nhiệm vụ,Bài tập",
       'icon': FontAwesomeIcons.bookOpen,
-      'action': () => {},
+      'action': () => {
+        Get.to(TaskScreen())
+      },
       'color': Colors.redAccent
     },
     {
@@ -65,7 +73,7 @@ class _AllActionScreenState extends State<AllActionScreen> {
       'title': "Thời khoá biểu lớp học",
       'icon': FontAwesomeIcons.calendarDays,
       'action': () => {
-        Get.to(TimetableScreen())
+        Get.to(ScheduleScreen())
       },
       'color': Colors.cyan
     },
@@ -80,19 +88,24 @@ class _AllActionScreenState extends State<AllActionScreen> {
     {
       'title': "Thông tin học sinh",
       'icon': FontAwesomeIcons.addressCard,
-      'action': () => {},
+      'action': () => {
+        Get.to(StudentInfoScreen())
+      },
       'color': Colors.yellow
     },
     {
       'title': "Trang số liệu học",
       'icon': FontAwesomeIcons.usersRectangle,
-      'action': () => {},
+      'action': () => {
+      },
       'color': Colors.redAccent
     },
     {
       'title': "Quét QR code",
       'icon': FontAwesomeIcons.qrcode,
-      'action': () => {},
+      'action': () => {
+        Get.to(PaymentScreen())
+      },
       'color': Colors.redAccent
     },
     {

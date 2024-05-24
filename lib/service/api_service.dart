@@ -100,6 +100,9 @@ class DioService {
     return _dio.post(path, data: data);
   }
 
+  // post method,
+
+
   // put method
   Future<Response> put(String path, {dynamic data}) async {
     return _dio.put(path, data: data);

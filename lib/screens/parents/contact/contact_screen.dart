@@ -24,7 +24,6 @@ class _ContactScreenState extends State<ContactScreen> {
       maskType: EasyLoadingMaskType.black,
     );
     final response = await DioService().get("/teacher/contact?schoolYearClassId=1");
-    print(response.data);
     setState(() {
       for (Map<String, dynamic> user in response.data) {
         _teacherDetails.add(TeacherContact.fromJson(user));
