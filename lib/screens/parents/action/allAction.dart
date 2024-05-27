@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/parents/action/learning/learning_assessment.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/meal/meal_screen.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/report/report_card.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/schedule/schedule_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/student/student_infor.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/schedule/schedule_screen.dart';
@@ -47,10 +47,10 @@ class _AllActionScreenState extends State<AllActionScreen> {
     },
 
     {
-      'title': "Phiếu đánh giá học tập",
+      'title': "Bảng điểm",
       'icon': FontAwesomeIcons.calendarDay,
       'action': () => {
-        Get.to(LeaningAssessmentScreen())
+        Get.to(ReportCardScreen())
       },
       'color': Colors.yellow
     },

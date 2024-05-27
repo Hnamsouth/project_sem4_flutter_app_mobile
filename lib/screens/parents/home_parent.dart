@@ -4,7 +4,6 @@ import 'package:project_sem4_flutter_app_mobile/controller/student_controller.da
 import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/allAction.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/attendance/attendance_creen.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/parents/action/learning/learning_assessment.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/schedule/schedule_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/tuition/tuition_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -12,6 +11,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../model/student_info.dart';
 import '../../service/student_service.dart';
 import 'action/meal/meal_screen.dart';
+import 'action/report/report_card.dart';
 import 'action/student/student_infor.dart';
 import 'action/tasks_exercises/tasks_screen.dart';
 
@@ -53,9 +53,9 @@ class _HomeParentState extends State<HomeParent> {
       },
 
       {
-        'title': "Phiếu đánh giá học tập",
+        'title': "Bảng điểm",
         'icon': FontAwesomeIcons.calendarDay,
-        'action': () => {Get.to(LeaningAssessmentScreen())},
+        'action': () => {Get.to(ReportCardScreen())},
         'color': Colors.yellow
       },
       {

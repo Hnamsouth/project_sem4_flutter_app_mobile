@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
+import 'package:project_sem4_flutter_app_mobile/home_screen.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/home_parent.dart';
 import 'package:project_sem4_flutter_app_mobile/service/api_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -13,8 +14,7 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   final DioService _dio = DioService();
   bool _isLoading = false;
-final data=
-  {"amount": 111212, "orderInfo": "hahahaha"};
+  final data = {"amount": 111212, "orderInfo": "hahahaha"};
 
   Future<void> initiatePayment(dynamic data) async {
     setState(() {
@@ -24,7 +24,7 @@ final data=
     try {
       final response = await _dio.post(
         '/vn-pay/submitOrder',
-        data:data,
+        data: data,
       );
 
       if (response.statusCode == 200) {
@@ -32,21 +32,20 @@ final data=
 
         // Ensure responseData is a Map
 
-          final paymentUrl = responseData;
-          // Ensure the paymentUrl is a String
-            if (await canLaunch(paymentUrl)) {
-              await launch(paymentUrl);
-            } else {
-              throw Exception('Could not launch $paymentUrl');
-            }
+        final paymentUrl = responseData;
+        // Ensure the paymentUrl is a String
+        if (await canLaunch(paymentUrl)) {
+          await launch(paymentUrl);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => HomeParent()));
 
-
+        } else {
+          throw Exception('Could not launch $paymentUrl');
+        }
       } else {
         print('Failed to create payment: ${response.statusMessage}');
         throw Exception('Failed to create payment: ${response.statusMessage}');
       }
     } catch (e) {
-      print(e);
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
