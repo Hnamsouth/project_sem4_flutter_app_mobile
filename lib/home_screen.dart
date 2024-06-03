@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen>{
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        selectedItemColor: primary,
+        selectedItemColor: Colors.black,
         unselectedItemColor: secondary,
         onTap: (index) => _changeTab(index),
         items: [

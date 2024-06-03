@@ -27,22 +27,25 @@ class WorkScreen extends StatelessWidget{
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton.icon(
-                  icon: Icon(Icons.image),
-                  label: Text('Đăng ảnh'),
+                  icon: Icon(Icons.image,color: Colors.black,),
+                  label: Text('Đăng ảnh',style: TextStyle(
+                    color: Colors.black)),
                   onPressed: () {
                     // Handle image upload
                   },
                 ),
                 ElevatedButton.icon(
-                  icon: Icon(Icons.videocam),
-                  label: Text('Đăng video'),
+                  icon: Icon(Icons.videocam,color: Colors.black,),
+                  label: Text('Đăng video',style: TextStyle(
+                      color: Colors.black)),
                   onPressed: () {
                     // Handle video upload
                   },
                 ),
                 ElevatedButton.icon(
-                  icon: Icon(Icons.wallpaper),
-                  label: Text('Hình nền'),
+                  icon: Icon(Icons.wallpaper,color: Colors.black,),
+                  label: Text('Hình nền',style: TextStyle(
+                      color: Colors.black)),
                   onPressed: () {
                     // Handle background change
                   },

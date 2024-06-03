@@ -29,6 +29,11 @@ class _ReportCardScreenState extends State<ReportCardScreen> with TickerProvider
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TabBar(
+            unselectedLabelColor: Colors.black,
+            labelStyle: TextStyle(
+                color: Colors.blue,
+                fontWeight: FontWeight.bold
+            ),
             controller: _tabController,
             tabs: [
               Tab(text: 'Học kỳ I'),
@@ -65,11 +70,11 @@ class _ReportCardScreenState extends State<ReportCardScreen> with TickerProvider
             border: TableBorder.all(color: Colors.grey),
             columnWidths: const <int, TableColumnWidth>{
               0: FractionColumnWidth(0.3),
-              1: FractionColumnWidth(0.14),
-              2: FractionColumnWidth(0.14),
-              3: FractionColumnWidth(0.14),
-              4: FractionColumnWidth(0.14),
-              5: FractionColumnWidth(0.14),
+              1: FractionColumnWidth(0.18),
+              2: FractionColumnWidth(0.18),
+              3: FractionColumnWidth(0.18),
+              4: FractionColumnWidth(0.18),
+              5: FractionColumnWidth(0.18),
             },
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             children: rows,
@@ -93,6 +98,7 @@ class _ReportCardScreenState extends State<ReportCardScreen> with TickerProvider
           ),
           const Text('- ĐĐGTx: Điểm đánh giá thường xuyên'),
           const Text('- ĐĐGGK: Điểm đánh giá giữa  Kỳ'),
+          const Text('- ĐĐGCK: Điểm đánh giá cuối  Kỳ'),
         ],
       ),
     );

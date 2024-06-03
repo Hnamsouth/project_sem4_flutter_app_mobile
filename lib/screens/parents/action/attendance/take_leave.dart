@@ -1,93 +1,265 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/widgets/my_button.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/widgets/my_textfield.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:intl/intl.dart' as intl;
 
-class TakeLeaveScreen extends StatefulWidget {
-  const TakeLeaveScreen({super.key});
+import 'package:get/get.dart';
+import 'package:project_sem4_flutter_app_mobile/controller/student_controller.dart';
+import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/attendance/attendance_creen.dart';
+
+StudentController studentController = Get.find();
+
+class LeaveRequestForm extends StatefulWidget {
+  const LeaveRequestForm({super.key});
 
   @override
-  State<TakeLeaveScreen> createState() => _TakeLeaveScreenState();
+  _LeaveRequestFormState createState() => _LeaveRequestFormState();
 }
 
-class _TakeLeaveScreenState extends State<TakeLeaveScreen> {
-  void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
+class _LeaveRequestFormState extends State<LeaveRequestForm> {
+  final _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _noteController = TextEditingController();
+  final TextEditingController _parentNameController =
+      TextEditingController(text: 'Nguyễn Thị Ngân');
+  DateTime startDate = DateTime.now();
+  DateTime endDate = DateTime.now();
+  List<DateTime> _absentDates = [];
+
+  void _updateAbsentDates() {
     setState(() {
-      if (args.value is PickerDateRange) {
-        // _startDate = '${DateFormat('dd/MM/yyyy').format(args.value.startDate)}';
-        // _endDate = '${DateFormat('dd/MM/yyyy').format(args.value.endDate)}';
-        _range = '${DateFormat('dd/MM/yyyy').format(args.value.startDate)} ->'
-            // ignore: lines_longer_than_80_chars
-            ' ${DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.startDate)}';
-      } else if (args.value is DateTime?) {
-        _selectedDate = args.value.toString();
-      } else if (args.value is List<DateTime>?) {
-        _dateCount = args.value.length.toString();
-      } else {
-        _rangeCount = args.value.length.toString();
+      _absentDates = [];
+      for (DateTime date = startDate;
+          date.isBefore(endDate) || date.isAtSameMomentAs(endDate);
+          date = date.add(Duration(days: 1))) {
+        _absentDates.add(date);
       }
     });
   }
 
-  String _selectedDate = '';
-  String _range = '';
-  String _rangeCount = '';
-  String _dateCount = '';
+  UserController userctrl = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Đơn xin nghỉ'),
-        ),
-        body: SingleChildScrollView(
-            child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                    padding: EdgeInsets.only(top: 20),
-
-                    child: Text('Nghỉ Từ : $_range',style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-
-                    ),)),
-                // Text('Start: $_startDate'),
-                // Text('End: $_endDate'),
-              ],
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            Container(
-              height: 450,
-              child: SfDateRangePicker(
-                onSelectionChanged: _onSelectionChanged,
-                selectionMode: DateRangePickerSelectionMode.range,
-                initialSelectedRange: PickerDateRange(
-                    DateTime.now().subtract(const Duration(days: 4)),
-                    DateTime.now().add(const Duration(days: 3))),
+      appBar: AppBar(
+        title: Text('Đăng ký nghỉ học'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RichText(
+                text: const TextSpan(
+                  text: "Kính gửi : ",
+                  style: TextStyle(color: Colors.black),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Thầy/Cô giáo chủ nhiệm',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        decorationStyle: TextDecorationStyle.wavy,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              SizedBox(height: 8.0),
+              RichText(
+                text: TextSpan(
+                  text: "Tên học sinh : ",
+                  style: TextStyle(color: Colors.black),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: studentController.studentRecord.value.students
+                          ?.getFullName(),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        decorationStyle: TextDecorationStyle.wavy,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 8.0),
+              RichText(
+                text: TextSpan(
+                  text: "Lớp : ",
+                  style: TextStyle(color: Colors.black),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: studentController
+                          .studentRecord.value.schoolYearClass?.className,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        decorationStyle: TextDecorationStyle.wavy,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 16.0),
+              Text('Gia đình xin phép cho con được nghỉ học ngày:'),
+              SizedBox(height: 8.0),
+              Row(
+                children: [
+                  Expanded(
+                    child: _FormDatePicker(
+                      date: startDate,
+                      title: "Từ ngày",
+                      onChanged: (value) {
+                        setState(() {
+                          startDate = value;
+                          _updateAbsentDates();
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 8.0),
+                  Expanded(
+                    child: _FormDatePicker(
+                      date: endDate,
+                      title: "Đến ngày",
+                      onChanged: (value) {
+                        setState(() {
+                          endDate = value;
+                          _updateAbsentDates();
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16.0),
+              Text("Danh sách ngày nghỉ(${_absentDates.length}) ",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: _absentDates.length,
+                itemBuilder: (context, index) {
+                  return Text(
+                      intl.DateFormat.yMd().format(_absentDates[index]));
+                },
+              ),
+              Text('Lí do',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              TextFormField(
+                controller: _noteController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+                maxLines: 3,
+              ),
+              SizedBox(height: 16.0),
+              Text(
+                  'Gia đình cam kết giúp cháu tự ôn tập, làm đầy đủ bài tập được giao trong thời gian nghỉ học. Trân trọng cảm ơn!'),
+              SizedBox(height: 16.0),
+
+
+
+
+              RichText(
+                text: TextSpan(
+                  text: "Họ tên phụ huynh: ",
+                  style: TextStyle(color: Colors.black),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: userctrl.user.value.userDetail?.fullName(),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        decorationStyle: TextDecorationStyle.wavy,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: 16.0),
+              Container(
+                height: 50,
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                    }
+                  },
+                  child: Text('Gửi đơn'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _FormDatePicker extends StatefulWidget {
+  final DateTime date;
+  final String title;
+  final ValueChanged<DateTime> onChanged;
+
+  const _FormDatePicker({
+    required this.date,
+    required this.title,
+    required this.onChanged,
+  });
+
+  @override
+  State<_FormDatePicker> createState() => _FormDatePickerState();
+}
+
+class _FormDatePickerState extends State<_FormDatePicker> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              widget.title,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
-            SizedBox(
-              height: 25,
+            Text(
+              intl.DateFormat.yMd().format(widget.date),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
-            MyTextField(
-              hintText: "Lý do",
-              obscureText: false,
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            MyButton(onPressed: (){}, buttonText: "Nộp đơn xin nghỉ", btnHeight: 55, btnWidth: 275,)
           ],
-        )));
+        ),
+        TextButton(
+          child: const Text(
+            'Sửa',
+            style: TextStyle(color: Colors.black),
+          ),
+          onPressed: () async {
+            var newDate = await showDatePicker(
+              context: context,
+              initialDate: widget.date,
+              firstDate: DateTime(1900),
+              lastDate: DateTime(2100),
+            );
+
+            // Don't change the date if the date picker returns null.
+            if (newDate == null) {
+              return;
+            }
+
+            widget.onChanged(newDate);
+          },
+        )
+      ],
+    );
   }
 }

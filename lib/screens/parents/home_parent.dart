@@ -5,7 +5,7 @@ import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart'
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/allAction.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/attendance/attendance_creen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/schedule/schedule_screen.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/parents/action/tuition/tuition_screen.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/payment/payment.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../model/student_info.dart';
@@ -16,6 +16,7 @@ import 'action/student/student_infor.dart';
 import 'action/tasks_exercises/tasks_screen.dart';
 
 final UserController ctrl = Get.find();
+final StudentController studentController = Get.find();
 
 class HomeParent extends StatefulWidget {
   const HomeParent({super.key});
@@ -23,14 +24,6 @@ class HomeParent extends StatefulWidget {
   @override
   State<HomeParent> createState() => _HomeParentState();
 }
-
-
-
-
-
-
-
-
 
 final _controller = PageController();
 
@@ -61,10 +54,7 @@ class _HomeParentState extends State<HomeParent> {
       {
         'title': "Nhiệm vụ,Bài tập",
         'icon': FontAwesomeIcons.bookOpen,
-        'action': () => {
-          Get.to(TaskScreen())
-
-        },
+        'action': () => {Get.to(TaskScreen())},
         'color': Colors.redAccent
       },
       {
@@ -123,7 +113,7 @@ class _HomeParentState extends State<HomeParent> {
         children: [
           SingleChildScrollView(
             // scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(10),
             child: Column(
               children: [
                 Row(
@@ -141,19 +131,33 @@ class _HomeParentState extends State<HomeParent> {
                     SizedBox(
                       width: 15,
                     ),
-                    Text(
-                      "${ctrl.user.value.userDetail?.fullName()}",
-                      // "${ctrl2.studentRecord.value.students?.id}",
-                      style: TextStyle(
-                          color: Color.fromRGBO(143, 148, 251, 1),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Center(
+                            child: Text(
+                              "${ctrl.user.value.userDetail?.fullName()}",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "Phụ huynh của : ${studentController.studentRecord.value.students?.getFullName()}",
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10),
+                        ),
+
+                      ],
                     )
                   ],
                 ),
-                // SizedBox(
-                //   height: 5,
-                // ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -168,15 +172,11 @@ class _HomeParentState extends State<HomeParent> {
                         onPressed: () {
                           Get.to(AllActionScreen());
                         },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white),
-                        child: const Text("Tất Cả"))
+
+                        child: const Text("Tất Cả",style: TextStyle(color: Colors.black),))
                   ],
                 ),
-                // SizedBox(
-                //   height: 10,
-                // ),
-                // work view
+
                 SizedBox(
                   height: 277,
                   child: PageView(
@@ -207,8 +207,7 @@ class _HomeParentState extends State<HomeParent> {
                     child: Container(
                       decoration: const BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage(
-                              "assets/images/B_Ill_Education_Back_to_school_min_a72a89f00f.png"),
+                          image: AssetImage("assets/images/vnpay.jpeg"),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -229,18 +228,11 @@ class _HomeParentState extends State<HomeParent> {
                     ),
                     ElevatedButton(
                         onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white),
-                        child: const Text("Xem thêm"))
+
+                        child: const Text("Xem thêm",style: TextStyle(color: Colors.black)))
                   ],
                 ),
-                SizedBox(
-                  height: 200,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [],
-                  ),
-                )
+
               ],
             ),
           )
@@ -300,3 +292,4 @@ class _HomeParentState extends State<HomeParent> {
     );
   }
 }
+

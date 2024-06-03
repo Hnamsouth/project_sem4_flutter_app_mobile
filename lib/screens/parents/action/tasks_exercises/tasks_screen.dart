@@ -43,9 +43,15 @@ class _TaskScreenState extends State<TaskScreen> with TickerProviderStateMixin {
           style: TextStyle(fontSize: 20),
         ),
         bottom: TabBar(controller: _tabController, tabs: [
-          Tab(text: "ĐÃ GIAO"),
+          Tab(text: "ĐÃ GIAO",),
           Tab(text: "ĐÃ HOÀN THÀNH"),
-        ]),
+
+        ],labelStyle: TextStyle(
+          color: Colors.blue,
+          fontWeight: FontWeight.bold
+        ),
+          unselectedLabelColor: Colors.black,
+        ),
       ),
       body: TabBarView(
         controller: _tabController,

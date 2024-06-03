@@ -53,6 +53,11 @@ class _ScheduleScreenState extends State<ScheduleScreen>
       appBar: AppBar(
         title: Text('Thời Khóa Biểu'),
         bottom: TabBar(
+          unselectedLabelColor: Colors.black,
+          labelStyle: TextStyle(
+              color: Colors.blue,
+              fontWeight: FontWeight.bold
+          ),
           controller: _tabController,
           tabs: daysOfWeek.map((day) => Tab(text: day)).toList(),
         ),

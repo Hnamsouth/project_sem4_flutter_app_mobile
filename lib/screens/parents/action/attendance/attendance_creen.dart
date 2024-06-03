@@ -2,9 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart'; // Thêm package intl để định dạng ngày tháng
+import 'package:project_sem4_flutter_app_mobile/controller/student_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/attendance/take_leave.dart';
 
+
+
+final StudentController studentController = Get.find();
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({super.key});
 
@@ -15,12 +19,37 @@ class AttendanceScreen extends StatefulWidget {
 class _AttendanceScreenState extends State<AttendanceScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
-
+  DateTime _selectedDate = DateTime.now();
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+  }
+
+  void _incrementDate() {
+    setState(() {
+      _selectedDate = _selectedDate.add(Duration(days: 1));
+    });
+  }
+
+  void _decrementDate() {
+    setState(() {
+      _selectedDate = _selectedDate.subtract(Duration(days: 1));
+    });
+  }
+
+  String _getAttendanceStatus(DateTime date) {
+
+    if (date.isAfter(DateTime.now())) {
+      return 'Chưa có thông tin';
+    } else {
+      return 'Đi học';
+    }
+  }
+
+  String _getTeacherName(DateTime date) {
+    return 'G/V Nguyễn Thị Ngân';
   }
 
   @override
@@ -34,10 +63,13 @@ class _AttendanceScreenState extends State<AttendanceScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Điểm danh,Xin nghỉ học",
+          "Điểm danh, Xin nghỉ học",
           style: TextStyle(fontSize: 20),
         ),
         bottom: TabBar(
+          unselectedLabelColor: Colors.black,
+          labelStyle:
+          TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
           controller: _tabController,
           tabs: [
             Tab(text: 'ĐIỂM DANH'),
@@ -54,16 +86,13 @@ class _AttendanceScreenState extends State<AttendanceScreen>
           _buildAttendance(),
           _pendingAttendance(),
           _buildAttendanceDone()
-
         ],
       ),
     );
   }
-}
 
-Widget _buildAttendance() {
-  return Stack(
-      // padding: const EdgeInsets.all(16.0),
+  Widget _buildAttendance() {
+    return Stack(
       children: [
         Card(
           elevation: 4.0,
@@ -77,12 +106,10 @@ Widget _buildAttendance() {
                   children: [
                     IconButton(
                       icon: Icon(Icons.arrow_back),
-                      onPressed: () {
-                        // Handle back button press
-                      },
+                      onPressed: _decrementDate,
                     ),
                     Text(
-                      'Thứ Ba, 17/05/2024',
+                      DateFormat('EEEE, dd/MM/yyyy').format(_selectedDate),
                       style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.bold,
@@ -90,9 +117,7 @@ Widget _buildAttendance() {
                     ),
                     IconButton(
                       icon: Icon(Icons.arrow_forward),
-                      onPressed: () {
-                        // Handle forward button press
-                      },
+                      onPressed: _incrementDate,
                     ),
                   ],
                 ),
@@ -101,14 +126,39 @@ Widget _buildAttendance() {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Hà Sỹ Duy Anh - 1A1',
+                      studentController.studentRecord.value.students?.getFullName(),
                       style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          _selectedDate = DateTime.now();
+                        });
+                      },
+                      child: Text(
+                        'Hôm nay',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4.0),
+                Row(
+                  children: [
                     Text(
-                      'Hôm nay',
+                      'Trạng thái: ',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    Text(
+                      _getAttendanceStatus(_selectedDate),
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.blue,
@@ -116,23 +166,9 @@ Widget _buildAttendance() {
                     ),
                   ],
                 ),
-                SizedBox(height: 4.0),
-                Text(
-                  'Trạng thái: ',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                  ),
-                ),
-                Text(
-                  'Đi học',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.blue,
-                  ),
-                ),
                 SizedBox(height: 8.0),
                 Text(
-                  'Người điểm danh: G/V Nguyễn Thị Ngân',
+                  'Người điểm danh: ${_getTeacherName(_selectedDate)}',
                   style: TextStyle(
                     fontSize: 16.0,
                   ),
@@ -144,25 +180,30 @@ Widget _buildAttendance() {
         Positioned(
           height: 50,
           bottom: 30,
-            left: 10,
-            right: 10,
-            child: TextButton(
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.blue)),
-          onPressed: () {
-            Get.to(TakeLeaveScreen());
-          },
-          child: Text("Xin Nghỉ Học",style: TextStyle(
-            color: CupertinoColors.white
-          ),),
-        ))
-      ]);
-}
+          left: 10,
+          right: 10,
+          child: TextButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.blue),
+            ),
+            onPressed: () {
+              Get.to(const LeaveRequestForm());
+            },
+            child: Text(
+              "Xin Nghỉ Học",
+              style: TextStyle(color: CupertinoColors.white),
+            ),
+          ),
+        )
+      ],
+    );
+  }
 
+  Widget _pendingAttendance() {
+    return Center(child: Text('Chưa có dữ liệu'));
+  }
 
-Widget _pendingAttendance(){
-  return Center(child: Text('Chưa có dữ liệu'));
-}
-Widget _buildAttendanceDone(){
-  return Center(child: Text('Chưa có dữ liệu'));
+  Widget _buildAttendanceDone() {
+    return Center(child: Text('Chưa có dữ liệu'));
+  }
 }

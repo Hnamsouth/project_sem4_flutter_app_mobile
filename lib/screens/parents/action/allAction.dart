@@ -9,8 +9,8 @@ import 'package:project_sem4_flutter_app_mobile/screens/parents/action/schedule/
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/student/student_infor.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/schedule/schedule_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/tasks_exercises/tasks_screen.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/parents/action/tuition/payment_details.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/parents/action/tuition/tuition_screen.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/payment/payment_details.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/action/payment/payment.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/test/test_payment.dart';
 import 'package:project_sem4_flutter_app_mobile/service/student_service.dart';
 
@@ -104,7 +104,7 @@ class _AllActionScreenState extends State<AllActionScreen> {
       'title': "Quét QR code",
       'icon': FontAwesomeIcons.qrcode,
       'action': () => {
-        Get.to(PaymentScreen())
+        Get.to(())
       },
       'color': Colors.redAccent
     },

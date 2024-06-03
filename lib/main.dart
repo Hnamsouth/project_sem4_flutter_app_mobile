@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -26,16 +27,6 @@ void main() async {
   Get.put(UserController());
   Get.put(StudentController());
 
-
-  // final StudentController studentController = Get.find();
-  // final UserController userController = Get.find();
-  // final int? _id = userController.user.value.id;
-  //
-  // Future<StudentRecord> getInfo() async {
-  //   var student = await StudentService.getOne(_id!);
-  //   studentController.setStudentRecord(student);
-  //   return student;
-  // }await getInfo();
 
 
   final token = await SharedPreferences.getInstance();
