@@ -13,5 +13,10 @@ override func application(_ app: UIApplication, open url: URL, options: [UIAppli
         return true
     }
 
+//import Firebase
+//
+//
+//FirebaseApp.configure() //add this before the code below
+//GeneratedPluginRegistrant.register(with: self)
 
 

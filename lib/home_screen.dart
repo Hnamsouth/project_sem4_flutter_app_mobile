@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
@@ -20,6 +21,10 @@ class HomeScreen extends StatefulWidget{
 }
 
 class _HomeScreenState extends State<HomeScreen>{
+
+
+
+
   final List<Widget> _screens = [
     const HomeParent(),
     // const ChatPage(peerNickname:, peerAvatar: peerAvatar, peerId: peerId, userAvatar: userAvatar),

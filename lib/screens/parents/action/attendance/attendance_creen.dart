@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart'; // Thêm package intl để định dạng ngày tháng
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 import 'package:project_sem4_flutter_app_mobile/controller/student_controller.dart';
+import 'package:project_sem4_flutter_app_mobile/model/attendance_model.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/attendance/take_leave.dart';
-
-
+import 'package:project_sem4_flutter_app_mobile/service/attendance_service.dart';
 
 final StudentController studentController = Get.find();
+
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({super.key});
 
@@ -16,39 +18,35 @@ class AttendanceScreen extends StatefulWidget {
   State<AttendanceScreen> createState() => _AttendanceScreenState();
 }
 
-class _AttendanceScreenState extends State<AttendanceScreen>
-    with TickerProviderStateMixin {
+class _AttendanceScreenState extends State<AttendanceScreen> with TickerProviderStateMixin {
   late TabController _tabController;
-  DateTime _selectedDate = DateTime.now();
+  late Future<List<AttendanceList>> futureAttendance;
+  final List<DateTime> _recentDates = List.generate(30, (index) => DateTime.now().subtract(Duration(days: index)));
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-  }
-
-  void _incrementDate() {
-    setState(() {
-      _selectedDate = _selectedDate.add(Duration(days: 1));
+    initializeDateFormatting('vi_VN', null).then((_) {
+      setState(() {});
     });
+    futureAttendance = getAttendances();
   }
 
-  void _decrementDate() {
-    setState(() {
-      _selectedDate = _selectedDate.subtract(Duration(days: 1));
-    });
+  Future<List<AttendanceList>> getAttendances() async {
+    final data = await AttendanceService.getAttendance(studentController.studentRecord.value.students!.id);
+    return data.map<AttendanceList>((json) => AttendanceList.fromJson(json)).toList();
   }
 
-  String _getAttendanceStatus(DateTime date) {
-
-    if (date.isAfter(DateTime.now())) {
-      return 'Chưa có thông tin';
-    } else {
-      return 'Đi học';
-    }
+  String _getAttendanceStatus(List<AttendanceList> attendances, DateTime date) {
+    final record = attendances.firstWhere(
+          (element) => DateFormat('yyyy-MM-dd').format(DateTime.parse(element.createdAt!)) == DateFormat('yyyy-MM-dd').format(date),
+      orElse: () => AttendanceList(attendanceStatusName: 'Chưa có dữ liệu'),
+    );
+    return record.attendanceStatusName!;
   }
 
-  String _getTeacherName(DateTime date) {
+  String _getTeacherName() {
     return 'G/V Nguyễn Thị Ngân';
   }
 
@@ -63,19 +61,27 @@ class _AttendanceScreenState extends State<AttendanceScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Điểm danh, Xin nghỉ học",
+          "Điểm danh",
           style: TextStyle(fontSize: 20),
         ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.to(const LeaveRequestForm());
+            },
+            child: Text(
+              "Xin Nghỉ Phép",
+              style: TextStyle(color: Colors.blue),
+            ),
+          ),
+        ],
         bottom: TabBar(
           unselectedLabelColor: Colors.black,
-          labelStyle:
-          TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+          labelStyle: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
           controller: _tabController,
           tabs: [
             Tab(text: 'ĐIỂM DANH'),
-            Tab(
-              text: 'CHỜ DUYỆT (0)',
-            ),
+            Tab(text: 'CHỜ DUYỆT (0)'),
             Tab(text: 'ĐÃ DUYỆT'),
           ],
         ),
@@ -92,110 +98,75 @@ class _AttendanceScreenState extends State<AttendanceScreen>
   }
 
   Widget _buildAttendance() {
-    return Stack(
-      children: [
-        Card(
-          elevation: 4.0,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back),
-                      onPressed: _decrementDate,
-                    ),
-                    Text(
-                      DateFormat('EEEE, dd/MM/yyyy').format(_selectedDate),
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.arrow_forward),
-                      onPressed: _incrementDate,
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      studentController.studentRecord.value.students?.getFullName(),
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          _selectedDate = DateTime.now();
-                        });
-                      },
-                      child: Text(
-                        'Hôm nay',
+    return FutureBuilder<List<AttendanceList>>(
+      future: futureAttendance,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text('No attendance data available.'));
+        } else {
+          final attendances = snapshot.data!;
+          return ListView.builder(
+            itemCount: _recentDates.length,
+            itemBuilder: (context, index) {
+              final date = _recentDates[index];
+              return Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        DateFormat('EEEE, dd/MM/yyyy', 'vi_VN').format(date),
                         style: TextStyle(
                           fontSize: 16.0,
-                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 4.0),
-                Row(
-                  children: [
-                    Text(
-                      'Trạng thái: ',
-                      style: TextStyle(
-                        fontSize: 16.0,
+                      SizedBox(height: 8.0),
+                      Text(
+                        studentController.studentRecord.value.students?.getFullName() ?? 'Unknown',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      _getAttendanceStatus(_selectedDate),
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.blue,
+                      SizedBox(height: 4.0),
+                      Row(
+                        children: [
+                          Text(
+                            'Trạng thái: ',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          Text(
+                            _getAttendanceStatus(attendances, date),
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8.0),
-                Text(
-                  'Người điểm danh: ${_getTeacherName(_selectedDate)}',
-                  style: TextStyle(
-                    fontSize: 16.0,
+                      SizedBox(height: 8.0),
+                      Text(
+                        'Người điểm danh: ${_getTeacherName()}',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
-        Positioned(
-          height: 50,
-          bottom: 30,
-          left: 10,
-          right: 10,
-          child: TextButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.blue),
-            ),
-            onPressed: () {
-              Get.to(const LeaveRequestForm());
+              );
             },
-            child: Text(
-              "Xin Nghỉ Học",
-              style: TextStyle(color: CupertinoColors.white),
-            ),
-          ),
-        )
-      ],
+          );
+        }
+      },
     );
   }
 

@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/payment/payment.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/test/test_payment.dart';
 import 'package:quickly/quickly.dart';
@@ -8,14 +11,18 @@ import '../../../../service/api_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../home_parent.dart';
+
 enum SingingCharacter { one, two }
+
 SingingCharacter? _character = SingingCharacter.one;
+
 class PaymentDetail {
   final String title;
   final int amount;
   final int price;
 
-  PaymentDetail({required this.title, required this.amount, required this.price});
+  PaymentDetail(
+      {required this.title, required this.amount, required this.price});
 }
 
 class PaymentDetailScreen extends StatefulWidget {
@@ -108,6 +115,12 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
     }
   }
 
+  String formatCurrency(int amount) {
+    final NumberFormat currencyFormatter =
+        NumberFormat.currency(locale: 'vi_VN', symbol: '₫');
+    return currencyFormatter.format(amount);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,10 +132,6 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
         child: ListView(
           children: [
             _buildHeader(),
-            SizedBox(height: 10),
-            _buildStudentInfo(),
-            SizedBox(height: 10),
-            _buildPaymentDetails(),
             SizedBox(height: 10),
             _buildTotalAmount(),
             SizedBox(height: 10),
@@ -149,130 +158,121 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
 
   Widget _buildHeader() {
     return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.period,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              widget.status,
-              style: TextStyle(
-                fontSize: 16,
-                color: widget.status == 'Chưa thanh toán'
-                    ? Colors.red
-                    : Colors.green,
+      elevation: 1,
+      child: Column(children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.period,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            ),
-          ],
+              Text(
+                widget.status,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: widget.status == 'Chưa thanh toán'
+                      ? Colors.red
+                      : Colors.green,
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
+        _buildStudentInfo(),
+      ]),
     );
   }
 
   Widget _buildStudentInfo() {
-    return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildInfoRow('Tên học sinh', widget.studentName),
-            _buildInfoRow('Lớp học', widget.className),
-            _buildInfoRow('Mã học sinh', widget.studentCode),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildInfoRow('Học sinh', widget.studentName),
+          _buildInfoRow('Lớp học', widget.className),
+          _buildInfoRow('Mã học sinh', widget.studentCode),
+        ],
       ),
     );
   }
 
   Widget _buildInfoRow(String title, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.all(10),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            flex: 2,
-            child: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(value),
-          ),
+          Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(value),
         ],
       ),
     );
   }
 
   Widget _buildPaymentDetails() {
-    return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Các khoản thu',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Column(
-              children: widget.paymentDetails.map((detail) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 6,
-                        child: Text(detail.title),
-                      ),
-                      Expanded(
-                        flex: 4,
-                        child: Text('${detail.amount} x ${detail.price} đ'),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Text('${detail.amount * detail.price} đ',
-                            textAlign: TextAlign.end),
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-            ),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Các khoản thu',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8),
+          Column(
+            children: widget.paymentDetails.map((detail) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: Text(detail.title),
+                    ),
+                    Expanded(
+                      flex: 6,
+                      child: Text(formatCurrency(detail.amount * detail.price),
+                          textAlign: TextAlign.end),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildTotalAmount() {
     return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildInfoRow('Tổng số tiền', '${widget.totalAmount} đ'),
-            _buildInfoRow('Đã thanh toán', '${widget.paidAmount} đ'),
-            _buildInfoRow('Chưa thanh toán', '${widget.unpaidAmount} đ'),
-          ],
+      elevation: 1,
+      child: Column(children: [
+        _buildPaymentDetails(),
+        Container(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildInfoRow('Tổng số tiền', formatCurrency(widget.totalAmount)),
+              _buildInfoRow('Đã thanh toán', formatCurrency(widget.paidAmount)),
+              _buildInfoRow(
+                  'Chưa thanh toán', formatCurrency(widget.unpaidAmount)),
+            ],
+          ),
         ),
-      ),
+      ]),
     );
   }
 
   Widget _buildPaymentMethods() {
     return Card(
-      elevation: 4,
-
+      elevation: 1,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -289,7 +289,8 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
               ),
               child: ListTile(
                 leading: Image.network(
-                  'https://vnpay.vn/s1/statics.vnpay.vn/2023/6/0oxhzjmxbksr1686814746087.png', // Thay bằng URL thực tế của ảnh logo ZaloPay
+                  'https://vnpay.vn/s1/statics.vnpay.vn/2023/6/0oxhzjmxbksr1686814746087.png',
+                  // Thay bằng URL thực tế của ảnh logo ZaloPay
                   width: 40,
                   height: 40,
                 ),
@@ -301,7 +302,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
                   ),
                 ),
                 subtitle: Text('Miễn phí giao dịch'),
-                trailing: Radio <SingingCharacter>(
+                trailing: Radio<SingingCharacter>(
                   value: SingingCharacter.two,
                   groupValue: _character,
                   onChanged: (SingingCharacter? value) {
@@ -315,7 +316,6 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
           ],
         ),
       ),
-
     );
   }
 
@@ -325,7 +325,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
       "orderInfo": widget.transactionId
     };
     return Card(
-      elevation: 4,
+      elevation: 1,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -338,22 +338,22 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '${widget.totalAmount} đ',
+                  formatCurrency(widget.totalAmount),
                   style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
                 ),
               ],
             ),
-
             ElevatedButton(
-
               onPressed: () {
                 initiatePayment(data);
                 // _handlePayment();
               },
               style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                backgroundColor: Colors.blue// text color
+                  backgroundColor: Colors.blue // text color
                   ),
               child: Text('Thanh toán'),
             ),
@@ -363,11 +363,3 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-

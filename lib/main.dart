@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:intl/date_symbol_data_file.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/student_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/home_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/provider/theme_provider.dart';
@@ -13,6 +14,8 @@ import 'package:project_sem4_flutter_app_mobile/screens/teacher/teacher_actions.
 import 'package:project_sem4_flutter_app_mobile/service/student_service.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 
 import 'controller/user_controller.dart';
 import 'data/constants.dart';
@@ -24,6 +27,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+
   Get.put(UserController());
   Get.put(StudentController());
 
@@ -78,12 +83,22 @@ class MyApp extends StatelessWidget {
             brightness: Brightness.dark),
       ),
       home: LoginScreen(loginType: LoginType.phuhuynh,),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('vi', 'VN'), // Vietnamese
+        const Locale('en', 'US'), // English
+        // Add other locales here if needed
+      ],
       // home: MyRealtimeApp(),
       routes: {
         '/select_action': (context) => SelectActionScreen(),
         '/home_parent': (context) => const HomeScreen(),
         '/teacher_action': (context) => TeacherActions(),
-        '/timetable_action': (context) =>  ScheduleScreen()
+        '/timetable_action': (context) =>  ScheduleScreen(),
       },
       builder: EasyLoading.init(),
     );

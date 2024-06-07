@@ -77,6 +77,9 @@
   <key>NSAllowsArbitraryLoads</key>
   <true/>
 </dict>
+<key>FirebaseAppDelegateProxyEnabled</key>
+<true/>
+
 
 
 

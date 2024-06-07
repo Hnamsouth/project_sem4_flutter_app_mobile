@@ -1,119 +1,97 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Meal {
-  late String name;
-  late List<String> dishes;
-
-  Meal(this.name, this.dishes);
+class MenuScreen extends StatefulWidget {
+  @override
+  _MenuScreenState createState() => _MenuScreenState();
 }
 
-class Menu {
-  late String day;
-  late Meal breakfast;
-  late Meal lunch;
+class _MenuScreenState extends State<MenuScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
 
-  Menu(this.day, this.breakfast, this.lunch);
-}
+  final List<String> daysOfWeek = ["T2", "T3", "T4", "T5", "T6"];
+  final List<Map<String, dynamic>> menuData = [
+    {
+      "day": "T2",
+      "meals": [
+        {"type": "Bữa trưa", "menu": ["Bánh trứng nhện", "Cháo cá rau cải xanh"]},
+        {"type": "Bữa chiều", "menu": ["Phở bò"]}
+      ]
+    },
+    {
+      "day": "T3",
+      "meals": []
+    },
+    {
+      "day": "T4",
+      "meals": []
+    },
+    {
+      "day": "T5",
+      "meals": []
+    },
+    {
+      "day": "T6",
+      "meals": [
+        {"type": "Bữa trưa", "menu": ["Bánh trứng nhện", "Cháo cá rau cải xanh"]},
+        {"type": "Bữa chiều", "menu": ["Phở bò"]}
+      ]
+    },
 
-List<String> breakfastDishes = ['Omelette', 'Toast', 'Fruit Salad'];
-List<String> lunchDishes = ['Grilled Chicken', 'Steamed Vegetables', 'Brown Rice'];
-
-// Khởi tạo thực đơn cho mỗi ngày trong tuần từ thứ 2 đến thứ 6
-List<Menu> weeklyMenu = [
-  Menu('Thứ 2', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes)),
-  Menu('Thứ 3', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes)),
-  Menu('Thứ 4', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes)),
-  Menu('Thứ 5', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes)),
-  Menu('Thứ 6', Meal('Breakfast', breakfastDishes), Meal('Lunch', lunchDishes)),
-];
-
-class MealScreen extends StatefulWidget {
-  const MealScreen({super.key});
+  ];
 
   @override
-  State<MealScreen> createState() => _MealScreenState();
-}
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: daysOfWeek.length, vsync: this);
+  }
 
-class _MealScreenState extends State<MealScreen> {
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  Widget buildMealCard(Map<String, dynamic> meal) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(meal['type'], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
+            ...meal['menu'].map<Widget>((item) {
+              return Text(item, style: TextStyle(fontSize: 16));
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Thực đơn"),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(15.0),
-        child: ListView.builder(
-          itemCount: weeklyMenu.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: CupertinoColors.white,
-                    border: Border.all(color: Colors.green),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  height: 50,
-                  width: double.infinity,
-                  child: Center(
-                    child: Text(
-                      weeklyMenu[index].day,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                DataTable(
-                  columns: [
-                    DataColumn(
-                      label: Text(
-                        'Sáng :',
-                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                  rows: weeklyMenu[index].breakfast.dishes.map((dish) {
-                    return DataRow(
-                      cells: [
-                        DataCell(Text(dish)),
-                      ],
-                    );
-                  }).toList(),
-                ),
-                SizedBox(height: 10),
-                DataTable(
-                  columns: [
-                    DataColumn(
-                      label: Text(
-                        'Trưa :',
-                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                  rows: weeklyMenu[index].lunch.dishes.map((dish) {
-                    return DataRow(
-                      cells: [
-                        DataCell(Text(dish)),
-                      ],
-                    );
-                  }).toList(),
-                ),
-                SizedBox(height: 10),
-                Divider(),
-              ],
-            );
-          },
+        title: Text('Thực đơn tuần'),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: menuData.map((day) => Tab(text: '${day["day"]}')).toList(),
         ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: menuData.map((day) {
+          return ListView(
+            children: day['meals'].isNotEmpty
+                ? day['meals'].map<Widget>((meal) => buildMealCard(meal)).toList()
+                : [Center(child: Text('Không có dữ liệu'))],
+          );
+        }).toList(),
       ),
     );
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: MealScreen(),
-  ));
-}

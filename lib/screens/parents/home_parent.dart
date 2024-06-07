@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/student_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
@@ -8,8 +10,7 @@ import 'package:project_sem4_flutter_app_mobile/screens/parents/action/schedule/
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/payment/payment.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../model/student_info.dart';
-import '../../service/student_service.dart';
+
 import 'action/meal/meal_screen.dart';
 import 'action/report/report_card.dart';
 import 'action/student/student_infor.dart';
@@ -17,6 +18,19 @@ import 'action/tasks_exercises/tasks_screen.dart';
 
 final UserController ctrl = Get.find();
 final StudentController studentController = Get.find();
+List<String> image = [
+  'https://cdn.pixabay.com/photo/2021/06/01/07/03/sparrow-6300790_960_720.jpg',
+  'https://cdn.pixabay.com/photo/2017/10/20/10/58/elephant-2870777_960_720.jpg',
+  'https://cdn.pixabay.com/photo/2014/09/08/17/32/humming-bird-439364_960_720.jpg',
+  'https://cdn.pixabay.com/photo/2018/05/03/22/34/lion-3372720_960_720.jpg'
+];
+List<String> title = ['Sparrow', 'Elephant', 'Humming Bird', 'Lion'];
+List<String> content = [
+  'I am using Flutter to make a list of information about movies. Now I want the cover image on the left to be a rounded corners picture',
+  'I am using Flutter to make a list of information about movies. Now I want the cover image on the left to be a rounded corners picture',
+  'Humming I am using Flutter to make a list of information about movies. Now I want the cover image on the left to be a rounded corners picture',
+  'Lion I am using Flutter to make a list of information about movies. Now I want the cover image on the left to be a rounded corners picture'
+];
 
 class HomeParent extends StatefulWidget {
   const HomeParent({super.key});
@@ -73,7 +87,7 @@ class _HomeParentState extends State<HomeParent> {
       {
         'title': "Thực đơn bữa ăn",
         'icon': FontAwesomeIcons.bowlRice,
-        'action': () => {Get.to(MealScreen())},
+        'action': () => {Get.to(MenuScreen())},
         'color': Colors.redAccent
       },
       {
@@ -152,12 +166,10 @@ class _HomeParentState extends State<HomeParent> {
                               fontWeight: FontWeight.bold,
                               fontSize: 10),
                         ),
-
                       ],
                     )
                   ],
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -172,11 +184,12 @@ class _HomeParentState extends State<HomeParent> {
                         onPressed: () {
                           Get.to(AllActionScreen());
                         },
-
-                        child: const Text("Tất Cả",style: TextStyle(color: Colors.black),))
+                        child: const Text(
+                          "Tất Cả",
+                          style: TextStyle(color: Colors.black),
+                        ))
                   ],
                 ),
-
                 SizedBox(
                   height: 277,
                   child: PageView(
@@ -228,11 +241,21 @@ class _HomeParentState extends State<HomeParent> {
                     ),
                     ElevatedButton(
                         onPressed: () {},
-
-                        child: const Text("Xem thêm",style: TextStyle(color: Colors.black)))
+                        child: const Text("Xem thêm",
+                            style: TextStyle(color: Colors.black)))
                   ],
                 ),
-
+                SizedBox(
+                  height: 300,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: image.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return card(
+                          image[index], title[index], content[index], context);
+                    },
+                  ),
+                ),
               ],
             ),
           )
@@ -293,3 +316,60 @@ class _HomeParentState extends State<HomeParent> {
   }
 }
 
+Widget card(String image, String title, String content, BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+      print("Container was tapped");
+    },
+    child: Container(
+      margin: EdgeInsets.all(10),
+      padding: EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      ),
+      width: 300,
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.0),
+            child: Image.network(
+              image,
+              height: 150,
+              width: 300,
+              fit: BoxFit.cover,
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            Text(
+              "date",
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ]),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            softWrap: true,
+            maxLines: 5,
+            overflow: TextOverflow.clip,
+            content,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}

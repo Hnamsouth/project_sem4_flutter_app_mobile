@@ -81,7 +81,7 @@ class _AllActionScreenState extends State<AllActionScreen> {
       'title': "Thực đơn bữa ăn",
       'icon': FontAwesomeIcons.bowlRice,
       'action': () => {
-        Get.to(MealScreen())
+        Get.to(MenuScreen())
       },
       'color': Colors.redAccent
     },
