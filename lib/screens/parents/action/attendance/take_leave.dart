@@ -228,8 +228,8 @@ class _LeaveRequestFormState extends State<LeaveRequestForm> {
                             studentController.studentRecord.value.students!.id,
                         userId: userController.user.value.id,
                         note: _noteController.text,
-                        startDate: DateFormat('yyyy-MM-dd').format(startDate),
-                        endDate: DateFormat('yyyy-MM-dd').format(endDate),
+                        startDate: startDate,
+                        endDate: endDate,
                       );
                       submitLeaveRequest(leaveRequest);
                     }

@@ -33,7 +33,8 @@ class _StudentPaymentScreenState extends State<StudentPaymentScreen> {
   }
 
   String formatCurrency(int amount) {
-    final NumberFormat currencyFormatter = NumberFormat.currency(locale: 'vi_VN', symbol: '₫');
+    final NumberFormat currencyFormatter =
+        NumberFormat.currency(locale: 'vi_VN', symbol: '₫');
     return currencyFormatter.format(amount);
   }
 
@@ -143,59 +144,58 @@ class _StudentPaymentScreenState extends State<StudentPaymentScreen> {
   }
 
   Widget _buildPaymentCard(TransactionModel transaction) {
-    return   Column(
-      children:[
-        Card(
-        elevation: 1,
-        child: ListTile(
-          title: Text(transaction.feePeriod.title ?? 'Không có tiêu đề'),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 4),
-              Text('Tổng số tiền: ${formatCurrency(transaction.total)}'),
-              Text(
-                'Hạn nộp :${transaction.feePeriod.endDate.toString().substring(0, 10)}',
-                style: TextStyle(color: Colors.red),
+    return Column(children: [
+      ListTile(
+        title: Text(transaction.feePeriod.title ?? 'Không có tiêu đề'),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 4),
+            Text('Tổng số tiền: ${formatCurrency(transaction.total)}'),
+            Text(
+              'Hạn nộp : ${transaction.feePeriod.endDate!= null ? DateFormat('EEEE, dd/MM/yyyy', 'vi_VN').format(transaction.feePeriod.endDate!) : 'N/A'}',
+
+              style: TextStyle(color: Colors.red),
+            ),
+          ],
+        ),
+        trailing: TextButton(
+          onPressed: () {
+            Get.to(
+              PaymentDetailScreen(
+                transactionId: transaction.id,
+                period: transaction.feePeriod.title ?? 'Không có tiêu đề',
+                studentName: studentName ?? 'Không có tên',
+                className: className ?? 'Không có lớp',
+                studentCode: studentCode ?? 'Không có mã',
+                paymentDetails: transaction.transactionDetails.map((detail) {
+                  return PaymentDetail(
+                    title: detail.title ?? 'Không có mô tả',
+                    price: (detail.price),
+                    amount: detail.amount,
+                  );
+                }).toList(),
+                totalAmount: transaction.total,
+                paidAmount: transaction.paid,
+                unpaidAmount: transaction.total - transaction.paid,
+                status: transaction.status ?? 'Không có trạng thái',
               ),
-            ],
-          ),
-          trailing: TextButton(
-            onPressed: () {
-              Get.to(
-                PaymentDetailScreen(
-                  transactionId: transaction.id,
-                  period: transaction.feePeriod.title ?? 'Không có tiêu đề',
-                  studentName: studentName ?? 'Không có tên',
-                  className: className ?? 'Không có lớp',
-                  studentCode: studentCode ?? 'Không có mã',
-                  paymentDetails: transaction.transactionDetails.map((detail) {
-                    return PaymentDetail(
-                      title: detail.title ?? 'Không có mô tả',
-                      price: (detail.price),
-                      amount: detail.amount,
-                    );
-                  }).toList(),
-                  totalAmount:  transaction.total,
-                  paidAmount: transaction.paid,
-                  unpaidAmount: transaction.total - transaction.paid,
-                  status: transaction.status ?? 'Không có trạng thái',
-                ),
-              );
-            },
-            child: Text(
-              transaction.status ?? 'Không có trạng thái',
-              style: TextStyle(
-                color: transaction.status == 'Chưa thanh toán'
-                    ? Colors.red
-                    : Colors.green,
-              ),
+            );
+          },
+          child: Text(
+            transaction.status ?? 'Không có trạng thái',
+            style: TextStyle(
+              color: transaction.status == 'Chưa thanh toán'
+                  ? Colors.red
+                  : Colors.green,
             ),
           ),
         ),
       ),
-    ]
-    );
+      SizedBox(height: 1,child: Container(
+        color: Colors.black,
+      ),)
+    ]);
   }
 
   Widget _buildSectionTitle(String title) {

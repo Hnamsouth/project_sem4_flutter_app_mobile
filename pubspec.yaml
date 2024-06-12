@@ -47,6 +47,7 @@ dependencies:
   firebase_messaging: ^14.9.4
 
   flutter_localization: ^0.2.0
+  awesome_notifications: ^0.8.2
 
 
 

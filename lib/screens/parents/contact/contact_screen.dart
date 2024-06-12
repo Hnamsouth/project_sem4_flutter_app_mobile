@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
+import 'package:project_sem4_flutter_app_mobile/controller/student_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/service/api_service.dart';
 
 import '../../../model/parent_model.dart';
 import 'package:dio/dio.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+
+
+final StudentController studentController = Get.find();
 class ContactScreen extends StatefulWidget {
   const ContactScreen({super.key});
 
@@ -17,13 +22,13 @@ class _ContactScreenState extends State<ContactScreen> {
   List<TeacherContact> _searchResult = [];
   List<TeacherContact> _teacherDetails = [];
   TextEditingController controller = TextEditingController();
-
+ final _id= studentController.studentRecord.value.students!.id;
   Future<Null> getUserDetails() async {
     EasyLoading.show(
       status: 'loading...',
       maskType: EasyLoadingMaskType.black,
     );
-    final response = await DioService().get("/teacher/contact?schoolYearClassId=1");
+    final response = await DioService().get("/teacher/contact?schoolYearClassId=$_id");
     setState(() {
       for (Map<String, dynamic> user in response.data) {
         _teacherDetails.add(TeacherContact.fromJson(user));

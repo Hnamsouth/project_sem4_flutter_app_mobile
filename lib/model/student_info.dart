@@ -1,4 +1,6 @@
 
+import 'package:project_sem4_flutter_app_mobile/model/userDetails_model.dart';
+
 class StudentStatus {
   int id;
   String description;
@@ -112,61 +114,6 @@ class StudentInfo {
   }
 }
 
-class UserDetail {
-  int id;
-  String firstname;
-  String lastname;
-  String address;
-  String phone;
-  String email;
-  bool gender;
-  DateTime birthday;
-  String citizenId;
-  String? nation;
-  String avatar;
-
-  UserDetail({
-    required this.id,
-    required this.firstname,
-    required this.lastname,
-    required this.address,
-    required this.phone,
-    required this.email,
-    required this.gender,
-    required this.birthday,
-    required this.citizenId,
-    this.nation,
-    required this.avatar,
-  });
-
-  factory UserDetail.fromJson(Map<String, dynamic> json) => UserDetail(
-    id: json['id'],
-    firstname: json['firstname'],
-    lastname: json['lastname'],
-    address: json['address'],
-    phone: json['phone'],
-    email: json['email'],
-    gender: json['gender'],
-    birthday: DateTime.parse(json['birthday']),
-    citizenId: json['citizen_id'],
-    nation: json['nation'],
-    avatar: json['avatar'],
-  );
-
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'firstname': firstname,
-    'lastname': lastname,
-    'address': address,
-    'phone': phone,
-    'email': email,
-    'gender': gender,
-    'birthday': birthday.toIso8601String(),
-    'citizen_id': citizenId,
-    'nation': nation,
-    'avatar': avatar,
-  };
-}
 
 class User {
   int id;

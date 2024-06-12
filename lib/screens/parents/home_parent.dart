@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,9 +9,11 @@ import 'package:project_sem4_flutter_app_mobile/screens/parents/action/allAction
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/attendance/attendance_creen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/schedule/schedule_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/payment/payment.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/news/new_details.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../controller/notification_controller.dart';
 import 'action/meal/meal_screen.dart';
 import 'action/report/report_card.dart';
 import 'action/student/student_infor.dart';
@@ -42,6 +45,22 @@ class HomeParent extends StatefulWidget {
 final _controller = PageController();
 
 class _HomeParentState extends State<HomeParent> {
+
+
+  @override
+  void initState() {
+    AwesomeNotifications().setListeners(
+      onActionReceivedMethod: NotificationController.onActionReceivedMethod,
+      onNotificationCreatedMethod:
+      NotificationController.onNotificationCreatedMethod,
+      onDismissActionReceivedMethod:
+      NotificationController.onDismissActionReceivedMethod,
+      onNotificationDisplayedMethod:
+      NotificationController.onNotificationDisplayedMethod,
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // print(ctrl2.studentRecord.value.schoolYearClass?.id);
@@ -71,12 +90,14 @@ class _HomeParentState extends State<HomeParent> {
         'action': () => {Get.to(TaskScreen())},
         'color': Colors.redAccent
       },
+
       {
-        'title': "Đăng ký, Khảo sát",
-        'icon': FontAwesomeIcons.calendar,
-        'action': () => {},
-        'color': Colors.redAccent
+        'title': "Thông tin học sinh",
+        'icon': FontAwesomeIcons.addressCard,
+        'action': () => {Get.to(StudentInfoScreen())},
+        'color': Colors.yellow
       },
+
       // 2
       {
         'title': "Thời khoá biểu lớp học",
@@ -91,34 +112,34 @@ class _HomeParentState extends State<HomeParent> {
         'color': Colors.redAccent
       },
       {
-        'title': "Thông tin học sinh",
-        'icon': FontAwesomeIcons.addressCard,
-        'action': () => {Get.to(StudentInfoScreen())},
-        'color': Colors.yellow
-      },
-      {
         'title': "Trang số liệu học",
         'icon': FontAwesomeIcons.usersRectangle,
         'action': () => {},
-        'color': Colors.redAccent
+        'color': Colors.cyan
       },
       {
         'title': "Quét QR code",
         'icon': FontAwesomeIcons.qrcode,
         'action': () => {},
-        'color': Colors.redAccent
+        'color': Colors.pink
+      },
+      {
+        'title': "Đăng ký, Khảo sát",
+        'icon': FontAwesomeIcons.calendar,
+        'action': () => {},
+        'color': Colors.blueGrey
       },
       {
         'title': "Trang điện Tử",
         'icon': FontAwesomeIcons.globe,
         'action': () => {},
-        'color': Colors.redAccent
+        'color': Colors.blue
       },
       {
-        'title': "Thời khoá biểu lớp học 22",
+        'title': "Thời khoá",
         'icon': FontAwesomeIcons.heart,
         'action': () => {},
-        'color': Colors.redAccent
+        'color': Colors.greenAccent
       },
     ];
     return Scaffold(
@@ -160,7 +181,8 @@ class _HomeParentState extends State<HomeParent> {
                           ),
                         ),
                         Text(
-                          "Phụ huynh của : ${studentController.studentRecord.value.students?.getFullName()}",
+                          "Phụ huynh của : ${studentController.studentRecord
+                              .value.students?.getFullName()}",
                           style: TextStyle(
                               color: Colors.red,
                               fontWeight: FontWeight.bold,
@@ -181,6 +203,10 @@ class _HomeParentState extends State<HomeParent> {
                           fontSize: 20),
                     ),
                     ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          side: BorderSide(width: 0, color: Colors.white),
+                        ),
                         onPressed: () {
                           Get.to(AllActionScreen());
                         },
@@ -240,6 +266,10 @@ class _HomeParentState extends State<HomeParent> {
                           fontSize: 20),
                     ),
                     ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          side: BorderSide(width: 0, color: Colors.white),
+                        ),
                         onPressed: () {},
                         child: const Text("Xem thêm",
                             style: TextStyle(color: Colors.black)))
@@ -275,40 +305,41 @@ class _HomeParentState extends State<HomeParent> {
         mainAxisSpacing: 30,
         children: workdetail
             .asMap()
-            .map((key, value) => MapEntry(
-                  key,
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          width: 70,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            color: value['color'],
-                          ),
-                          child: IconButton(
-                            color: Colors.white,
-                            icon: FaIcon(value['icon'], size: 43.0),
-                            onPressed: value['action'],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          value['title'].toString(),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: 2,
-                        )
-                      ]),
-                ))
+            .map((key, value) =>
+            MapEntry(
+              key,
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      width: 70,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        color: value['color'],
+                      ),
+                      child: IconButton(
+                        color: Colors.white,
+                        icon: FaIcon(value['icon'], size: 43.0),
+                        onPressed: value['action'],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      value['title'].toString(),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 2,
+                    )
+                  ]),
+            ))
             .values
             .toList(),
       ),
@@ -318,8 +349,13 @@ class _HomeParentState extends State<HomeParent> {
 
 Widget card(String image, String title, String content, BuildContext context) {
   return GestureDetector(
-    onTap: () {
-      print("Container was tapped");
+    onDoubleTap: () {
+      AwesomeNotifications().createNotification(
+          content: NotificationContent(id: 1, channelKey: "basic_chanel",ticker: "hello",body: "new notification"));
+    },
+
+    onTap: (){
+      Get.to(NewDetails(id: 1, title: title, imageUrl: image, content: content));
     },
     child: Container(
       margin: EdgeInsets.all(10),

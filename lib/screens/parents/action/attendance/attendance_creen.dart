@@ -6,8 +6,10 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:project_sem4_flutter_app_mobile/controller/student_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/model/attendance_model.dart';
+import 'package:project_sem4_flutter_app_mobile/model/take_leave_model.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/attendance/take_leave.dart';
 import 'package:project_sem4_flutter_app_mobile/service/attendance_service.dart';
+import 'package:project_sem4_flutter_app_mobile/service/take_leave_service.dart';
 
 final StudentController studentController = Get.find();
 
@@ -21,7 +23,11 @@ class AttendanceScreen extends StatefulWidget {
 class _AttendanceScreenState extends State<AttendanceScreen> with TickerProviderStateMixin {
   late TabController _tabController;
   late Future<List<AttendanceList>> futureAttendance;
+  late Future<List<TakeLeave>> futureTakeLeaveList;
   final List<DateTime> _recentDates = List.generate(30, (index) => DateTime.now().subtract(Duration(days: index)));
+
+  int pendingLeaveCount = 0; // Add this variable
+
 
   @override
   void initState() {
@@ -31,7 +37,19 @@ class _AttendanceScreenState extends State<AttendanceScreen> with TickerProvider
       setState(() {});
     });
     futureAttendance = getAttendances();
+    futureTakeLeaveList = takeLeaveList();
+    futureTakeLeaveList.then((data) {
+      setState(() {
+        pendingLeaveCount = data.length;
+      });
+    });
   }
+
+  Future<List<TakeLeave>> takeLeaveList() async {
+    final data = await TakeLeaveService.getTakeLeave(studentController.studentRecord.value.students!.id);
+    return data.map<TakeLeave>((json) => TakeLeave.fromJson(json)).toList();
+  }
+
 
   Future<List<AttendanceList>> getAttendances() async {
     final data = await AttendanceService.getAttendance(studentController.studentRecord.value.students!.id);
@@ -81,7 +99,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> with TickerProvider
           controller: _tabController,
           tabs: [
             Tab(text: 'ĐIỂM DANH'),
-            Tab(text: 'CHỜ DUYỆT (0)'),
+            Tab(text: 'CHỜ DUYỆT ($pendingLeaveCount)'),
             Tab(text: 'ĐÃ DUYỆT'),
           ],
         ),
@@ -171,8 +189,74 @@ class _AttendanceScreenState extends State<AttendanceScreen> with TickerProvider
   }
 
   Widget _pendingAttendance() {
-    return Center(child: Text('Chưa có dữ liệu'));
+    return FutureBuilder<List<TakeLeave>>(
+      future: futureTakeLeaveList,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text('Chưa có dữ liệu'));
+        } else {
+          final takeLeaveList = snapshot.data!;
+          return ListView.builder(
+            itemCount: takeLeaveList.length,
+            itemBuilder: (context, index) {
+              final takeLeave = takeLeaveList[index];
+              return Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 8.0),
+                      Text(
+                        studentController.studentRecord.value.students?.getFullName() ?? 'Unknown',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 4.0),
+                      Text(
+                        'Lý do: ${takeLeave.note}',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      Text(
+                        'Từ ngày: ${takeLeave.startDate != null ? DateFormat('EEEE, dd/MM/yyyy', 'vi_VN').format(takeLeave.startDate!) : 'N/A'}',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      Text(
+                        'Đến ngày: ${takeLeave.endDate != null ? DateFormat('EEEE, dd/MM/yyyy', 'vi_VN').format(takeLeave.endDate!) : 'N/A'}',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+
+                      SizedBox(height: 8.0),
+                      Text(
+                        'Trạng thái: ${takeLeave.statusName}',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        }
+      },
+    );
   }
+
 
   Widget _buildAttendanceDone() {
     return Center(child: Text('Chưa có dữ liệu'));

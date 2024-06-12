@@ -1,9 +1,11 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_file.dart';
+import 'package:project_sem4_flutter_app_mobile/controller/notification_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/student_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/home_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/provider/theme_provider.dart';
@@ -16,23 +18,35 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-
 import 'controller/user_controller.dart';
 import 'data/constants.dart';
 import 'firebase_options.dart';
 import 'model/student_info.dart';
 
 void main() async {
+  await AwesomeNotifications().initialize(null, [
+    NotificationChannel(
+        channelGroupKey: "basic_chanel_group",
+        channelKey: "basic_chanel",
+        channelName: "channelName",
+        channelDescription: "channelDescription")
+  ], channelGroups: [
+    NotificationChannelGroup(
+        channelGroupKey: "basic_chanel_group", channelGroupName: "basic group")
+  ]);
+
+  bool isAllowedSendNotification =
+      await AwesomeNotifications().isNotificationAllowed();
+  if (!isAllowedSendNotification) {
+    AwesomeNotifications().requestPermissionToSendNotifications();
+  }
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-
   Get.put(UserController());
   Get.put(StudentController());
-
-
 
   final token = await SharedPreferences.getInstance();
   final accessToken = token.getString(TokenType.accress_token.name);
@@ -46,12 +60,17 @@ void main() async {
     ),
   );
 }
+
 final UserController userController = Get.put(UserController());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -59,7 +78,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       themeMode: context.watch<ThemeProvider>().getThemeMode,
       theme: ThemeData(
-        fontFamily:'Roboto',
+        fontFamily: 'Roboto',
         useMaterial3: true,
         brightness: Brightness.light,
         colorScheme: const ColorScheme.light(
@@ -82,7 +101,9 @@ class MyApp extends StatelessWidget {
             background: tertiaryContainer,
             brightness: Brightness.dark),
       ),
-      home: LoginScreen(loginType: LoginType.phuhuynh,),
+      home: LoginScreen(
+        loginType: LoginType.phuhuynh,
+      ),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -98,9 +119,11 @@ class MyApp extends StatelessWidget {
         '/select_action': (context) => SelectActionScreen(),
         '/home_parent': (context) => const HomeScreen(),
         '/teacher_action': (context) => TeacherActions(),
-        '/timetable_action': (context) =>  ScheduleScreen(),
+        '/timetable_action': (context) => ScheduleScreen(),
       },
       builder: EasyLoading.init(),
     );
   }
+
+
 }
