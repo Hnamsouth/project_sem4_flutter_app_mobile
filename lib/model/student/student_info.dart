@@ -1,5 +1,6 @@
 
-import 'package:project_sem4_flutter_app_mobile/model/userDetails_model.dart';
+import 'package:project_sem4_flutter_app_mobile/model/action/school_year.dart';
+import 'package:project_sem4_flutter_app_mobile/model/auth/userDetails_model.dart';
 
 class StudentStatus {
   int id;
@@ -113,7 +114,6 @@ class StudentInfo {
     return '$firstName $lastName';
   }
 }
-
 
 class User {
   int id;
@@ -236,34 +236,6 @@ class Room {
   Map<String, dynamic> toJson() => {
     'id': id,
     'name': name,
-  };
-}
-
-class SchoolYear {
-  int id;
-  DateTime startSem1;
-  DateTime startSem2;
-  DateTime end;
-
-  SchoolYear({
-    required this.id,
-    required this.startSem1,
-    required this.startSem2,
-    required this.end,
-  });
-
-  factory SchoolYear.fromJson(Map<String, dynamic> json) => SchoolYear(
-    id: json['id'],
-    startSem1: DateTime.parse(json['startSem1']),
-    startSem2: DateTime.parse(json['startSem2']),
-    end: DateTime.parse(json['end']),
-  );
-
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'startSem1': startSem1.toIso8601String(),
-    'startSem2': startSem2.toIso8601String(),
-    'end': end.toIso8601String(),
   };
 }
 

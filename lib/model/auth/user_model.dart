@@ -1,6 +1,6 @@
-import 'package:project_sem4_flutter_app_mobile/model/permissions_model.dart';
+import 'package:project_sem4_flutter_app_mobile/model/auth/permissions_model.dart';
 import 'package:project_sem4_flutter_app_mobile/model/roles_model.dart';
-import 'package:project_sem4_flutter_app_mobile/model/userDetails_model.dart';
+import 'package:project_sem4_flutter_app_mobile/model/auth/userDetails_model.dart';
 
 import 'authRespone_model.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:project_sem4_flutter_app_mobile/model/student_info.dart';
+import 'package:project_sem4_flutter_app_mobile/model/student/student_info.dart';
 import 'package:project_sem4_flutter_app_mobile/service/student_service.dart';
 
 import '../../../../controller/student_controller.dart';

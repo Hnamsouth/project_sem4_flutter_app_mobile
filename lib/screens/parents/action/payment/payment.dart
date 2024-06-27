@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/student_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/payment/payment_details.dart';
 import 'package:project_sem4_flutter_app_mobile/service/transaction_service.dart';
-import '../../../../model/transaction_model.dart';
+import '../../../../model/action/transaction_model.dart';
 
 final StudentController studentController = Get.find();
 

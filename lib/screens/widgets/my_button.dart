@@ -23,7 +23,7 @@ class MyButton extends StatelessWidget {
           height: btnHeight,
           width: btnWidth,
           decoration: BoxDecoration(
-            border:Border.all(color: Colors.green,width:1.0,style: BorderStyle.solid),
+            border:Border.all(color: Colors.green,width:0.5,style: BorderStyle.solid),
             color: Color(0xFFBFECD9),
             // color: HexColor('#44564a'),
             borderRadius: BorderRadius.circular(15),

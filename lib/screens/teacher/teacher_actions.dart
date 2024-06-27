@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/extensions/text_extension.dart';
 import 'package:project_sem4_flutter_app_mobile/main.dart';
-import 'package:project_sem4_flutter_app_mobile/model/userDetails_model.dart';
+import 'package:project_sem4_flutter_app_mobile/model/auth/userDetails_model.dart';
 import 'package:project_sem4_flutter_app_mobile/service/api_service.dart';
 import 'package:project_sem4_flutter_app_mobile/service/user_service.dart';
 import 'package:quickly/quickly.dart';

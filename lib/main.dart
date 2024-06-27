@@ -21,7 +21,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'controller/user_controller.dart';
 import 'data/constants.dart';
 import 'firebase_options.dart';
-import 'model/student_info.dart';
+import 'model/student/student_info.dart';
 
 void main() async {
   await AwesomeNotifications().initialize(null, [

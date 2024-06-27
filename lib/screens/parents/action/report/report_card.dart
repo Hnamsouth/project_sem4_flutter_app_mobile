@@ -1,9 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
+import 'package:get/get.dart';
+import 'package:project_sem4_flutter_app_mobile/controller/student_controller.dart';
+import 'package:project_sem4_flutter_app_mobile/model/student/point_model.dart';
+import 'package:project_sem4_flutter_app_mobile/model/student/student_score.dart';
+import 'package:project_sem4_flutter_app_mobile/service/point_service.dart';
+
+StudentController studentController = Get.find();
+final _id = studentController.studentRecord.value.students?.id;
 
 class ReportCardScreen extends StatefulWidget {
-  const ReportCardScreen({Key? key}) : super(key: key);
+  const ReportCardScreen({super.key});
 
   @override
   _ReportCardScreenState createState() => _ReportCardScreenState();
@@ -11,29 +18,53 @@ class ReportCardScreen extends StatefulWidget {
 
 class _ReportCardScreenState extends State<ReportCardScreen> with TickerProviderStateMixin {
   TabController? _tabController;
+  PointModel? _pointModel;
+  bool _isLoading = true;
+  String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    try {
+      PointModel data = await PointService.getPoint(_id!);
+      setState(() {
+        _pointModel = data;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = e.toString();
+      });
+      debugPrint('Error fetching data: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Bảng điểm'),
         centerTitle: true,
       ),
-      body: Column(
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : _errorMessage != null
+          ? Center(child: Text('Error: $_errorMessage'))
+          : _pointModel == null
+          ? Center(child: Text('No data available'))
+          : Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TabBar(
             unselectedLabelColor: Colors.black,
-            labelStyle: TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.bold
-            ),
+            labelStyle: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
             controller: _tabController,
             tabs: [
               Tab(text: 'Học kỳ I'),
@@ -48,9 +79,9 @@ class _ReportCardScreenState extends State<ReportCardScreen> with TickerProvider
             child: TabBarView(
               controller: _tabController,
               children: [
-                _buildReportCard('Học kỳ I', _semester1Rows()),
-                _buildReportCard('Học kỳ II', _semester2Rows()),
-                _buildReportCard('Tổng kết', _summaryRows()),
+                _buildReportCard('Học kỳ I', _pointModel?.semester1 ?? []),
+                _buildReportCard('Học kỳ II', _pointModel?.semester2 ?? []),
+                _buildReportCard('Tổng kết', _pointModel?.summary ?? []),
               ],
             ),
           ),
@@ -59,118 +90,57 @@ class _ReportCardScreenState extends State<ReportCardScreen> with TickerProvider
     );
   }
 
-  Widget _buildReportCard(String title, List<TableRow> rows) {
+  Widget _buildReportCard(String title, List<StudentScoreSubject> scores) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 16.0),
+          // Main header row
           Table(
-            border: TableBorder.all(color: Colors.grey),
+            border: TableBorder.all(
+              borderRadius: BorderRadius.circular(10),
+                color:Colors.black12 ),
             columnWidths: const <int, TableColumnWidth>{
-              0: FractionColumnWidth(0.3),
-              1: FractionColumnWidth(0.18),
-              2: FractionColumnWidth(0.18),
-              3: FractionColumnWidth(0.18),
-              4: FractionColumnWidth(0.18),
-              5: FractionColumnWidth(0.18),
+              0: FractionColumnWidth(0.2),
+              1: FractionColumnWidth(0.1),
+              2: FractionColumnWidth(0.1),
+              3: FractionColumnWidth(0.1),
+              4: FractionColumnWidth(0.1),
+              5: FractionColumnWidth(0.1),
+              6: FractionColumnWidth(0.1),
+              7: FractionColumnWidth(0.2),
             },
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            children: rows,
+            children: [
+              TableRow(
+
+                children: [
+                  _buildTableCellHeader('Môn học', isHeader: true),
+                  _buildTableCellHeader('ĐĐGTX1', isHeader: true),
+                  _buildTableCellHeader('ĐĐGTX2', isHeader: true),
+                  _buildTableCellHeader('ĐĐGTX3', isHeader: true),
+                  _buildTableCellHeader('ĐĐGTX4', isHeader: true),
+                  _buildTableCellHeader('ĐĐGGK', isHeader: true),
+                  _buildTableCellHeader('ĐĐGCK', isHeader: true),
+                  _buildTableCellHeader('TB', isHeader: true),
+                ],
+              ),
+              ...scores.map((subject) => TableRow(
+                children: [
+                  _buildTableCell(subject.schoolYearSubject.name),
+                  _buildTableCell(subject.studentScores.KTTX.isNotEmpty ? subject.studentScores.KTTX[0].score : ""),
+                  _buildTableCell(subject.studentScores.KTTX.length > 1 ? subject.studentScores.KTTX[1].score : ""),
+                  _buildTableCell(subject.studentScores.KTTX.length > 2 ? subject.studentScores.KTTX[2].score : ""),
+                  _buildTableCell(subject.studentScores.KTTX.length > 3 ? subject.studentScores.KTTX[3].score : ""),
+                  _buildTableCell(subject.studentScores.KT_GIUA_KY.map((e) => e.score).join(", ")),
+                  _buildTableCell(subject.studentScores.KT_CUOI_KY.map((e) => e.score).join(", ")),
+                  _buildTableCell(subject.studentScores.DTB.map((e) => e.score).join(", ")),
+                ],
+              )),
+            ],
           ),
-          const SizedBox(height: 16.0),
-          const Text(
-            'TỔNG KẾT HỌC KỲ',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8.0),
-          _buildSummaryRow('Học lực', 'G'),
-          _buildSummaryRow('Hạnh kiểm', 'T'),
-          _buildSummaryRow('Danh hiệu', 'GIOI'),
-          _buildSummaryRow('Xếp hạng', '32'),
-          _buildSummaryRow('Số ngày nghỉ', '0'),
-          _buildSummaryRow('TBMHK', '8.5'),
-          const SizedBox(height: 8.0),
-          const Text(
-            'Chú thích:',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const Text('- ĐĐGTx: Điểm đánh giá thường xuyên'),
-          const Text('- ĐĐGGK: Điểm đánh giá giữa  Kỳ'),
-          const Text('- ĐĐGCK: Điểm đánh giá cuối  Kỳ'),
         ],
       ),
-    );
-  }
-
-  List<TableRow> _semester1Rows() {
-    return [
-      _buildTableHeader(),
-      _buildTableRow('Toán', '8', '9', '10', '8.9'),
-      _buildTableRow('Vật lí', '10', '9', '8', '8.9'),
-      _buildTableRow('Sinh học', '9', '10', '8',  '8.8'),
-      _buildTableRow('Ngữ văn', '8', '8', '8',  '7.8'),
-      _buildTableRow('Lịch sử', '8', '9', '10',  '8.6'),
-      _buildTableRow('Địa lí', '9', '9', '8', '7.8'),
-      _buildTableRow('Ngoại ngữ 1', '7', '8', '9', '8.1'),
-      _buildTableRow('GDCD', '9', '10', '10',  '8.9'),
-      _buildTableRow('Công nghệ', '9', '10', '8.5',  '9.0'),
-    ];
-  }
-
-  List<TableRow> _semester2Rows() {
-    return [
-      _buildTableHeader(),
-      _buildTableRow('Toán', '8', '8', '9', '8.6'),
-      _buildTableRow('Vật lí', '9', '8.5', '8',  '8.4'),
-      _buildTableRow('Sinh học', '8', '9', '7',  '8.0'),
-      _buildTableRow('Ngữ văn', '8', '8', '7',  '7.6'),
-      _buildTableRow('Lịch sử', '9', '9', '9',  '9.0'),
-      _buildTableRow('Địa lí', '8', '8', '7',  '7.8'),
-      _buildTableRow('Ngoại ngữ 1', '7', '7', '8',  '7.5'),
-      _buildTableRow('GDCD', '10', '9', '9',  '9.2'),
-      _buildTableRow('Công nghệ', '9', '9', '9',  '9.0'),
-    ];
-  }
-
-  List<TableRow> _summaryRows() {
-    return [
-      _buildTableHeader(),
-      _buildTableRow('Toán', '8', '8.5', '9.5',  '8.9'),
-      _buildTableRow('Vật lí', '9.5', '8.75', '8',  '8.75'),
-      _buildTableRow('Sinh học', '8.5', '9.5', '7.5',  '8.3'),
-      _buildTableRow('Ngữ văn', '8', '8', '7.5', '7.5'),
-      _buildTableRow('Lịch sử', '8.5', '9', '9.5',  '8.9'),
-      _buildTableRow('Địa lí', '8.5', '8.5', '7.5',  '7.9'),
-      _buildTableRow('Ngoại ngữ 1', '7', '7.5', '8.5', '7.8'),
-      _buildTableRow('GDCD', '9.5', '9.5', '9.5',  '9.3'),
-      _buildTableRow('Công nghệ', '9', '9.5', '8.75',  '9.0'),
-    ];
-  }
-
-  TableRow _buildTableHeader() {
-    return TableRow(
-      decoration: BoxDecoration(color: Colors.grey[300]),
-      children: [
-        _buildTableCell('Môn học', isHeader: true),
-        _buildTableCell('ĐĐGTx', isHeader: true),
-        _buildTableCell('ĐĐGGK', isHeader: true),
-        _buildTableCell('ĐĐGCK', isHeader: true),
-        _buildTableCell('TB', isHeader: true),
-      ],
-    );
-  }
-
-  TableRow _buildTableRow(String subject, String ddgtx, String ddgk, String ddgck,  String avg) {
-    return TableRow(
-      children: [
-        _buildTableCell(subject),
-        _buildTableCell(ddgtx),
-        _buildTableCell(ddgk),
-        _buildTableCell(ddgck),
-        _buildTableCell(avg),
-      ],
     );
   }
 
@@ -187,16 +157,17 @@ class _ReportCardScreenState extends State<ReportCardScreen> with TickerProvider
     );
   }
 
-  Widget _buildSummaryRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label),
-          Text(value),
-        ],
-      ),
+  Widget _buildTableCellHeader(String text, {bool isHeader = false}) {
+    return  Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.blueAccent,
+            fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
     );
   }
 }

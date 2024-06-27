@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyABv2bM_hRxG7o2I3RrkzmlPRwy446QJrU</string>
+	<string>AIzaSyBh5l3HTP14AuEnbeZEKxAJxJEXJe3Nucs</string>
 	<key>GCM_SENDER_ID</key>
-	<string>812381791478</string>
+	<string>1021060863316</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.projectSem4FlutterAppMobile</string>
+	<string>com.example.projectSem4FlutterAppMobile1</string>
 	<key>PROJECT_ID</key>
-	<string>erudite-scholar-417316</string>
+	<string>cloudmessages4-2875f</string>
 	<key>STORAGE_BUCKET</key>
-	<string>erudite-scholar-417316.appspot.com</string>
+	<string>cloudmessages4-2875f.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:812381791478:ios:0ece1e9bf29047ae1078d7</string>
+	<string>1:1021060863316:ios:e45789f7ccb43f2c2e24c1</string>
 </dict>
 </plist>

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as Getx;
 import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
-import 'package:project_sem4_flutter_app_mobile/model/login_response.dart';
+import 'package:project_sem4_flutter_app_mobile/model/auth/login_response.dart';
 import 'package:project_sem4_flutter_app_mobile/service/Endpoint.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';

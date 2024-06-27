@@ -47,29 +47,28 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBmV54qg-S0te__6-R3hWfEBZUl3CCLMoY',
-    appId: '1:812381791478:web:bbfb2a05dcdf5f4f1078d7',
-    messagingSenderId: '812381791478',
-    projectId: 'erudite-scholar-417316',
-    authDomain: 'erudite-scholar-417316.firebaseapp.com',
-    storageBucket: 'erudite-scholar-417316.appspot.com',
-    measurementId: 'G-3WEF7CYSBN',
+    apiKey: 'AIzaSyBXX2dHPna8O-NbaWTD7ukqSTaPVA9rdy0',
+    appId: '1:1021060863316:web:a147612fd4043fe02e24c1',
+    messagingSenderId: '1021060863316',
+    projectId: 'cloudmessages4-2875f',
+    authDomain: 'cloudmessages4-2875f.firebaseapp.com',
+    storageBucket: 'cloudmessages4-2875f.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB62_13ISDGJnhFOOmxLxwonCqr2yuUlh4',
-    appId: '1:812381791478:android:7dfa9fcf2b3ce4c31078d7',
-    messagingSenderId: '812381791478',
-    projectId: 'erudite-scholar-417316',
-    storageBucket: 'erudite-scholar-417316.appspot.com',
+    apiKey: 'AIzaSyD10blvfmrQC51wkBymQIH4bsLyMNqnfng',
+    appId: '1:1021060863316:android:f88563189b2376da2e24c1',
+    messagingSenderId: '1021060863316',
+    projectId: 'cloudmessages4-2875f',
+    storageBucket: 'cloudmessages4-2875f.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyABv2bM_hRxG7o2I3RrkzmlPRwy446QJrU',
-    appId: '1:812381791478:ios:0ece1e9bf29047ae1078d7',
-    messagingSenderId: '812381791478',
-    projectId: 'erudite-scholar-417316',
-    storageBucket: 'erudite-scholar-417316.appspot.com',
+    apiKey: 'AIzaSyBh5l3HTP14AuEnbeZEKxAJxJEXJe3Nucs',
+    appId: '1:1021060863316:ios:c7c8151df61112d62e24c1',
+    messagingSenderId: '1021060863316',
+    projectId: 'cloudmessages4-2875f',
+    storageBucket: 'cloudmessages4-2875f.appspot.com',
     iosBundleId: 'com.example.projectSem4FlutterAppMobile',
   );
 }

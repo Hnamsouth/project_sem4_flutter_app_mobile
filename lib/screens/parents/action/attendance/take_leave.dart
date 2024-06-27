@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/student_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
-import '../../../../model/take_leave_model.dart';
+import '../../../../model/action/take_leave_model.dart';
 import '../../../../service/api_service.dart';
 
 StudentController studentController = Get.find();
@@ -62,7 +62,7 @@ class _LeaveRequestFormState extends State<LeaveRequestForm> {
               'Nộp đơn thành công, vui lòng chờ giáo viên xác nhận !!'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
+              onPressed: () => Navigator.pushNamed(context, '/home_parent'),
               child: const Text('OK'),
             ),
           ],

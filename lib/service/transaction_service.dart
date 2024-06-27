@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
-import 'package:project_sem4_flutter_app_mobile/model/schedule_model.dart';
+import 'package:project_sem4_flutter_app_mobile/model/action/schedule_model.dart';
 
 import '../data/constants.dart';
 import 'api_service.dart';

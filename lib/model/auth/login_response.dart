@@ -1,4 +1,4 @@
-import 'package:project_sem4_flutter_app_mobile/model/userDetails_model.dart';
+import 'package:project_sem4_flutter_app_mobile/model/auth/userDetails_model.dart';
 
 class LoginResponse {
   final int id;

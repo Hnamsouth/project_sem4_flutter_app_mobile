@@ -5,11 +5,16 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/student_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
+import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
+import 'package:project_sem4_flutter_app_mobile/model/action/article_model.dart' as model;
+import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/allAction.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/attendance/attendance_creen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/schedule/schedule_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/payment/payment.dart';
-import 'package:project_sem4_flutter_app_mobile/screens/parents/news/new_details.dart';
+import 'package:project_sem4_flutter_app_mobile/screens/parents/article/article_details.dart';
+import 'package:project_sem4_flutter_app_mobile/service/article_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -21,19 +26,6 @@ import 'action/tasks_exercises/tasks_screen.dart';
 
 final UserController ctrl = Get.find();
 final StudentController studentController = Get.find();
-List<String> image = [
-  'https://cdn.pixabay.com/photo/2021/06/01/07/03/sparrow-6300790_960_720.jpg',
-  'https://cdn.pixabay.com/photo/2017/10/20/10/58/elephant-2870777_960_720.jpg',
-  'https://cdn.pixabay.com/photo/2014/09/08/17/32/humming-bird-439364_960_720.jpg',
-  'https://cdn.pixabay.com/photo/2018/05/03/22/34/lion-3372720_960_720.jpg'
-];
-List<String> title = ['Sparrow', 'Elephant', 'Humming Bird', 'Lion'];
-List<String> content = [
-  'I am using Flutter to make a list of information about movies. Now I want the cover image on the left to be a rounded corners picture',
-  'I am using Flutter to make a list of information about movies. Now I want the cover image on the left to be a rounded corners picture',
-  'Humming I am using Flutter to make a list of information about movies. Now I want the cover image on the left to be a rounded corners picture',
-  'Lion I am using Flutter to make a list of information about movies. Now I want the cover image on the left to be a rounded corners picture'
-];
 
 class HomeParent extends StatefulWidget {
   const HomeParent({super.key});
@@ -47,8 +39,22 @@ final _controller = PageController();
 class _HomeParentState extends State<HomeParent> {
 
 
+  Future<void> logout(BuildContext context) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear(); // Clear all saved preferences
+
+    final UserController userController = Get.find();
+    userController.clearUser(); // Clear the user data in the controller
+
+    Get.to(LoginScreen(loginType: LoginType.phuhuynh)); // Navigate to the login screen
+  }
+
+  final ArticleService articleService = ArticleService();
+  late Future<List<model.ArticleModel>> _articlesFuture;
   @override
   void initState() {
+    _articlesFuture = articleService.getAllArticles();
+
     AwesomeNotifications().setListeners(
       onActionReceivedMethod: NotificationController.onActionReceivedMethod,
       onNotificationCreatedMethod:
@@ -151,45 +157,58 @@ class _HomeParentState extends State<HomeParent> {
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
+
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      height: 100,
-                      child: CircleAvatar(
-                        backgroundColor: Color.fromRGBO(143, 148, 251, 1),
-                        child: Text(
-                          "avatar",
-                          style: TextStyle(fontSize: 10, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    Row(
                       children: [
-                        Center(
-                          child: Center(
+                        SizedBox(
+                          height: 100,
+                          child: CircleAvatar(
+                            backgroundColor: Color.fromRGBO(143, 148, 251, 1),
                             child: Text(
-                              "${ctrl.user.value.userDetail?.fullName()}",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18),
+                              "avatar",
+                              style: TextStyle(fontSize: 10, color: Colors.white),
                             ),
                           ),
                         ),
-                        Text(
-                          "Phụ huynh của : ${studentController.studentRecord
-                              .value.students?.getFullName()}",
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: Center(
+                                child: Text(
+                                  "${ctrl.user.value.userDetail?.fullName()}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              "Phụ huynh của : ${studentController.studentRecord
+                                  .value.students?.getFullName()}",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 10),
+                            ),
+                          ],
                         ),
                       ],
-                    )
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.logout),
+                      onPressed: () {
+                        logout(context);
+                      },
+                    ),
+
                   ],
                 ),
                 Row(
@@ -277,12 +296,26 @@ class _HomeParentState extends State<HomeParent> {
                 ),
                 SizedBox(
                   height: 300,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: image.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return card(
-                          image[index], title[index], content[index], context);
+                  child: FutureBuilder<List<model.ArticleModel>>(
+                    future: _articlesFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Center(child: Text('No articles found'));
+                      } else {
+                        List<model.ArticleModel> articles = snapshot.data!;
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: articles.length,
+                          itemBuilder: (BuildContext context, int index) {
+                        model.ArticleModel  article = articles[index];
+                            return _ArticleCard(article, context);
+                          },
+                        );
+                      }
                     },
                   ),
                 ),
@@ -347,15 +380,29 @@ class _HomeParentState extends State<HomeParent> {
   }
 }
 
-Widget card(String image, String title, String content, BuildContext context) {
+
+Widget _ArticleCard(model.ArticleModel article, BuildContext context) {
+  // Use the first image from the article's images list as the cover image
+  String coverImage = article.images.isNotEmpty ? article.images.first.url : 'default_image_url';
+
   return GestureDetector(
     onDoubleTap: () {
       AwesomeNotifications().createNotification(
-          content: NotificationContent(id: 1, channelKey: "basic_chanel",ticker: "hello",body: "new notification"));
+        content: NotificationContent(
+          id: 1,
+          channelKey: "basic_channel",
+          ticker: "hello",
+          body: "new notification",
+        ),
+      );
     },
-
-    onTap: (){
-      Get.to(NewDetails(id: 1, title: title, imageUrl: image, content: content));
+    onTap: () {
+      Get.to(ArticleDetails(
+        id: article.id,
+        title: article.title,
+        imageUrl: coverImage,
+        content: article.content,
+      ));
     },
     child: Container(
       margin: EdgeInsets.all(10),
@@ -369,7 +416,7 @@ Widget card(String image, String title, String content, BuildContext context) {
           ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
             child: Image.network(
-              image,
+              coverImage,
               height: 150,
               width: 300,
               fit: BoxFit.cover,
@@ -378,28 +425,31 @@ Widget card(String image, String title, String content, BuildContext context) {
           SizedBox(
             height: 10,
           ),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                article.title,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
-            Text(
-              "date",
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
+              Text(
+                "date", // You can replace this with the actual date if available in the Article model
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
-          ]),
+            ],
+          ),
           SizedBox(
             height: 10,
           ),
           Text(
+            article.content,
             softWrap: true,
             maxLines: 5,
             overflow: TextOverflow.clip,
-            content,
             style: TextStyle(
               fontWeight: FontWeight.w700,
             ),
@@ -409,3 +459,5 @@ Widget card(String image, String title, String content, BuildContext context) {
     ),
   );
 }
+
+

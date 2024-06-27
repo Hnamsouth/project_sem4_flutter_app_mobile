@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
 import '../data/constants.dart';
-import '../model/student_info.dart';
+import '../model/student/student_info.dart';
 import 'api_service.dart';
 
 class StudentService {
