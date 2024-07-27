@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:project_sem4_flutter_app_mobile/home_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/payment/payment.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/test/test_payment.dart';
 import 'package:quickly/quickly.dart';
@@ -86,7 +87,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
         // Ensure the paymentUrl is a String
         if (await canLaunch(paymentUrl)) {
           await launch(paymentUrl);
-          Get.to(StudentPaymentScreen());
+          Get.to(HomeScreen());
         } else {
           throw Exception('Could not launch $paymentUrl');
         }

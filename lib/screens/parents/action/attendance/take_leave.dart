@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:get/get.dart';
@@ -51,9 +52,14 @@ class _LeaveRequestFormState extends State<LeaveRequestForm> {
   }
 
   Future<void> submitLeaveRequest(TakeLeave takeLeave) async {
+    EasyLoading.show(
+      status: 'loading...',
+      maskType: EasyLoadingMaskType.black,
+    );
     final response =
         await DioService().post("/student/take-leave", data: takeLeave);
     if (response.statusCode == 200) {
+      EasyLoading.dismiss();
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(

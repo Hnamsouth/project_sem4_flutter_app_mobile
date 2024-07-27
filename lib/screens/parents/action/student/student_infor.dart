@@ -99,9 +99,7 @@ class _StudentInfoState extends State<StudentInfoScreen> with TickerProviderStat
             children: [
               CircleAvatar(
                 radius: 50,
-                backgroundColor: Colors.grey.shade200,
-                // backgroundImage: NetworkImage(student.studentStatuses.first.status.color ?? ''),
-                child: Icon(Icons.person, size: 50),
+                backgroundImage: NetworkImage(student?.avatar ?? ''),
               ),
               SizedBox(height: 10),
               Text('${student?.firstName} ${student?.lastName}', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
@@ -115,6 +113,9 @@ class _StudentInfoState extends State<StudentInfoScreen> with TickerProviderStat
         _buildInfoRow('Giới tính', student.gender ? 'Nam' : 'Nữ'),
         _buildInfoRow('Lớp', schoolYearClass!.className),
         _buildInfoRow('Năm học', '${schoolYearClass.schoolYear.startSem1.year} - ${schoolYearClass.schoolYear.end.year}'),
+        _buildInfoRow('CMND/CCCD', ""),
+        _buildInfoRow('Nơi cấp', ""),
+        _buildInfoRow('Ngày cấp', ""),
         _buildInfoRow('Dân tộc', 'Kinh'),
         _buildInfoRow('Địa chỉ', student.address),
       ],

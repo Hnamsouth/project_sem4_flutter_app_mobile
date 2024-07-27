@@ -101,6 +101,27 @@ class DioService {
   }
 
   // post method,
+  Future<Response> post2(String path, {dynamic data, Map<String, dynamic>? queryParameters, Options? options}) async {
+    try {
+      final response = await _dio.post(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+      );
+      return response;
+    } on DioException catch (e) {
+      print('DioException: ${e.message}');
+      if (e.response != null) {
+        print('Response data: ${e.response?.data}');
+      }
+      throw e; // Rethrow the exception to be caught by the calling method
+    }
+  }
+
+
+
+
 
 
   // put method

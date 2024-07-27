@@ -93,33 +93,7 @@ class _AllActionScreenState extends State<AllActionScreen> {
       },
       'color': Colors.yellow
     },
-    {
-      'title': "Trang số liệu học",
-      'icon': FontAwesomeIcons.usersRectangle,
-      'action': () => {
-      },
-      'color': Colors.redAccent
-    },
-    {
-      'title': "Quét QR code",
-      'icon': FontAwesomeIcons.qrcode,
-      'action': () => {
-        Get.to(())
-      },
-      'color': Colors.redAccent
-    },
-    {
-      'title': "Trang điện Tử",
-      'icon': FontAwesomeIcons.globe,
-      'action': () => {},
-      'color': Colors.redAccent
-    },
-    {
-      'title': "Thời khoá biểu lớp học 22",
-      'icon': FontAwesomeIcons.heart,
-      'action': () => {},
-      'color': Colors.redAccent
-    },
+
   ];
 
   @override
@@ -134,7 +108,7 @@ class _AllActionScreenState extends State<AllActionScreen> {
           child: PageView(
             controller: _controller,
             children: [
-              workViewDetail(workData.getRange(0, 12).toList()),
+              workViewDetail(workData.getRange(0, 7).toList()),
             ],
           ),
         ),

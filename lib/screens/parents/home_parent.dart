@@ -6,7 +6,8 @@ import 'package:get/get.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/student_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/controller/user_controller.dart';
 import 'package:project_sem4_flutter_app_mobile/data/constants.dart';
-import 'package:project_sem4_flutter_app_mobile/model/action/article_model.dart' as model;
+import 'package:project_sem4_flutter_app_mobile/model/action/article_model.dart'
+    as model;
 import 'package:project_sem4_flutter_app_mobile/screens/auth/login/login_screen.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/allAction.dart';
 import 'package:project_sem4_flutter_app_mobile/screens/parents/action/attendance/attendance_creen.dart';
@@ -23,6 +24,7 @@ import 'action/meal/meal_screen.dart';
 import 'action/report/report_card.dart';
 import 'action/student/student_infor.dart';
 import 'action/tasks_exercises/tasks_screen.dart';
+import 'package:intl/intl.dart' as intl;
 
 final UserController ctrl = Get.find();
 final StudentController studentController = Get.find();
@@ -37,8 +39,6 @@ class HomeParent extends StatefulWidget {
 final _controller = PageController();
 
 class _HomeParentState extends State<HomeParent> {
-
-
   Future<void> logout(BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear(); // Clear all saved preferences
@@ -46,11 +46,13 @@ class _HomeParentState extends State<HomeParent> {
     final UserController userController = Get.find();
     userController.clearUser(); // Clear the user data in the controller
 
-    Get.to(LoginScreen(loginType: LoginType.phuhuynh)); // Navigate to the login screen
+    Get.to(LoginScreen(
+        loginType: LoginType.phuhuynh)); // Navigate to the login screen
   }
 
   final ArticleService articleService = ArticleService();
   late Future<List<model.ArticleModel>> _articlesFuture;
+
   @override
   void initState() {
     _articlesFuture = articleService.getAllArticles();
@@ -58,11 +60,11 @@ class _HomeParentState extends State<HomeParent> {
     AwesomeNotifications().setListeners(
       onActionReceivedMethod: NotificationController.onActionReceivedMethod,
       onNotificationCreatedMethod:
-      NotificationController.onNotificationCreatedMethod,
+          NotificationController.onNotificationCreatedMethod,
       onDismissActionReceivedMethod:
-      NotificationController.onDismissActionReceivedMethod,
+          NotificationController.onDismissActionReceivedMethod,
       onNotificationDisplayedMethod:
-      NotificationController.onNotificationDisplayedMethod,
+          NotificationController.onNotificationDisplayedMethod,
     );
     super.initState();
   }
@@ -117,36 +119,6 @@ class _HomeParentState extends State<HomeParent> {
         'action': () => {Get.to(MenuScreen())},
         'color': Colors.redAccent
       },
-      {
-        'title': "Trang số liệu học",
-        'icon': FontAwesomeIcons.usersRectangle,
-        'action': () => {},
-        'color': Colors.cyan
-      },
-      {
-        'title': "Quét QR code",
-        'icon': FontAwesomeIcons.qrcode,
-        'action': () => {},
-        'color': Colors.pink
-      },
-      {
-        'title': "Đăng ký, Khảo sát",
-        'icon': FontAwesomeIcons.calendar,
-        'action': () => {},
-        'color': Colors.blueGrey
-      },
-      {
-        'title': "Trang điện Tử",
-        'icon': FontAwesomeIcons.globe,
-        'action': () => {},
-        'color': Colors.blue
-      },
-      {
-        'title': "Thời khoá",
-        'icon': FontAwesomeIcons.heart,
-        'action': () => {},
-        'color': Colors.greenAccent
-      },
     ];
     return Scaffold(
       backgroundColor: Colors.white,
@@ -157,7 +129,6 @@ class _HomeParentState extends State<HomeParent> {
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -166,11 +137,9 @@ class _HomeParentState extends State<HomeParent> {
                         SizedBox(
                           height: 100,
                           child: CircleAvatar(
-                            backgroundColor: Color.fromRGBO(143, 148, 251, 1),
-                            child: Text(
-                              "avatar",
-                              style: TextStyle(fontSize: 10, color: Colors.white),
-                            ),
+                            radius: 30,
+                            backgroundImage: NetworkImage(
+                                "${ctrl.user.value.userDetail?.avatar}"),
                           ),
                         ),
                         SizedBox(
@@ -191,8 +160,7 @@ class _HomeParentState extends State<HomeParent> {
                               ),
                             ),
                             Text(
-                              "Phụ huynh của : ${studentController.studentRecord
-                                  .value.students?.getFullName()}",
+                              "Phụ huynh của : ${studentController.studentRecord.value.students?.getFullName()}",
                               style: TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.bold,
@@ -208,7 +176,6 @@ class _HomeParentState extends State<HomeParent> {
                         logout(context);
                       },
                     ),
-
                   ],
                 ),
                 Row(
@@ -241,7 +208,7 @@ class _HomeParentState extends State<HomeParent> {
                     controller: _controller,
                     children: [
                       workViewDetail(workData.getRange(0, 6).toList()),
-                      workViewDetail(workData.getRange(6, 12).toList()),
+                      workViewDetail(workData.getRange(6, 7).toList()),
                     ],
                   ),
                 ),
@@ -311,7 +278,7 @@ class _HomeParentState extends State<HomeParent> {
                           scrollDirection: Axis.horizontal,
                           itemCount: articles.length,
                           itemBuilder: (BuildContext context, int index) {
-                        model.ArticleModel  article = articles[index];
+                            model.ArticleModel article = articles[index];
                             return _ArticleCard(article, context);
                           },
                         );
@@ -338,41 +305,40 @@ class _HomeParentState extends State<HomeParent> {
         mainAxisSpacing: 30,
         children: workdetail
             .asMap()
-            .map((key, value) =>
-            MapEntry(
-              key,
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      width: 70,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        color: value['color'],
-                      ),
-                      child: IconButton(
-                        color: Colors.white,
-                        icon: FaIcon(value['icon'], size: 43.0),
-                        onPressed: value['action'],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      value['title'].toString(),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 2,
-                    )
-                  ]),
-            ))
+            .map((key, value) => MapEntry(
+                  key,
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          width: 70,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                            color: value['color'],
+                          ),
+                          child: IconButton(
+                            color: Colors.white,
+                            icon: FaIcon(value['icon'], size: 43.0),
+                            onPressed: value['action'],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          value['title'].toString(),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 2,
+                        )
+                      ]),
+                ))
             .values
             .toList(),
       ),
@@ -380,10 +346,11 @@ class _HomeParentState extends State<HomeParent> {
   }
 }
 
-
 Widget _ArticleCard(model.ArticleModel article, BuildContext context) {
-  // Use the first image from the article's images list as the cover image
-  String coverImage = article.images.isNotEmpty ? article.images.first.url : 'default_image_url';
+  String coverImage =
+      (article.articleImageUrls != null && article.articleImageUrls!.isNotEmpty)
+          ? article.articleImageUrls!.first
+          : 'default_image_url';
 
   return GestureDetector(
     onDoubleTap: () {
@@ -399,9 +366,12 @@ Widget _ArticleCard(model.ArticleModel article, BuildContext context) {
     onTap: () {
       Get.to(ArticleDetails(
         id: article.id,
-        title: article.title,
-        imageUrl: coverImage,
-        content: article.content,
+        title: article.title ?? 'No title',
+        imageUrl: article.articleImageUrls,
+        content: article.content ?? 'No content',
+        createdAt: article.createdAt ?? DateTime.now(),
+        likeList: article.likeList!,
+        commentList: article.commentList!,
       ));
     },
     child: Container(
@@ -428,16 +398,22 @@ Widget _ArticleCard(model.ArticleModel article, BuildContext context) {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                article.title,
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
+              Expanded(
+                child: Text(
+                  article.title ?? 'No title',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
-                "date", // You can replace this with the actual date if available in the Article model
+                article.createdAt != null
+                    ? intl.DateFormat('EEEE, dd/MM/yyyy', 'vi_VN')
+                        .format(article.createdAt!)
+                    : 'No date',
                 style: TextStyle(
-                  fontWeight: FontWeight.w700,
+                  fontSize: 12,
                 ),
               ),
             ],
@@ -446,10 +422,10 @@ Widget _ArticleCard(model.ArticleModel article, BuildContext context) {
             height: 10,
           ),
           Text(
-            article.content,
+            article.content ?? 'No content',
             softWrap: true,
-            maxLines: 5,
-            overflow: TextOverflow.clip,
+            maxLines: 4,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontWeight: FontWeight.w700,
             ),
@@ -459,5 +435,3 @@ Widget _ArticleCard(model.ArticleModel article, BuildContext context) {
     ),
   );
 }
-
-

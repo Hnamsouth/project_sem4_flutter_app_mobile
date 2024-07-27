@@ -14,11 +14,20 @@ class ArticleService {
         List<dynamic> jsonResponse = response.data;
         return jsonResponse.map((article) => ArticleModel.fromJson(article)).toList();
       } else {
-        throw Exception('Failed to load articles');
+        throw Exception('Hiện không có tin tức !!');
       }
     } catch (e) {
-      throw Exception('Failed to load articles: $e');
+      throw Exception('Hiện không có tin tức !!');
     }
   }
+
+
+
+
+
+
+
 }
+
+
 

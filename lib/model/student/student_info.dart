@@ -1,6 +1,8 @@
-
 import 'package:project_sem4_flutter_app_mobile/model/action/school_year.dart';
 import 'package:project_sem4_flutter_app_mobile/model/auth/userDetails_model.dart';
+
+import '../grade_model.dart';
+import '../room_model.dart';
 
 class StudentStatus {
   int id;
@@ -18,20 +20,20 @@ class StudentStatus {
   });
 
   factory StudentStatus.fromJson(Map<String, dynamic> json) => StudentStatus(
-    id: json['id'],
-    description: json['description'],
-    createdAt: DateTime.parse(json['createdAt']),
-    endAt: json['endAt'] != null ? DateTime.parse(json['endAt']) : null,
-    status: Status.fromJson(json['status']),
-  );
+        id: json['id'],
+        description: json['description'],
+        createdAt: DateTime.parse(json['createdAt']),
+        endAt: json['endAt'] != null ? DateTime.parse(json['endAt']) : null,
+        status: Status.fromJson(json['status']),
+      );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'description': description,
-    'createdAt': createdAt.toIso8601String(),
-    'endAt': endAt?.toIso8601String(),
-    'status': status.toJson(),
-  };
+        'id': id,
+        'description': description,
+        'createdAt': createdAt.toIso8601String(),
+        'endAt': endAt?.toIso8601String(),
+        'status': status.toJson(),
+      };
 }
 
 class Status {
@@ -48,18 +50,18 @@ class Status {
   });
 
   factory Status.fromJson(Map<String, dynamic> json) => Status(
-    id: json['id'],
-    name: json['name'],
-    code: json['code'],
-    color: json['color'],
-  );
+        id: json['id'],
+        name: json['name'],
+        code: json['code'],
+        color: json['color'],
+      );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'code': code,
-    'color': color,
-  };
+        'id': id,
+        'name': name,
+        'code': code,
+        'color': color,
+      };
 }
 
 class StudentInfo {
@@ -69,6 +71,7 @@ class StudentInfo {
   String lastName;
   DateTime birthday;
   String address;
+  String avatar;
   String studentCode;
   DateTime? createdAt;
   List<StudentStatus> studentStatuses;
@@ -80,37 +83,43 @@ class StudentInfo {
     required this.lastName,
     required this.birthday,
     required this.address,
+    required this.avatar,
     required this.studentCode,
     this.createdAt,
     required this.studentStatuses,
   });
 
   factory StudentInfo.fromJson(Map<String, dynamic> json) => StudentInfo(
-    id: json['id'],
-    gender: json['gender'],
-    firstName: json['firstName'],
-    lastName: json['lastName'],
-    birthday: DateTime.parse(json['birthday']),
-    address: json['address'],
-    studentCode: json['studentCode'],
-    createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
-    studentStatuses: List<StudentStatus>.from(
-        json['studentStatuses'].map((x) => StudentStatus.fromJson(x))),
-  );
+        id: json['id'],
+        gender: json['gender'],
+        firstName: json['firstName'],
+        lastName: json['lastName'],
+        birthday: DateTime.parse(json['birthday']),
+        address: json['address'],
+        avatar: json['avatar'],
+        studentCode: json['studentCode'],
+        createdAt: json['createdAt'] != null
+            ? DateTime.parse(json['createdAt'])
+            : null,
+        studentStatuses: List<StudentStatus>.from(
+            json['studentStatuses'].map((x) => StudentStatus.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'gender': gender,
-    'firstName': firstName,
-    'lastName': lastName,
-    'birthday': birthday.toIso8601String(),
-    'address': address,
-    'studentCode': studentCode,
-    'createdAt': createdAt?.toIso8601String(),
-    'studentStatuses': List<dynamic>.from(studentStatuses.map((x) => x.toJson())),
-  };
+        'id': id,
+        'gender': gender,
+        'firstName': firstName,
+        'lastName': lastName,
+        'birthday': birthday.toIso8601String(),
+        'address': address,
+        'avatar': avatar,
+        'studentCode': studentCode,
+        'createdAt': createdAt?.toIso8601String(),
+        'studentStatuses':
+            List<dynamic>.from(studentStatuses.map((x) => x.toJson())),
+      };
 
-  getFullName(){
+  getFullName() {
     return '$firstName $lastName';
   }
 }
@@ -135,24 +144,25 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json['id'],
-    username: json['username'],
-    password: json['password'],
-    realPassword: json['realPassword'],
-    token: json['token'],
-    createdAt: DateTime.parse(json['createdAt']),
-    userDetail: List<UserDetail>.from(json['userDetail'].map((x) => UserDetail.fromJson(x))),
-  );
+        id: json['id'],
+        username: json['username'],
+        password: json['password'],
+        realPassword: json['realPassword'],
+        token: json['token'],
+        createdAt: DateTime.parse(json['createdAt']),
+        userDetail: List<UserDetail>.from(
+            json['userDetail'].map((x) => UserDetail.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'username': username,
-    'password': password,
-    'realPassword': realPassword,
-    'token': token,
-    'createdAt': createdAt.toIso8601String(),
-    'userDetail': List<dynamic>.from(userDetail.map((x) => x.toJson())),
-  };
+        'id': id,
+        'username': username,
+        'password': password,
+        'realPassword': realPassword,
+        'token': token,
+        'createdAt': createdAt.toIso8601String(),
+        'userDetail': List<dynamic>.from(userDetail.map((x) => x.toJson())),
+      };
 }
 
 class Teacher {
@@ -177,67 +187,28 @@ class Teacher {
   });
 
   factory Teacher.fromJson(Map<String, dynamic> json) => Teacher(
-    id: json['id'],
-    officerNumber: json['officerNumber'],
-    sortName: json['sortName'],
-    joiningDate: DateTime.parse(json['joiningDate']),
-    active: json['active'],
-    positionId: json['positionId'],
-    departments: List<dynamic>.from(json['departments'].map((x) => x)),
-    user: User.fromJson(json['user']),
-  );
+        id: json['id'],
+        officerNumber: json['officerNumber'],
+        sortName: json['sortName'],
+        joiningDate: DateTime.parse(json['joiningDate']),
+        active: json['active'],
+        positionId: json['positionId'],
+        departments: List<dynamic>.from(json['departments'].map((x) => x)),
+        user: User.fromJson(json['user']),
+      );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'officerNumber': officerNumber,
-    'sortName': sortName,
-    'joiningDate': joiningDate.toIso8601String(),
-    'active': active,
-    'positionId': positionId,
-    'departments': List<dynamic>.from(departments.map((x) => x)),
-    'user': user.toJson(),
-  };
+        'id': id,
+        'officerNumber': officerNumber,
+        'sortName': sortName,
+        'joiningDate': joiningDate.toIso8601String(),
+        'active': active,
+        'positionId': positionId,
+        'departments': List<dynamic>.from(departments.map((x) => x)),
+        'user': user.toJson(),
+      };
 }
 
-class Grade {
-  int id;
-  String name;
-
-  Grade({
-    required this.id,
-    required this.name,
-  });
-
-  factory Grade.fromJson(Map<String, dynamic> json) => Grade(
-    id: json['id'],
-    name: json['name'],
-  );
-
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-  };
-}
-
-class Room {
-  int id;
-  String name;
-
-  Room({
-    required this.id,
-    required this.name,
-  });
-
-  factory Room.fromJson(Map<String, dynamic> json) => Room(
-    id: json['id'],
-    name: json['name'],
-  );
-
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-  };
-}
 
 class TeacherSchoolYear {
   int id;
@@ -250,17 +221,18 @@ class TeacherSchoolYear {
     required this.schoolYear,
   });
 
-  factory TeacherSchoolYear.fromJson(Map<String, dynamic> json) => TeacherSchoolYear(
-    id: json['id'],
-    teacher: Teacher.fromJson(json['teacher']),
-    schoolYear: SchoolYear.fromJson(json['schoolYear']),
-  );
+  factory TeacherSchoolYear.fromJson(Map<String, dynamic> json) =>
+      TeacherSchoolYear(
+        id: json['id'],
+        teacher: Teacher.fromJson(json['teacher']),
+        schoolYear: SchoolYear.fromJson(json['schoolYear']),
+      );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'teacher': teacher.toJson(),
-    'schoolYear': schoolYear.toJson(),
-  };
+        'id': id,
+        'teacher': teacher.toJson(),
+        'schoolYear': schoolYear.toJson(),
+      };
 }
 
 class SchoolYearClass {
@@ -282,25 +254,27 @@ class SchoolYearClass {
     required this.schoolYear,
   });
 
-  factory SchoolYearClass.fromJson(Map<String, dynamic> json) => SchoolYearClass(
-    id: json['id'],
-    className: json['className'],
-    classCode: json['classCode'],
-    grade: Grade.fromJson(json['grade']),
-    room: Room.fromJson(json['room']),
-    teacherSchoolYear: TeacherSchoolYear.fromJson(json['teacherSchoolYear']),
-    schoolYear: SchoolYear.fromJson(json['schoolYear']),
-  );
+  factory SchoolYearClass.fromJson(Map<String, dynamic> json) =>
+      SchoolYearClass(
+        id: json['id'],
+        className: json['className'],
+        classCode: json['classCode'],
+        grade: Grade.fromJson(json['grade']),
+        room: Room.fromJson(json['room']),
+        teacherSchoolYear:
+            TeacherSchoolYear.fromJson(json['teacherSchoolYear']),
+        schoolYear: SchoolYear.fromJson(json['schoolYear']),
+      );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'className': className,
-    'classCode': classCode,
-    'grade': grade.toJson(),
-    'room': room.toJson(),
-    'teacherSchoolYear': teacherSchoolYear.toJson(),
-    'schoolYear': schoolYear.toJson(),
-  };
+        'id': id,
+        'className': className,
+        'classCode': classCode,
+        'grade': grade.toJson(),
+        'room': room.toJson(),
+        'teacherSchoolYear': teacherSchoolYear.toJson(),
+        'schoolYear': schoolYear.toJson(),
+      };
 }
 
 class StudentRecord {
@@ -310,24 +284,25 @@ class StudentRecord {
   SchoolYearClass? schoolYearClass;
 
   StudentRecord({
-     this.id,
+    this.id,
     this.createdAt,
-     this.students,
-     this.schoolYearClass,
+    this.students,
+    this.schoolYearClass,
   });
 
   factory StudentRecord.fromJson(Map<String, dynamic> json) => StudentRecord(
-    id: json['id'],
-    createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
-    students: StudentInfo.fromJson(json['students']),
-    schoolYearClass: SchoolYearClass.fromJson(json['schoolYearClass']),
-  );
+        id: json['id'],
+        createdAt: json['createdAt'] != null
+            ? DateTime.parse(json['createdAt'])
+            : null,
+        students: StudentInfo.fromJson(json['students']),
+        schoolYearClass: SchoolYearClass.fromJson(json['schoolYearClass']),
+      );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'createdAt': createdAt?.toIso8601String(),
-    'students': students?.toJson(),
-    'schoolYearClass': schoolYearClass?.toJson(),
-  };
+        'id': id,
+        'createdAt': createdAt?.toIso8601String(),
+        'students': students?.toJson(),
+        'schoolYearClass': schoolYearClass?.toJson(),
+      };
 }
-
